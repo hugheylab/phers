@@ -1,0 +1,24 @@
+Package: phers
+Type: Package
+Title: What the package does
+Version: 0.0.0.9000
+Authors@R: as.person(c(
+  "Jake Hughey <jakejhughey@gmail.com> [aut, cre]",
+  "Layla Aref <larefnezhad@gmail.com> [aut]"))
+Description: More about what it does.
+URL: https://phers.hugheylab.org, https://github.com/hugheylab/phers
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.2
+Roxygen: list(markdown = TRUE)
+Depends: R (>= 3.5)
+Imports:
+  checkmate (>= 2.0.0),
+  data.table (>= 1.11.8)
+Suggests:
+  knitr,
+  rmarkdown,
+  testthat (>= 3.1.0)
+Config/testthat/edition: 3
+VignetteBuilder: knitr

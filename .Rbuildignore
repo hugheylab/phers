@@ -1,0 +1,9 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.md$
+^_pkgdown\.yml$
+^docs$
+^NEWS\.md$
+^data-raw$
+^codecov\.yml$
+^\.github$
