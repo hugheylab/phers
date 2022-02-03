@@ -3,35 +3,39 @@
 NULL
 
 
-calcWeights = function(demo, phecodes) {
+#'
+#' @param GRIDs vector of person IDs for everyone in the population
+#' @param phecodes [GRID, phecode]
+calcWeights = function(GRIDs, phecodes) {
 
-  npop = uniqueN(demo$GRID)
-  prev_weights = phecodes[,.(prev=.N/npop, prev_w=-log(.N/npop)),by=phecode]
-  phers_w = phecodes[,.(GRID, prob=.N/npop),by=phecode]
+  npop = uniqueN(GRIDs)
+  weights = phecodes[,.(prev=.N/npop, w=-log(.N/npop)),by=phecode]
 
-  phers_w_all = foreach (subpheno = unique(phers_w$phecode), .combine = rbind,
+return(weights)}
+
+#'
+#' @param GRIDs vector of person IDs for everyone in the population
+#' @param phecodes [GRID, phecode]
+#' @param weights  [phecode, w]
+#' @param diseasePhecodeMap [dID, phecode]
+calcPheRS = function(GRIDs, phecodes, weights, diseasePhecodeMap){
+
+  GRIDs = data.table('GRID'=GRIDs)
+  weightsAll = foreach (subpheno = unique(phecodes$phecode), .combine = rbind,
                          .packages = c('data.table')) %dopar% {
-                           phers_w_demo = merge(demo, phers_w[phecode==subpheno,], by = "GRID", all.x = TRUE)
+                           weightsSub = merge(GRIDs,
+                                              phecodes[phecode==subpheno,],
+                                              by = "GRID", all.x = TRUE)
 
-                           phers_w_demo[, dx_status := ifelse(is.na(phecode), 0, 1)]
-                           phers_w_demo[,phecode:=subpheno]
+                           weightsSub[, dx_status := ifelse(is.na(phecode),
+                                                            0, 1)]
+                           weightsSub[,phecode:=subpheno]
+                           weightsSub[,w:=dx_status*weights[phecode==subpheno]$w]
 
-                           uprob = prev_weights[phecode==subpheno]$prev
-                           phers_w_demo[,prob:=uprob]
+                           weightsSub}
 
-                           phers_w_demo}
+  weightsAll = merge(weightsAll, diseasePhecodeMap, by='phecode',
+                     allow.cartesian=T)
+  phers = weightsAll[, .(phers = sum(w)), by = .(GRID, dID)]
 
-  saveRDS(prev_weights, file.path(resultDir, paste0("prev_weights_", dataName, ".rds")))
-  calc_phers(phers_w_all, paste0("prev_phers_", dataName, ".rds"), dID_phecodes_long)
-}
-
-
-calc_phers = function(weights, dID_phecodes_long){
-
-  weights[,w:=(1 - 2 * dx_status) * log(dx_status * prob + (1 - dx_status) * (1 - prob))]
-  weights[,w0:=dx_status*w]
-
-  dID_weights = merge(weights, dID_phecodes_long, by='phecode', allow.cartesian=T)
-  phers = dID_weights[, .(phers = sum(w), phers0=sum(w0)), by = .(GRID, dID)]
-
-}
+return(phers)}
