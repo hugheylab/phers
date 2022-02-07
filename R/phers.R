@@ -14,26 +14,24 @@ calcWeights = function(GRIDs, phecodes) {
 return(weights)}
 
 #'
-#' @param GRIDs vector of person IDs for everyone in the population
+#' @param demos vector of person IDs for everyone in the population
 #' @param phecodes [GRID, phecode]
 #' @param weights  [phecode, w]
 #' @param diseasePhecodeMap [dID, phecode]
-calcPheRS = function(GRIDs, phecodes, weights, diseasePhecodeMap){
+calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap, diseaseIDs){
 
-  GRIDs = data.table(GRID = GRIDs)
-  weightsAll = foreach (subpheno = unique(phecodes$phecode), .combine = rbind,
-                        .packages = c('data.table')) %dopar% {
-       weightsSub = merge(GRIDs,
-                          phecodes[phecode == subpheno],
-                          by = "GRID", all.x = TRUE)
+  phecodesW = merge(phecodes, weights, by='phecode')
 
-       weightsSub[, dx_status := ifelse(is.na(phecode),
-                                        0, 1)]
-       weightsSub[, phecode := subpheno]
-       weightsSub[, w := dx_status * weights[phecode == subpheno]$w]}
+  phersAll = foreach (ID = unique(diseaseIDs),
+                        .combine = rbind) %dopar% {
 
-  weightsAll = merge(weightsAll, diseasePhecodeMap, by = 'phecode',
-                     allow.cartesian = TRUE)
-  phers = weightsAll[, .(phers = sum(w)), by = .(GRID, dID)]
 
-return(phers)}
+              phecodesWSub = merge(phecodesW, diseasePhecodeMap[diseaseID==ID],
+                                by = 'phecode', allow.cartesian = TRUE)
+              phers = phecodesWSub[, .(phers = sum(w)), by = .(GRID, dID)]
+
+              phers = merge(demo, phers, by='GRID', all.x = TRUE)
+              phers[is.na(phers),phers:=0]
+              phers[, diseaseID:=ID]}
+
+return(phersAll)}
