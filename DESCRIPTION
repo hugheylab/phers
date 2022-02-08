@@ -1,6 +1,6 @@
 Package: phers
 Type: Package
-Title: What the package does
+Title: Calculate phenotype risk scores 
 Version: 0.0.0.9000
 Authors@R: as.person(c(
   "Jake Hughey <jakejhughey@gmail.com> [aut, cre]",
@@ -15,7 +15,9 @@ Roxygen: list(markdown = TRUE)
 Depends: R (>= 3.5)
 Imports:
   checkmate (>= 2.0.0),
-  data.table (>= 1.11.8)
+  data.table (>= 1.11.8),
+  foreach,
+  doParallel
 Suggests:
   knitr,
   rmarkdown,

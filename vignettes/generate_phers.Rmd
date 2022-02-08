@@ -1,0 +1,48 @@
+---
+title: "generate_phers"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{generate_phers}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library('phers')
+library('data.table')
+library('foreach')
+library('doParallel')
+registerDoParallel(cores = 2)
+```
+
+
+```{r}
+demos = fread(system.file("extdata", "sample_demo.csv", package = "phers"))
+
+ICDs = fread(system.file("extdata", "sample_icd.csv", package = "phers"), 
+             colClasses = list(character=c('ICD')))
+
+ICDPhecodeMap = fread(system.file("extdata", "ICD_phecode_map.csv", 
+                                  package = "phers"), 
+                      colClasses = list(character=c('ICD', 'phecode')))
+
+diseasePhecodeMap = fread(system.file("extdata", "disease_phecode_map.csv", package = "phers"), colClasses = list(character=c('phecode')))
+diseasePhecodeMap = unique(diseasePhecodeMap[phecode != ''][,.(disease_ID, phecode)])
+```
+
+
+```{r}
+phecodes = merge(ICDs, ICDPhecodeMap, by=c('ICD', 'flag'))[,.(person_ID, phecode)]
+
+weights = calcWeights(demos, phecodes)
+
+calcPheRS(demos, phecodes, weights, diseasePhecodeMap, c(154700))
+```
+
