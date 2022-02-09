@@ -9,8 +9,8 @@ calcPheRS(demos, phecodes, weights, diseasePhecodeMap, diseaseIDs)
 \arguments{
 \item{demos}{A data.table containing demographic information for each person
 in the population. The columns are \code{person_ID}, \code{sex}, \code{uniq_age},
-\code{first_age}, and \code{last_age}. The age columns specify the number of unique years with
-ICD codes, the age of the individual at first ICD code,
+\code{first_age}, and \code{last_age}. The age columns specify the number of
+unique years with ICD codes, the age of the individual at first ICD code,
 and the age of the individual at last ICD code.}
 
 \item{phecodes}{A data.table containing phenotypes stored as phecodes

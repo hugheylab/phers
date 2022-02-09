@@ -4,7 +4,6 @@
 #' @importFrom stats lm rstudent
 NULL
 
-
 #' Calculate phenotype weights
 #'
 #' Calculate the population prevalence and weight for each phenotype.
@@ -40,8 +39,8 @@ return(weights)}
 #'
 #' @param demos A data.table containing demographic information for each person
 #'   in the population. The columns are `person_ID`, `sex`, `uniq_age`,
-#'   `first_age`, and `last_age`. The age columns specify the number of unique years with
-#'   ICD codes, the age of the individual at first ICD code,
+#'   `first_age`, and `last_age`. The age columns specify the number of
+#'   unique years with ICD codes, the age of the individual at first ICD code,
 #'   and the age of the individual at last ICD code.
 #' @param phecodes A data.table containing phenotypes stored as phecodes
 #'   for each person. The columns are `person_ID` and `phecode`.
@@ -60,27 +59,28 @@ calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap, diseaseIDs){
 
   person_ID = disease_ID = ID = w = rphers = `.` = NULL
 
-  phecodesW = merge(phecodes, weights, by='phecode')
+  phecodesW = merge(phecodes, weights, by = 'phecode')
 
-  phersAll = foreach (ID = unique(diseaseIDs),
-                        .combine = rbind) %dopar% {
+  phersAll = foreach (ID = unique(diseaseIDs), .combine = rbind) %dopar% {
 
-              phecodesWSub = merge(phecodesW, diseasePhecodeMap[disease_ID==ID],
+              phecodesWSub = merge(phecodesW,
+                                   diseasePhecodeMap[disease_ID == ID],
                                 by = 'phecode', allow.cartesian = TRUE)
               phers = phecodesWSub[, .(phers = sum(w)), by = 'person_ID']
 
-              phers = merge(demos, phers, by='person_ID', all.x = TRUE)
-              phers[is.na(phers),phers:=0]
-              phers[, disease_ID:=ID]
+              phers = merge(demos, phers, by = 'person_ID', all.x = TRUE)
+              phers[is.na(phers), phers := 0]
+              phers[, disease_ID := ID]
 
 
-              rphersFit = lm(phers~sex+uniq_age+first_age+last_age,
-                            data=phers)
-              phers[,rphers:=rstudent(rphersFit)]
+              rphersFit = lm(phers ~ sex + uniq_age + first_age + last_age,
+                            data = phers)
+              phers[, rphers := rstudent(rphersFit)]
 
               phers[,.(person_ID, disease_ID, phers, rphers)]}
 
 return(phersAll)}
+
 
 
 
