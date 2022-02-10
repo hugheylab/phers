@@ -11,6 +11,10 @@ mapDiseaseToPhecode(
   HPOPhecodeMap = phers::HPOPhecodeMap
 )
 }
+\value{
+A data.table containing the mapping between diseases and
+their phenotypes. The columns are \code{disease_ID}, \code{phecode}.
+}
 \description{
 Map diseases IDs to phecodes using HPO terms
 }

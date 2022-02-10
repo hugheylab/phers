@@ -28,6 +28,6 @@ phecodes = mapICDToPhecode(icdSample)
 weights = calcWeights(demoSample, phecodes)
 diseasePhecodeMap = mapDiseaseToPhecode(c(154700))
 
-calcPheRS(demoSample, phecodes, weights, diseasePhecodeMap, c(154700))
+calcPheRS(demoSample, phecodes, weights, diseaseIDs = c(154700))
 ```
 

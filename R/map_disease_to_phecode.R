@@ -6,6 +6,9 @@ NULL
 #' Map diseases IDs to phecodes using HPO terms
 #'
 #'
+#' @return A data.table containing the mapping between diseases and
+#'   their phenotypes. The columns are `disease_ID`, `phecode`.
+#'
 #' @export
 mapDiseaseToPhecode = function(diseaseIDs, dbName = 'OMIM',
                                diseaseHPOMap = phers::diseaseHPOMap,
@@ -20,5 +23,4 @@ mapDiseaseToPhecode = function(diseaseIDs, dbName = 'OMIM',
 return(diseasePhecodeMap)}
 
 
-'diseaseHPOMap'
-'HPOPhecodeMap'
+

@@ -4,7 +4,7 @@
 \alias{calcPheRS}
 \title{Calculate the Phenotype Risk Score}
 \usage{
-calcPheRS(demos, phecodes, weights, diseasePhecodeMap, diseaseIDs)
+calcPheRS(demos, phecodes, weights, diseaseIDs, dbName = "OMIM")
 }
 \arguments{
 \item{demos}{A data.table containing demographic information for each person
@@ -18,9 +18,6 @@ for each person. The columns are \code{person_ID} and \code{phecode}.}
 
 \item{weights}{A data.table where each row is a phecode and the weight
 corresponding to it. The columns are \code{phecode} and \code{w}.}
-
-\item{diseasePhecodeMap}{A data.table containing the mapping between
-diseases and their phenotypes. The columns are \code{disease_ID}, \code{phecode}.}
 
 \item{diseaseIDs}{vector of disease IDs to calculate PheRS for.}
 }

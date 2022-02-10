@@ -14,4 +14,3 @@ mapICDToPhecode = function(ICDs, ICDPhecodeMap = phers::ICDPhecodeMap) {
 
 return(phecodes)}
 
-'ICDPhecodeMap'

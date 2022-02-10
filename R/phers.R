@@ -10,10 +10,7 @@ NULL
 #' These weights will be used in the calculation of the phenotype risk score.
 #'
 #' @param demos A data.table containing demographic information for each person
-#'   in the population. The columns are `person_ID`, `sex`, `uniq_age`,
-#'   `first_age`, and `last_age`. The age columns specify the number of unique years with
-#'   ICD codes, the age of the individual at first ICD code,
-#'   and the age of the individual at last ICD code.
+#'   in the population. The columns are `person_ID`.
 #' @param phecodes A data.table containing phenotypes stored as phecodes
 #'   for each person. The columns are `person_ID` and `phecode`.
 #'
@@ -23,10 +20,19 @@ NULL
 #'
 #' @export
 calcWeights = function(demos, phecodes) {
-  phecode = `.` = NULL
+  phecode = person_ID = `.` = NULL
+
+  assertDataTable(demos)
+  assertNames(colnames(demos), must.include = c('person_ID'))
+
+  assertDataTable(phecodes, types='character')
+  assertNames(colnames(phecodes), must.include = c('person_ID', 'phecode'))
+  assertCharacter(phecodes$phecode)
+
 
   npop = uniqueN(demos$person_ID)
-  weights = phecodes[, .(prev = .N / npop, w = -log(.N / npop)), by = phecode]
+  weights = phecodes[, .(prev = uniqueN(person_ID) / npop,
+                         w = -log(uniqueN(person_ID) / npop)), by = phecode]
 
 return(weights)}
 
@@ -46,8 +52,6 @@ return(weights)}
 #'   for each person. The columns are `person_ID` and `phecode`.
 #' @param weights A data.table where each row is a phecode and the weight
 #'   corresponding to it. The columns are `phecode` and `w`.
-#' @param diseasePhecodeMap A data.table containing the mapping between
-#'   diseases and their phenotypes. The columns are `disease_ID`, `phecode`.
 #' @param diseaseIDs vector of disease IDs to calculate PheRS for.
 #'
 #' @return A data.table of raw and residualized phenotype risk scores
@@ -55,10 +59,27 @@ return(weights)}
 #'   `disease_ID`, `phers`, `rphers`.
 #'
 #' @export
-calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap, diseaseIDs){
-
+calcPheRS = function(demos, phecodes, weights, diseaseIDs, dbName = 'OMIM'){
   person_ID = disease_ID = ID = w = rphers = `.` = NULL
 
+  assertDataTable(demos)
+  assertNames(colnames(demos), must.include = c('person_ID'))
+
+  assertDataTable(phecodes, types='character')
+  assertNames(colnames(phecodes), must.include = c('person_ID', 'phecode'))
+  assertCharacter(phecodes$phecode)
+
+  assertDataTable(weights)
+  assertNames(colnames(weights), must.include = c('phecode', 'w'))
+  assertCharacter(weights$phecode)
+  assertNumeric(weights$w)
+
+  assertNumeric(diseaseIDs)
+  assertString(dbName)
+  assertNames(dbName, subset.of = c('DECIPHER', 'OMIM', 'ORPHA'))
+
+
+  diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName)
   phecodesW = merge(phecodes, weights, by = 'phecode')
 
   phersAll = foreach (ID = unique(diseaseIDs), .combine = rbind) %dopar% {
@@ -73,11 +94,13 @@ calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap, diseaseIDs){
               phers[, disease_ID := ID]
 
 
-              rphersFit = lm(phers ~ sex + uniq_age + first_age + last_age,
-                            data = phers)
-              phers[, rphers := rstudent(rphersFit)]
+              # rphersFit = lm(phers ~ sex + uniq_age + first_age + last_age,
+              #               data = phers)
+              # phers[, rphers := rstudent(rphersFit)]
+              # phers[,.(person_ID, disease_ID, phers, rphers)]
 
-              phers[,.(person_ID, disease_ID, phers, rphers)]}
+
+              phers[,.(person_ID, disease_ID, phers)]}
 
 return(phersAll)}
 
