@@ -23,20 +23,20 @@ usethis::use_data(icdSample, overwrite = TRUE)
 ########################
 # map of icd and phecode
 
-ICDPhecodeMap = fread(file.path('data-raw', 'ICD_phecode_map.csv'),
+ICDPhecodeMap = fread(file.path('data-raw', 'ICD_phecode_map.csv.gz'),
                       colClasses = list(character=c('ICD', 'phecode')))
 usethis::use_data(ICDPhecodeMap, overwrite = TRUE)
 
 #######################
 # map of disease ID and HPO terms
 
-diseaseHPOMap = fread(file.path('data-raw', 'disease_HPO_map.csv'))
+diseaseHPOMap = fread(file.path('data-raw', 'disease_HPO_map.csv.gz'))
 usethis::use_data(diseaseHPOMap, overwrite = TRUE)
 
 #######################
 # map of HPO terms and phecodes
 
-HPOPhecodeMap = fread(file.path('data-raw', 'HPO_phecode_map.csv'),
+HPOPhecodeMap = fread(file.path('data-raw', 'HPO_phecode_map.csv.gz'),
                       colClasses = list(character=c('phecode')))
 usethis::use_data(HPOPhecodeMap, overwrite = TRUE)
 

@@ -15,6 +15,11 @@ mapDiseaseToPhecode = function(diseaseIDs, dbName = 'OMIM',
                                HPOPhecodeMap = phers::HPOPhecodeMap) {
   db_name = phecode = disease_ID = NULL
 
+  assertString(dbName)
+  assertNames(dbName, subset.of = c('DECIPHER', 'OMIM', 'ORPHA'))
+  # change error message
+  assertChoice(as.numeric(diseaseIDs), unique(diseaseHPOMap$disease_ID))
+
   diseaseHPOMapSub = diseaseHPOMap[db_name == dbName][disease_ID %in% diseaseIDs]
   diseasePhecodeMap =merge(diseaseHPOMapSub,
                            HPOPhecodeMap[,!c('HPO_term_name')], by = 'term_ID')

@@ -98,15 +98,15 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">phecodes</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapICDToPhecode.html">mapICDToPhecode</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span>
 <span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="../reference/calcWeights.html">calcWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span><span class="op">)</span>
-<span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span><span class="op">)</span>
+<span class="co"># diseasePhecodeMap = mapDiseaseToPhecode(c(154700))</span>
 
-<span class="fu"><a href="../reference/calcPheRS.html">calcPheRS</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;    person_ID disease_ID     phers rphers</span>
-<span class="co">#&gt; 1:         1     154700 3.4420194    NaN</span>
-<span class="co">#&gt; 2:         2     154700 4.1351666    NaN</span>
-<span class="co">#&gt; 3:         3     154700 1.8325815    NaN</span>
-<span class="co">#&gt; 4:         4     154700 0.9162907    NaN</span>
-<span class="co">#&gt; 5:         5     154700 0.0000000    NaN</span></code></pre></div>
+<span class="fu"><a href="../reference/calcPheRS.html">calcPheRS</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span>, <span class="va">weights</span>, diseaseIDs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span><span class="op">)</span>
+<span class="co">#&gt;    person_ID disease_ID     phers</span>
+<span class="co">#&gt; 1:         1     154700 3.4420194</span>
+<span class="co">#&gt; 2:         2     154700 4.1351666</span>
+<span class="co">#&gt; 3:         3     154700 1.8325815</span>
+<span class="co">#&gt; 4:         4     154700 0.9162907</span>
+<span class="co">#&gt; 5:         5     154700 0.0000000</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

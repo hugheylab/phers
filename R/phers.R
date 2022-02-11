@@ -25,9 +25,13 @@ calcWeights = function(demos, phecodes) {
   assertDataTable(demos)
   assertNames(colnames(demos), must.include = c('person_ID'))
 
-  assertDataTable(phecodes, types='character')
+  assertDataTable(phecodes)
   assertNames(colnames(phecodes), must.include = c('person_ID', 'phecode'))
   assertCharacter(phecodes$phecode)
+
+  # better error message?
+  assertNumber(uniqueN(phecodes$person_ID),
+               upper = uniqueN(demos$person_ID))
 
 
   npop = uniqueN(demos$person_ID)
@@ -65,7 +69,7 @@ calcPheRS = function(demos, phecodes, weights, diseaseIDs, dbName = 'OMIM'){
   assertDataTable(demos)
   assertNames(colnames(demos), must.include = c('person_ID'))
 
-  assertDataTable(phecodes, types='character')
+  assertDataTable(phecodes)
   assertNames(colnames(phecodes), must.include = c('person_ID', 'phecode'))
   assertCharacter(phecodes$phecode)
 
@@ -74,10 +78,8 @@ calcPheRS = function(demos, phecodes, weights, diseaseIDs, dbName = 'OMIM'){
   assertCharacter(weights$phecode)
   assertNumeric(weights$w)
 
-  assertNumeric(diseaseIDs)
-  assertString(dbName)
-  assertNames(dbName, subset.of = c('DECIPHER', 'OMIM', 'ORPHA'))
-
+  demos[,person_ID:=as.character(person_ID)]
+  phecodes[,person_ID:=as.character(person_ID)]
 
   diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName)
   phecodesW = merge(phecodes, weights, by = 'phecode')

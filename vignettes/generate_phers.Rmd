@@ -26,7 +26,7 @@ registerDoParallel(cores = 2)
 ```{r}
 phecodes = mapICDToPhecode(icdSample)
 weights = calcWeights(demoSample, phecodes)
-diseasePhecodeMap = mapDiseaseToPhecode(c(154700))
+# diseasePhecodeMap = mapDiseaseToPhecode(c(154700))
 
 calcPheRS(demoSample, phecodes, weights, diseaseIDs = c(154700))
 ```
