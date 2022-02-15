@@ -16,14 +16,14 @@ test_that("calcWeights output 2", {
 
 test_that("check CalcWeights Args", {
 
-  # no column named person_ID
+  # no column named person_id
   demosTestErr = copy(demosTest)
-  setnames(demosTestErr, 'person_ID', 'person_ID_Err')
+  setnames(demosTestErr, 'person_id', 'person_id_Err')
   expect_error(calcWeights(demosTestErr, phecodesTest))
 
-  # no column named person_ID in phecodes
+  # no column named person_id in phecodes
   phecodesTestErr = copy(phecodesTest)
-  setnames(phecodesTestErr, 'person_ID', 'person_ID_Err')
+  setnames(phecodesTestErr, 'person_id', 'person_id_Err')
   expect_error(calcWeights(demosTest, phecodesTestErr))
 
   # phecodes is a data.frame
@@ -36,7 +36,7 @@ test_that("check CalcWeights Args", {
   phecodesTestErr[,phecode:=as.numeric(phecode)]
   expect_error(calcWeights(demosTest, phecodesTestErr))
 
-  # demo has less person_IDs than phecodes
+  # demo has less person_ids than phecodes
   demosTestErr = demosTest[1:2]
   expect_error(calcWeights(demosTestErr, phecodesTest))
 
@@ -54,15 +54,15 @@ test_that('check calcPheRS output', {
 
 test_that("check CalcPheRS Args",{
 
-  # no column named person_ID demos
+  # no column named person_id demos
   demosTestErr = copy(demosTest)
-  setnames(demosTestErr, 'person_ID', 'person_ID_Err')
+  setnames(demosTestErr, 'person_id', 'person_id_Err')
   expect_error(calcPheRS(demosTestErr, phecodesTest, weightsTest,
                          diseaseIDs, dbName = 'OMIM'))
 
-  # no column named person_ID in phecodes
+  # no column named person_id in phecodes
   phecodesTestErr = copy(phecodesTest)
-  setnames(phecodesTestErr, 'person_ID', 'person_ID_Err')
+  setnames(phecodesTestErr, 'person_id', 'person_id_Err')
   expect_error(calcPheRS(demosTestErr, phecodesTestErr, weightsTest,
                          diseaseIDs, dbName = 'OMIM'))
 

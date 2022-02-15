@@ -7,14 +7,14 @@ NULL
 #'
 #' @export
 mapICDToPhecode = function(ICDs, ICDPhecodeMap = phers::ICDPhecodeMap) {
-  person_ID = phecode = `.` = NULL
+  person_id = phecode = `.` = NULL
 
   assertDataTable(ICDs)
-  assertNames(colnames(ICDs), must.include = c('person_ID', 'ICD', 'flag'))
-  assertCharacter(ICDs$ICD)
+  assertNames(colnames(ICDs), must.include = c('person_id', 'icd', 'flag'))
+  assertCharacter(ICDs$icd)
 
   phecodes = merge(ICDs, ICDPhecodeMap,
-                   by=c('ICD', 'flag'))[,.(person_ID, phecode)]
+                   by=c('icd', 'flag'))[,.(person_id, phecode)]
 
 return(phecodes)}
 

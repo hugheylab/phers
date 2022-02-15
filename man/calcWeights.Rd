@@ -8,10 +8,10 @@ calcWeights(demos, phecodes)
 }
 \arguments{
 \item{demos}{A data.table containing demographic information for each person
-in the population. The columns are \code{person_ID}.}
+in the population. The columns are \code{person_id}.}
 
 \item{phecodes}{A data.table containing phenotypes stored as phecodes
-for each person. The columns are \code{person_ID} and \code{phecode}.}
+for each person. The columns are \code{person_id} and \code{phecode}.}
 }
 \value{
 A data.table where each row is a phecode and the population

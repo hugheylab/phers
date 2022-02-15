@@ -8,13 +8,13 @@ calcPheRS(demos, phecodes, weights, diseaseIDs, dbName = "OMIM")
 }
 \arguments{
 \item{demos}{A data.table containing demographic information for each person
-in the population. The columns are \code{person_ID}, \code{sex}, \code{uniq_age},
+in the population. The columns are \code{person_id}, \code{sex}, \code{uniq_age},
 \code{first_age}, and \code{last_age}. The age columns specify the number of
 unique years with ICD codes, the age of the individual at first ICD code,
 and the age of the individual at last ICD code.}
 
 \item{phecodes}{A data.table containing phenotypes stored as phecodes
-for each person. The columns are \code{person_ID} and \code{phecode}.}
+for each person. The columns are \code{person_id} and \code{phecode}.}
 
 \item{weights}{A data.table where each row is a phecode and the weight
 corresponding to it. The columns are \code{phecode} and \code{w}.}
@@ -23,8 +23,8 @@ corresponding to it. The columns are \code{phecode} and \code{w}.}
 }
 \value{
 A data.table of raw and residualized phenotype risk scores
-with one row per person per disease. The columns are \code{person_ID},
-\code{disease_ID}, \code{phers}, \code{rphers}.
+with one row per person per disease. The columns are \code{person_id},
+\code{disease_id}, \code{phers}, \code{rphers}.
 }
 \description{
 Calculate the phenotype risk score (PheRS)
