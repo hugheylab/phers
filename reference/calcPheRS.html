@@ -69,13 +69,13 @@ for a group of individuals and diseases</p>
     <h2>Arguments</h2>
     <dl><dt>demos</dt>
 <dd><p>A data.table containing demographic information for each person
-in the population. The columns are <code>person_ID</code>, <code>sex</code>, <code>uniq_age</code>,
+in the population. The columns are <code>person_id</code>, <code>sex</code>, <code>uniq_age</code>,
 <code>first_age</code>, and <code>last_age</code>. The age columns specify the number of
 unique years with ICD codes, the age of the individual at first ICD code,
 and the age of the individual at last ICD code.</p></dd>
 <dt>phecodes</dt>
 <dd><p>A data.table containing phenotypes stored as phecodes
-for each person. The columns are <code>person_ID</code> and <code>phecode</code>.</p></dd>
+for each person. The columns are <code>person_id</code> and <code>phecode</code>.</p></dd>
 <dt>weights</dt>
 <dd><p>A data.table where each row is a phecode and the weight
 corresponding to it. The columns are <code>phecode</code> and <code>w</code>.</p></dd>
@@ -85,8 +85,8 @@ corresponding to it. The columns are <code>phecode</code> and <code>w</code>.</p
     <div id="value">
     <h2>Value</h2>
     <p>A data.table of raw and residualized phenotype risk scores
-with one row per person per disease. The columns are <code>person_ID</code>,
-<code>disease_ID</code>, <code>phers</code>, <code>rphers</code>.</p>
+with one row per person per disease. The columns are <code>person_id</code>,
+<code>disease_id</code>, <code>phers</code>, <code>rphers</code>.</p>
     </div>
 
   </div>
