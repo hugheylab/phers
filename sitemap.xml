@@ -22,16 +22,16 @@
     <loc>https://phers.hugheylab.org/reference/ICDPhecodeMap.html</loc>
   </url>
   <url>
-    <loc>https://phers.hugheylab.org/reference/calcPheRS.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/calcWeights.html</loc>
-  </url>
-  <url>
     <loc>https://phers.hugheylab.org/reference/demoSample.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/diseaseHPOMap.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/getPheRS.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/getWeights.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/icdSample.html</loc>

@@ -92,12 +92,12 @@
 <span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/RevolutionAnalytics/doparallel" class="external-link">'doParallel'</a></span><span class="op">)</span>
 <span class="co">#&gt; Loading required package: iterators</span>
 <span class="co">#&gt; Loading required package: parallel</span>
-<span class="fu"><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">registerDoParallel</a></span><span class="op">(</span>cores <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://rdrr.io/pkg/foreach/man/registerDoSEQ.html" class="external-link">registerDoSEQ</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># map ICD codes to phecodes</span>
 <span class="va">phecodes</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapICDToPhecode.html">mapICDToPhecode</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span> 
 <span class="co"># calculate weights </span>
-<span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="../reference/calcWeights.html">calcWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span><span class="op">)</span> 
+<span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="../reference/getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span><span class="op">)</span> 
 <span class="co"># vector of disease IDs to calculate PheRS for</span>
 <span class="va">diseaseIDs</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span> 
 <span class="co"># database name used for linking diseases to phenotypes</span>
@@ -105,7 +105,7 @@
 <span class="co"># mape diseases to phecodes</span>
 <span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="va">diseaseIDs</span>, <span class="va">dbName</span><span class="op">)</span> 
 <span class="co"># calculate PheRS</span>
-<span class="fu"><a href="../reference/calcPheRS.html">calcPheRS</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span>
+<span class="fu"><a href="../reference/getPheRS.html">getPheRS</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span>
 <span class="co">#&gt;    person_id disease_id     phers</span>
 <span class="co">#&gt; 1:         1     154700 3.4420194</span>
 <span class="co">#&gt; 2:         2     154700 4.1351666</span>
