@@ -14,7 +14,7 @@
 #'   ICD code (**9**: ICD-9-CM,  **10**: ICD-10-CM)}
 #'}
 #'
-#' @seealso [calcWeights()], [calcPheRS()]
+#' @seealso [getWeights()], [getPheRS()]
 'icdSample'
 
 
@@ -38,7 +38,7 @@
 #'    the person last received an ICD code}
 #'}
 #'
-#' @seealso [calcWeights()], [calcPheRS()]
+#' @seealso [getWeights()], [getPheRS()]
 'demoSample'
 
 

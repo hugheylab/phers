@@ -24,6 +24,6 @@ This table contains a sample dataset of patient diagnostic codes
 (ICD-9-CM and ICD-10-CM).
 }
 \seealso{
-\code{\link[=calcWeights]{calcWeights()}}, \code{\link[=calcPheRS]{calcPheRS()}}
+\code{\link[=getWeights]{getWeights()}}, \code{\link[=getPheRS]{getPheRS()}}
 }
 \keyword{datasets}

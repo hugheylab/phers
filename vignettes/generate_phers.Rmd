@@ -19,7 +19,7 @@ library('phers')
 library('data.table')
 library('foreach')
 library('doParallel')
-registerDoParallel(cores = 2)
+registerDoSEQ()
 ```
 
 
@@ -27,7 +27,7 @@ registerDoParallel(cores = 2)
 # map ICD codes to phecodes
 phecodes = mapICDToPhecode(icdSample) 
 # calculate weights 
-weights = calcWeights(demoSample, phecodes) 
+weights = getWeights(demoSample, phecodes) 
 # vector of disease IDs to calculate PheRS for
 diseaseIDs = c(154700) 
 # database name used for linking diseases to phenotypes
@@ -35,6 +35,6 @@ dbName = 'OMIM'
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName) 
 # calculate PheRS
-calcPheRS(demoSample, phecodes, weights, diseasePhecodeMap)
+getPheRS(demoSample, phecodes, weights, diseasePhecodeMap)
 ```
 

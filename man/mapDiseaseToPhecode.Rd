@@ -5,7 +5,7 @@
 \title{Map diseases entities to phecodes using HPO terms}
 \usage{
 mapDiseaseToPhecode(
-  diseaseIDs,
+  diseaseIDs = unique(phers::diseaseHPOMap[db_name == "OMIM"]$disease_id),
   dbName = "OMIM",
   diseaseHPOMap = phers::diseaseHPOMap,
   HPOPhecodeMap = phers::HPOPhecodeMap

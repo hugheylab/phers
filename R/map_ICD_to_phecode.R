@@ -1,7 +1,3 @@
-#' @import checkmate
-#' @importFrom data.table data.table := set uniqueN .N
-NULL
-
 #' Map ICD codes to phecodes
 #'
 #' This function takes a data table of patient ICD codes and maps them to
@@ -24,8 +20,13 @@ mapICDToPhecode = function(ICDs, ICDPhecodeMap = phers::ICDPhecodeMap) {
   assertNames(colnames(ICDs), must.include = c('person_id', 'icd', 'flag'))
   assertCharacter(ICDs$icd)
 
-  phecodes = merge(ICDs, ICDPhecodeMap,
-                   by=c('icd', 'flag'))[,.(person_id, phecode)]
+  assertDataTable(ICDPhecodeMap)
+  assertNames(colnames(ICDPhecodeMap), must.include = c('phecode', 'icd', 'flag'))
+  assertCharacter(ICDPhecodeMap$icd)
+  assertCharacter(ICDPhecodeMap$phecode)
+
+  phecodes = merge(
+    ICDs, ICDPhecodeMap, by = c('icd', 'flag'))[, .(person_id, phecode)]
 
 return(phecodes)}
 

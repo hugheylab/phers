@@ -1,11 +1,27 @@
+
+test_that('check mapDiseaseToPhecode output', {
+
+  diseaseToPhecodeOut = mapDiseaseToPhecode(
+    c(1), 'OMIM', diseaseHPOMap = diseaseHPOMapTest,
+    HPOPhecodeMap = HPOPhecodeMapTest)
+
+  expect_equal(diseaseToPhecodeOut, diseasePhecodeMapTest)
+
+  expect_s3_class(diseaseToPhecodeOut, "data.table")
+})
+
+
+
 test_that('check mapDiseaseToPhecode Args', {
 
   # unknown database name
-  dbNameErr = 'OMIMErr'
-  expect_error(mapDiseaseToPhecode(diseaseIDs, dbNameErr))
+  dbNameTestErr = 'OMIMErr'
+  expect_error(mapDiseaseToPhecode(diseaseIDsTest, dbNameTestErr,
+                                   diseaseHPOMapTest, HPOPhecodeMapTest))
 
   # unknown disease ID
-  diseaseIDsErr = c(11111)
-  expect_error(mapDiseaseToPhecode(diseaseIDsErr, dbName))
+  diseaseIDsTestErr = c(0)
+  expect_error(mapDiseaseToPhecode(diseaseIDsTestErr, dbNameTest,
+                                   diseaseHPOMapTest, HPOPhecodeMapTest))
 
 })

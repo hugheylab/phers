@@ -1,5 +1,5 @@
 #' @import checkmate
-#' @importFrom data.table data.table := set uniqueN .N
+#' @importFrom data.table data.table := set uniqueN
 #' @importFrom foreach foreach %do% %dopar%
 #' @importFrom stats lm rstudent
 NULL
@@ -19,7 +19,7 @@ NULL
 #'   The columns are `phecode`, `prev`, `w`.
 #'
 #' @export
-calcWeights = function(demos, phecodes) {
+getWeights = function(demos, phecodes) {
   phecode = person_id = `.` = NULL
 
   assertDataTable(demos)
@@ -63,7 +63,7 @@ return(weights)}
 #'   `disease_id`, `phers`, `rphers`.
 #'
 #' @export
-calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap){
+getPheRS = function(demos, phecodes, weights, diseasePhecodeMap){
   person_id = disease_id = ID = w = rphers = `.` = NULL
 
   assertDataTable(demos)
@@ -83,15 +83,16 @@ calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap){
               must.include = c('disease_id', 'phecode'))
   assertCharacter(diseasePhecodeMap$phecode)
 
-  demos[,person_id:=as.character(person_id)]
-  phecodes[,person_id:=as.character(person_id)]
+  demos[, person_id := as.character(person_id)]
+  phecodes[, person_id := as.character(person_id)]
 
   phecodesW = merge(phecodes, weights, by = 'phecode')
 
-  phersAll = foreach (ID = unique(diseasePhecodeMap$disease_id), .combine = rbind) %dopar% {
-    phecodesWSub = merge(phecodesW,
-                         diseasePhecodeMap[disease_id == ID],
-                         by = 'phecode', allow.cartesian = TRUE)
+  phersAll = foreach (ID = unique(diseasePhecodeMap$disease_id),
+                      .combine = rbind) %dopar% {
+    phecodesWSub = merge(
+      phecodesW, diseasePhecodeMap[disease_id == ID],
+      by = 'phecode', allow.cartesian = TRUE)
     phers = phecodesWSub[, .(phers = sum(w)), by = 'person_id']
 
     phers = merge(demos, phers, by = 'person_id', all.x = TRUE)
@@ -101,9 +102,9 @@ calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap){
     # rphersFit = lm(phers ~ sex + uniq_age + first_age + last_age,
     #               data = phers)
     # phers[, rphers := rstudent(rphersFit)]
-    # phers[,.(person_id, disease_id, phers, rphers)]
+    # phers[, .(person_id, disease_id, phers, rphers)]
 
-    phers[,.(person_id, disease_id, phers)]}
+    phers[, .(person_id, disease_id, phers)]}
 
 return(phersAll)}
 

@@ -27,6 +27,6 @@ demoSample
 This table contains a sample dataset of patient demographics information.
 }
 \seealso{
-\code{\link[=calcWeights]{calcWeights()}}, \code{\link[=calcPheRS]{calcPheRS()}}
+\code{\link[=getWeights]{getWeights()}}, \code{\link[=getPheRS]{getPheRS()}}
 }
 \keyword{datasets}
