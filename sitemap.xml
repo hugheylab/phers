@@ -16,10 +16,25 @@
     <loc>https://phers.hugheylab.org/index.html</loc>
   </url>
   <url>
+    <loc>https://phers.hugheylab.org/reference/HPOPhecodeMap.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/ICDPhecodeMap.html</loc>
+  </url>
+  <url>
     <loc>https://phers.hugheylab.org/reference/calcPheRS.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/calcWeights.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/demoSample.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/diseaseHPOMap.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/icdSample.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/index.html</loc>
