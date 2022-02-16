@@ -46,7 +46,7 @@ test_that("check CalcWeights Args", {
 test_that('check calcPheRS output', {
 
   phersObs = calcPheRS(demosTestL, phecodesTestL, weightsTestL,
-                         diseaseIDs, dbName = dbName)
+                       diseasePhecodeMapTest)
   phersExp = snapshot(phersObs, file.path(dataDir, 'phers.qs'))
   expect_equal(phersObs, phersExp)
 })
@@ -58,31 +58,31 @@ test_that("check CalcPheRS Args",{
   demosTestErr = copy(demosTest)
   setnames(demosTestErr, 'person_id', 'person_id_Err')
   expect_error(calcPheRS(demosTestErr, phecodesTest, weightsTest,
-                         diseaseIDs, dbName = 'OMIM'))
+                         diseasePhecodeMapTest))
 
   # no column named person_id in phecodes
   phecodesTestErr = copy(phecodesTest)
   setnames(phecodesTestErr, 'person_id', 'person_id_Err')
   expect_error(calcPheRS(demosTestErr, phecodesTestErr, weightsTest,
-                         diseaseIDs, dbName = 'OMIM'))
+                         diseasePhecodeMapTest))
 
   # phecodes is a data.frame
   phecodesTestErr = copy(phecodesTest)
   phecodesTestErr = data.frame(phecodesTestErr)
   expect_error(calcPheRS(demosTestErr, phecodesTestErr, weightsTest,
-                         diseaseIDs, dbName = 'OMIM'))
+                         diseasePhecodeMapTest))
 
   # phecodes are numeric
   phecodesTestErr = copy(phecodesTest)
   phecodesTestErr[,phecode:=as.numeric(phecode)]
   expect_error(calcPheRS(demosTestErr, phecodesTestErr, weightsTest,
-                         diseaseIDs, dbName = 'OMIM'))
+                         diseasePhecodeMapTest))
 
   # phecodes are numeric in weights
   weightsTestErr = copy(weightsTest)
   weightsTestErr[,phecode:=as.numeric(phecode)]
   expect_error(calcPheRS(demosTestErr, phecodesTest, weightsTestErr,
-                         diseaseIDs, dbName = 'OMIM'))
+                         diseasePhecodeMapTest))
 
 })
 

@@ -43,9 +43,8 @@ return(weights)}
 
 #' Calculate the Phenotype Risk Score
 #'
-#' Calculate the phenotype risk score (PheRS)
-#' for a group of individuals and diseases
-#'
+#' Calculate the phenotype risk score (PheRS) for a group of individuals and
+#' diseases
 #'
 #' @param demos A data.table containing demographic information for each person
 #'   in the population. The columns are `person_id`, `sex`, `uniq_age`,
@@ -56,14 +55,15 @@ return(weights)}
 #'   for each person. The columns are `person_id` and `phecode`.
 #' @param weights A data.table where each row is a phecode and the weight
 #'   corresponding to it. The columns are `phecode` and `w`.
-#' @param diseaseIDs vector of disease IDs to calculate PheRS for.
+#' @param diseasePhecodeMap A data.table containing the mapping between
+#'   diseases and phecodes. The columns are `disease_id` and `phecode`.
 #'
 #' @return A data.table of raw and residualized phenotype risk scores
 #'   with one row per person per disease. The columns are `person_id`,
 #'   `disease_id`, `phers`, `rphers`.
 #'
 #' @export
-calcPheRS = function(demos, phecodes, weights, diseaseIDs, dbName = 'OMIM'){
+calcPheRS = function(demos, phecodes, weights, diseasePhecodeMap){
   person_id = disease_id = ID = w = rphers = `.` = NULL
 
   assertDataTable(demos)
@@ -78,13 +78,17 @@ calcPheRS = function(demos, phecodes, weights, diseaseIDs, dbName = 'OMIM'){
   assertCharacter(weights$phecode)
   assertNumeric(weights$w)
 
+  assertDataTable(diseasePhecodeMap)
+  assertNames(colnames(diseasePhecodeMap),
+              must.include = c('disease_id', 'phecode'))
+  assertCharacter(diseasePhecodeMap$phecode)
+
   demos[,person_id:=as.character(person_id)]
   phecodes[,person_id:=as.character(person_id)]
 
-  diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName)
   phecodesW = merge(phecodes, weights, by = 'phecode')
 
-  phersAll = foreach (ID = unique(diseaseIDs), .combine = rbind) %dopar% {
+  phersAll = foreach (ID = unique(diseasePhecodeMap$disease_id), .combine = rbind) %dopar% {
     phecodesWSub = merge(phecodesW,
                          diseasePhecodeMap[disease_id == ID],
                          by = 'phecode', allow.cartesian = TRUE)

@@ -2,7 +2,7 @@
 % Please edit documentation in R/map_disease_to_phecode.R
 \name{mapDiseaseToPhecode}
 \alias{mapDiseaseToPhecode}
-\title{Map diseases IDs to phecodes using HPO terms}
+\title{Map diseases entities to phecodes using HPO terms}
 \usage{
 mapDiseaseToPhecode(
   diseaseIDs,
@@ -11,10 +11,25 @@ mapDiseaseToPhecode(
   HPOPhecodeMap = phers::HPOPhecodeMap
 )
 }
+\arguments{
+\item{diseaseIDs}{A numeric vector of disease identifiers to be mapped}
+
+\item{dbName}{A character string of the name of database used for mapping.
+One of either 'OMIM', 'ORPHA', and 'DECIPHER'.}
+
+\item{diseaseHPOMap}{A data.table containing the mapping between disease
+entities in \code{diseaseIDs} and HPO terms. The columns are \code{db_name},
+\code{disease_id}, \code{term_id}. By default uses the map included in this package.}
+
+\item{HPOPhecodeMap}{A data.table containing the mapping between HPO terms
+and phecodes. The columns are \code{term_id} and \code{phecode}. By default uses the
+map included in this package.}
+}
 \value{
-A data.table containing the mapping between diseases and
-their phenotypes. The columns are \code{disease_ID}, \code{phecode}.
+A data.table containing the mapping between diseases and phecodes.
+The columns are \code{disease_id} and \code{phecode}.
 }
 \description{
-Map diseases IDs to phecodes using HPO terms
+This function takes a list of disease identifiers and returns the
+clinical features mapped to them as phecodes.
 }

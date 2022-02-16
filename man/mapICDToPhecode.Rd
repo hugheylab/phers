@@ -6,6 +6,19 @@
 \usage{
 mapICDToPhecode(ICDs, ICDPhecodeMap = phers::ICDPhecodeMap)
 }
+\arguments{
+\item{ICDs}{A data.table containing ICD codes recorded for each person.
+The columns are \code{person_id}, \code{icd}, and \code{flag}.}
+
+\item{ICDPhecodeMap}{A data.table containing the mapping between ICD codes
+and phecodes. The columns are \code{icd}, \code{phecode}, \code{flag}. By default uses
+the mapping included in this package.}
+}
+\value{
+A data.table of phecodes corresponding to each person. The columns
+are \code{person_id} and \code{phecode}.
+}
 \description{
-Map ICD codes to phecodes
+This function takes a data table of patient ICD codes and maps them to
+phecodes.
 }

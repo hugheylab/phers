@@ -24,10 +24,17 @@ registerDoParallel(cores = 2)
 
 
 ```{r}
-phecodes = mapICDToPhecode(icdSample)
-weights = calcWeights(demoSample, phecodes)
-# diseasePhecodeMap = mapDiseaseToPhecode(c(154700))
-
-calcPheRS(demoSample, phecodes, weights, diseaseIDs = c(154700))
+# map ICD codes to phecodes
+phecodes = mapICDToPhecode(icdSample) 
+# calculate weights 
+weights = calcWeights(demoSample, phecodes) 
+# vector of disease IDs to calculate PheRS for
+diseaseIDs = c(154700) 
+# database name used for linking diseases to phenotypes
+dbName = 'OMIM' 
+# mape diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName) 
+# calculate PheRS
+calcPheRS(demoSample, phecodes, weights, diseasePhecodeMap)
 ```
 

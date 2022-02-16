@@ -22,8 +22,8 @@ phecodesTestL = qread(file.path(dataDir, 'phecodes_test.qs'))
 demosTestL = qread(file.path(dataDir, 'demos_test.qs'))
 weightsTestL = qread(file.path(dataDir, 'weights.qs'))
 
-diseaseIDs = c(154700)
-dbName = 'OMIM'
+
+diseasePhecodeMapTest = qread(file.path(dataDir, 'disease_to_phecode_map.qs'))
 
 icdTest = data.table('person_id' = c(1, 2, 3),
                      'icd' = c('366', '366', '365'),

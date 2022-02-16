@@ -4,6 +4,17 @@ NULL
 
 #' Map ICD codes to phecodes
 #'
+#' This function takes a data table of patient ICD codes and maps them to
+#' phecodes.
+#'
+#' @param ICDs A data.table containing ICD codes recorded for each person.
+#'   The columns are `person_id`, `icd`, and `flag`.
+#' @param ICDPhecodeMap A data.table containing the mapping between ICD codes
+#'   and phecodes. The columns are `icd`, `phecode`, `flag`. By default uses
+#'   the mapping included in this package.
+#'
+#' @return A data.table of phecodes corresponding to each person. The columns
+#'   are `person_id` and `phecode`.
 #'
 #' @export
 mapICDToPhecode = function(ICDs, ICDPhecodeMap = phers::ICDPhecodeMap) {
