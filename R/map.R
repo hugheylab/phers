@@ -1,49 +1,3 @@
-#' Sample diagnostic code dataset
-#'
-#' This table contains a sample dataset of patient diagnostic codes
-#' (ICD-9-CM and ICD-10-CM).
-#'
-#' @format A data table with 9 rows and the 3 following columns:
-#'
-#' \describe{
-#'   \item{\code{person_id}}{Character vector of the identifier for each
-#'   person}
-#'   \item{\code{icd}}{Character vector containing the ICD codes recorded
-#'   for each person}
-#'   \item{\code{flag}}{Numeric vector representing the vocabulary of the
-#'   ICD code (**9**: ICD-9-CM,  **10**: ICD-10-CM)}
-#'}
-#'
-#' @seealso [getWeights()], [getPheRS()]
-'icdSample'
-
-
-
-#' Sample demographics dataset
-#'
-#' This table contains a sample dataset of patient demographics information.
-#'
-#' @format A data table with 5 rows and the 5 following columns:
-#'
-#' \describe{
-#'   \item{\code{person_id}}{Character vector of the identifier for each
-#'   person in the cohort}
-#'   \item{\code{sex}}{Character vector indicating biological sex
-#'   ('M': male, 'F': female)}
-#'   \item{\code{uniq_age}}{Numeric vector containing the number of unique
-#'    years with ICD codes}
-#'   \item{\code{first_age}}{Numeric vector containing the age (in days) when
-#'    the person first received an ICD code}
-#'   \item{\code{last_age}}{Numeric vector containing the age (in days) when
-#'    the person last received an ICD code}
-#'}
-#'
-#' @seealso [getWeights()], [getPheRS()]
-'demoSample'
-
-
-
-
 #' Mapping of disease entities and their clinical features
 #'
 #' This table provides mapping between disease entities and the clinical
@@ -70,8 +24,7 @@
 #' @source <https://hpo.jax.org/app/download/annotation>
 #'
 #' @seealso [mapDiseaseToPhecode()]
-'diseaseHPOMap'
-
+'diseaseHpoMap'
 
 
 #' Mapping of HPO terms and phecodes
@@ -94,8 +47,7 @@
 #' @source <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6857501/#sup1>
 #'
 #' @seealso [mapDiseaseToPhecode()]
-'HPOPhecodeMap'
-
+'hpoPhecodeMap'
 
 
 #' Mapping of ICD and phecodes
@@ -115,6 +67,56 @@
 #'
 #' @source <https://phewascatalog.org/phecodes_v1_1>
 #'
-#' @seealso [mapICDToPhecode()]
-'ICDPhecodeMap'
+#' @seealso [getPhecodeOccurrences()]
+'icdPhecodeMap'
 
+
+#' Map diseases entities to phecodes using HPO terms
+#'
+#' This function takes a list of disease identifiers and returns the
+#' clinical features mapped to them as phecodes.
+#'
+#' @param diseaseIDs A numeric vector of disease identifiers to be mapped
+#' @param dbName A character string of the name of database used for mapping.
+#'   One of either 'OMIM', 'ORPHA', and 'DECIPHER'.
+#' @param diseaseHpoMap A data.table containing the mapping between disease
+#'   entities in `diseaseIDs` and HPO terms. The columns are `db_name`,
+#'   `disease_id`, `term_id`. By default uses the map included in this package.
+#' @param hpoPhecodeMap A data.table containing the mapping between HPO terms
+#'   and phecodes. The columns are `term_id` and `phecode`. By default uses the
+#'   map included in this package.
+#'
+#' @return A data.table containing the mapping between diseases and phecodes.
+#'   The columns are `disease_id` and `phecode`.
+#'
+#' @export
+mapDiseaseToPhecode = function(
+  diseaseIDs = unique(phers::diseaseHpoMap[db_name == 'OMIM']$disease_id),
+  dbName = 'OMIM', diseaseHpoMap = phers::diseaseHpoMap,
+  hpoPhecodeMap = phers::hpoPhecodeMap) {
+
+  db_name = phecode = disease_id = NULL
+
+  assertString(dbName)
+  assertNames(dbName, subset.of = unique(diseaseHpoMap$db_name))
+  # change error message
+  assertChoice(
+    as.numeric(diseaseIDs), unique(diseaseHpoMap[db_name == dbName]$disease_id))
+
+  assertDataTable(diseaseHpoMap)
+  assertNames(
+    colnames(diseaseHpoMap), must.include = c('db_name', 'disease_id', 'term_id'))
+  assertNumeric(diseaseHpoMap$term_id)
+
+  assertDataTable(hpoPhecodeMap)
+  assertNames(
+    colnames(hpoPhecodeMap), must.include = c('term_id', 'phecode'))
+  assertNumeric(hpoPhecodeMap$term_id)
+  assertCharacter(hpoPhecodeMap$phecode)
+
+  diseaseHpoMapSub = diseaseHpoMap[db_name == dbName & disease_id %in% diseaseIDs]
+  diseasePhecodeMap = merge(diseaseHpoMapSub, hpoPhecodeMap, by = 'term_id')
+  diseasePhecodeMap = unique(
+    diseasePhecodeMap[phecode != ''][, c('disease_id', 'phecode')])
+
+  return(diseasePhecodeMap)}

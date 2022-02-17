@@ -10,31 +10,46 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
-)
+  comment = "#>",
+  retina = 2)
+
+foreach::registerDoSEQ()
 ```
 
 ```{r setup}
 library('phers')
 library('data.table')
-library('foreach')
-library('doParallel')
-registerDoSEQ()
+
+# doParallel::registerDoParallel() # register a parallel backend to minimize runtime
 ```
 
+```{r}
+demoSample = data.table(
+  person_id = 1:5,
+  sex = c('F', 'M', 'M', 'F', 'F'))
+
+icdSample = data.table(
+  person_id = c(rep(1L, 3), rep(2L, 3), rep(3L, 2), 4),
+  icd = c('365', '366', '734', '524.0', '718.4', '441', '366', '734', '441'),
+  flag = 9)
+```
 
 ```{r}
 # map ICD codes to phecodes
-phecodes = mapICDToPhecode(icdSample) 
-# calculate weights 
-weights = getWeights(demoSample, phecodes) 
-# vector of disease IDs to calculate PheRS for
-diseaseIDs = c(154700) 
-# database name used for linking diseases to phenotypes
-dbName = 'OMIM' 
-# mape diseases to phecodes
-diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName) 
-# calculate PheRS
-getPheRS(demoSample, phecodes, weights, diseasePhecodeMap)
-```
+phecodeOccurrences = getPhecodeOccurrences(icdSample)
 
+# calculate weights 
+weights = getWeights(demoSample, phecodeOccurrences)
+
+# vector of disease IDs to calculate PheRS for
+diseaseIds = 154700
+
+# database name used for linking diseases to phenotypes
+dbName = 'OMIM'
+
+# mape diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode(diseaseIds, dbName)
+
+# calculate PheRS
+getScores(demoSample, phecodeOccurrences, weights, diseasePhecodeMap)
+```
