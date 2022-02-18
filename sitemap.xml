@@ -25,6 +25,9 @@
     <loc>https://phers.hugheylab.org/reference/demoSample.html</loc>
   </url>
   <url>
+    <loc>https://phers.hugheylab.org/reference/diseaseDxPhecode.html</loc>
+  </url>
+  <url>
     <loc>https://phers.hugheylab.org/reference/diseaseHPOMap.html</loc>
   </url>
   <url>
@@ -38,6 +41,9 @@
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/genotypeAssociation.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/getCases.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/getPheRS.html</loc>
@@ -56,5 +62,8 @@
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/mapICDToPhecode.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/runPositiveControl.html</loc>
   </url>
 </urlset>
