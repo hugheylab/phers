@@ -93,6 +93,7 @@
 <span class="co">#&gt; Loading required package: iterators</span>
 <span class="co">#&gt; Loading required package: parallel</span>
 <span class="fu"><a href="https://rdrr.io/pkg/foreach/man/registerDoSEQ.html" class="external-link">registerDoSEQ</a></span><span class="op">(</span><span class="op">)</span></code></pre></div>
+<p>calculate PheRS</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># map ICD codes to phecodes</span>
 <span class="va">phecodes</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapICDToPhecode.html">mapICDToPhecode</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span> 
@@ -105,13 +106,14 @@
 <span class="co"># mape diseases to phecodes</span>
 <span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="va">diseaseIDs</span>, <span class="va">dbName</span><span class="op">)</span> 
 <span class="co"># calculate PheRS</span>
-<span class="fu"><a href="../reference/getPheRS.html">getPheRS</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span>
-<span class="co">#&gt;    person_id disease_id     phers</span>
-<span class="co">#&gt; 1:         1     154700 3.4420194</span>
-<span class="co">#&gt; 2:         2     154700 4.1351666</span>
-<span class="co">#&gt; 3:         3     154700 1.8325815</span>
-<span class="co">#&gt; 4:         4     154700 0.9162907</span>
-<span class="co">#&gt; 5:         5     154700 0.0000000</span></code></pre></div>
+<span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="../reference/getPheRS.html">getPheRS</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodes</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span></code></pre></div>
+<p>perform genotype association</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="va">covariates</span> <span class="op">=</span> <span class="va">demoSample</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">person_id</span>, <span class="va">sex</span><span class="op">)</span><span class="op">]</span>
+<span class="va">genoStats</span> <span class="op">=</span> <span class="fu"><a href="../reference/genotypeAssociation.html">genotypeAssociation</a></span><span class="op">(</span><span class="va">scores</span>, <span class="va">genoSample</span>, <span class="va">covariates</span><span class="op">)</span>
+<span class="co">#&gt; Warning in `[.data.table`(genotypes, , ..genoCols): Both 'genoCols' and</span>
+<span class="co">#&gt; '..genoCols' exist in calling scope. Please remove the '..genoCols' variable in</span>
+<span class="co">#&gt; calling scope for clarity.</span></code></pre></div>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
