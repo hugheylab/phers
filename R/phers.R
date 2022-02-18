@@ -1,7 +1,8 @@
 #' @import checkmate
+#' @import MASS
 #' @importFrom data.table data.table := set uniqueN
 #' @importFrom foreach foreach %do% %dopar%
-#' @importFrom stats lm rstudent
+#' @importFrom stats lm rstudent confint glm
 NULL
 
 #' Calculate phenotype weights

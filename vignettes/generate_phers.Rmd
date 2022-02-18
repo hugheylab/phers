@@ -23,6 +23,7 @@ registerDoSEQ()
 ```
 
 
+calculate PheRS
 ```{r}
 # map ICD codes to phecodes
 phecodes = mapICDToPhecode(icdSample) 
@@ -35,6 +36,13 @@ dbName = 'OMIM'
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName) 
 # calculate PheRS
-getPheRS(demoSample, phecodes, weights, diseasePhecodeMap)
+scores = getPheRS(demoSample, phecodes, weights, diseasePhecodeMap)
 ```
+
+perform genotype association 
+```{r}
+covariates = demoSample[, .(person_id, sex)]
+genoStats = genotypeAssociation(scores, genoSample, covariates)
+```
+
 

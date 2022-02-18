@@ -20,6 +20,22 @@ icdSample = data.table(
 icdSample[, flag := 9]
 usethis::use_data(icdSample, overwrite = TRUE)
 
+
+########################
+# create sample genotype data
+npop = 5
+gene1 = 'FBN1'
+nvar = uniqueN(geneVarMap[gene == gene1]$vid)
+
+genoSample = data.table('person_id' = as.character(seq(npop)))
+genos = replicate(
+  nvar, sample(c(0, 1, 2), replace = TRUE, size = npop, prob = c(80, 15, 5)))
+colnames(genos) = unique(geneVarMap[gene == gene1]$vid)
+genos = as.data.table(genos)
+genoSample = cbind(genoSample, genos)
+
+usethis::use_data(genoSample, overwrite = TRUE)
+
 ########################
 # map of icd and phecode
 
@@ -40,7 +56,31 @@ HPOPhecodeMap = fread(file.path('data-raw', 'HPO_phecode_map.csv.gz'),
                       colClasses = list(character = c('phecode')))
 usethis::use_data(HPOPhecodeMap, overwrite = TRUE)
 
+#######################
+# map of genes and variants
 
+geneVarMap = fread(file.path('data-raw', 'gene_variant_map.csv.gz'),
+                      select = c('Gene', 'SNP', 'rsID'))
+setnames(geneVarMap, c('Gene', 'SNP', 'rsID'), c('gene', 'vid', 'rsid'))
+usethis::use_data(geneVarMap, overwrite = TRUE)
 
+#######################
+# table of disease info (map of disease and gene)
 
+diseaseInfo = fread(file.path('data-raw', 'disease_info.csv.gz'),
+                    select = c('dID', 'disease', 'gene', 'sex_inc', 'skip'))
+diseaseInfo = unique(
+  diseaseInfo[skip == 0][sex_inc == 'B'][, .(dID, disease, gene)])
+diseaseInfo[, db_name := 'OMIM']
+setnames(diseaseInfo, c('dID', 'disease'),
+         c('disease_id', 'disease_name'))
 
+diseaseInfo = diseaseInfo[, .(db_name, disease_id, disease_name, gene)]
+
+usethis::use_data(diseaseInfo, overwrite = TRUE)
+
+#######################
+# map of disease to gold standard phecode (fake)
+
+# diseaseDxPhecode = data.table('disease_id' = c(154700), 'dx_phecode' = '366')
+# usethis::use_data(diseaseDxPhecode, overwrite = TRUE)
