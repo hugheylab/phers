@@ -170,3 +170,21 @@
 #' @seealso [genotypeAssociation()]
 'diseaseInfo'
 
+
+
+#' Diagnostic phecodes
+#'
+#' This table provides phecodes that represent diagnosis with a Mendelian disease.
+#'
+#' @format A data table with 1 row and the 2 following columns:
+#'
+#' \describe{
+#'   \item{\code{disease_id}}{Numeric vector of disease identifiers}
+#'   \item{\code{dx_phecode}}{Character vector of the phecode that represents
+#'   diagnosis with `disease_id`}
+#'}
+#'
+#' @source <>
+#'
+#' @seealso [runPositiveControl()]
+'diseaseDxPhecode'

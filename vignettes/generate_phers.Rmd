@@ -19,6 +19,7 @@ library('phers')
 library('data.table')
 library('foreach')
 library('doParallel')
+library('ggplot2')
 registerDoSEQ()
 ```
 
@@ -38,6 +39,18 @@ diseasePhecodeMap = mapDiseaseToPhecode(diseaseIDs, dbName)
 # calculate PheRS
 scores = getPheRS(demoSample, phecodes, weights, diseasePhecodeMap)
 ```
+
+perform positive control analysis using known cases and controls
+```{r}
+# map ICD codes to phecodes excluding diagnostic phecodes
+diseasePhecodeMapNoDx = mapDiseaseToPhecode(diseaseIDs, dbName, excludeDx = TRUE) 
+# calculate PheRS
+scores = getPheRS(demoSample, phecodes, weights, diseasePhecodeMapNoDx)
+
+cases = getCases(phecodes)
+runPositiveControl(scores, cases, 154700)
+```
+
 
 perform genotype association 
 ```{r}

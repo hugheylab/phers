@@ -12,6 +12,11 @@
 #' @param HPOPhecodeMap A data.table containing the mapping between HPO terms
 #'   and phecodes. The columns are `term_id` and `phecode`. By default uses the
 #'   map included in this package.
+#' @param excludeDx A boolean value indicating whether or not diagnostic phecodes
+#'   should be removed from the disease to phecode map.
+#' @param diseaseDxPhecode A data.table containing mapping between diseases and
+#'   the phecodes that represent being diagnosed with them. The columns are
+#'   `disease_id` and `dx_phecode`.
 #'
 #' @return A data.table containing the mapping between diseases and phecodes.
 #'   The columns are `disease_id` and `phecode`.
@@ -20,9 +25,10 @@
 mapDiseaseToPhecode = function(
   diseaseIDs = unique(phers::diseaseHPOMap[db_name == 'OMIM']$disease_id),
   dbName = 'OMIM', diseaseHPOMap = phers::diseaseHPOMap,
-  HPOPhecodeMap = phers::HPOPhecodeMap) {
+  HPOPhecodeMap = phers::HPOPhecodeMap, excludeDx = FALSE,
+  diseaseDxPhecode = phers::diseaseDxPhecode) {
 
-  db_name = phecode = disease_id = NULL
+  db_name = phecode = disease_id = dx = NULL
 
   assertString(dbName)
   assertNames(dbName, subset.of = unique(diseaseHPOMap$db_name))
@@ -46,6 +52,14 @@ mapDiseaseToPhecode = function(
   diseasePhecodeMap = merge(diseaseHPOMapSub, HPOPhecodeMap, by = 'term_id')
   diseasePhecodeMap = unique(
     diseasePhecodeMap[phecode != ''][, c('disease_id', 'phecode')])
+
+  if (excludeDx) {
+    diseaseDxPhecode[, dx := 1]
+    diseasePhecodeMap = merge(
+      diseasePhecodeMap, diseaseDxPhecode, by.x = c('disease_id', 'phecode'),
+      by.y = c('disease_id', 'dx_phecode'), all.x = TRUE)
+    diseasePhecodeMap = diseasePhecodeMap[is.na(dx)][, -c('dx')]
+  }
 
 return(diseasePhecodeMap)}
 

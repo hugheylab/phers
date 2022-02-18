@@ -82,5 +82,5 @@ usethis::use_data(diseaseInfo, overwrite = TRUE)
 #######################
 # map of disease to gold standard phecode (fake)
 
-# diseaseDxPhecode = data.table('disease_id' = c(154700), 'dx_phecode' = '366')
-# usethis::use_data(diseaseDxPhecode, overwrite = TRUE)
+diseaseDxPhecode = data.table('disease_id' = c(154700), 'dx_phecode' = '366')
+usethis::use_data(diseaseDxPhecode, overwrite = TRUE)

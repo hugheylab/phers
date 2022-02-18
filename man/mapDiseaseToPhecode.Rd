@@ -8,7 +8,9 @@ mapDiseaseToPhecode(
   diseaseIDs = unique(phers::diseaseHPOMap[db_name == "OMIM"]$disease_id),
   dbName = "OMIM",
   diseaseHPOMap = phers::diseaseHPOMap,
-  HPOPhecodeMap = phers::HPOPhecodeMap
+  HPOPhecodeMap = phers::HPOPhecodeMap,
+  excludeDx = FALSE,
+  diseaseDxPhecode = phers::diseaseDxPhecode
 )
 }
 \arguments{
@@ -24,6 +26,13 @@ entities in \code{diseaseIDs} and HPO terms. The columns are \code{db_name},
 \item{HPOPhecodeMap}{A data.table containing the mapping between HPO terms
 and phecodes. The columns are \code{term_id} and \code{phecode}. By default uses the
 map included in this package.}
+
+\item{excludeDx}{A boolean value indicating whether or not diagnostic phecodes
+should be removed from the disease to phecode map.}
+
+\item{diseaseDxPhecode}{A data.table containing mapping between diseases and
+the phecodes that represent being diagnosed with them. The columns are
+\code{disease_id} and \code{dx_phecode}.}
 }
 \value{
 A data.table containing the mapping between diseases and phecodes.

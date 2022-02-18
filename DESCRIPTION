@@ -20,7 +20,8 @@ Imports:
   doParallel (>= 1.0.17),
   stats (>= 4.0.2),
   qs (>= 0.25.2),
-  MASS (>= 7.3-55)
+  MASS (>= 7.3-55),
+  ggplot2 (>= 3.3.5)
 Suggests:
   knitr,
   rmarkdown,
