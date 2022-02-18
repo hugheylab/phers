@@ -16,18 +16,18 @@
 runPositiveControl = function(scores, cases, diseaseID) {
   disease_id = dx_status = phers = NULL
 
-
-  cases[, dx_status := 1]
+  cases1 = copy(cases)
+  cases1[, dx_status := 'case']
 
   plotInput = merge(
     scores[disease_id == diseaseID][, -c('disease_id')],
-    cases[disease_id == diseaseID][, -c('disease_id')],
+    cases1[disease_id == diseaseID][, -c('disease_id')],
     by = 'person_id', all.x = TRUE)
 
-  plotInput[is.na(dx_status), dx_status := 0]
+  plotInput[is.na(dx_status), dx_status := 'control']
 
-  ggplot(plotInput) + geom_boxplot(aes(x = factor(dx_status), y = phers))
-
+  ggplot(plotInput) + geom_boxplot(aes(x = dx_status, y = phers)) +
+    labs(x = '', title = 'PheRS distribution for cases vs. controls')
 }
 
 
@@ -49,7 +49,7 @@ runPositiveControl = function(scores, cases, diseaseID) {
 getCases = function(phecodes, diseaseDxPhecode = phers::diseaseDxPhecode) {
   person_id = disease_id = `.` = NULL
 
-  cases  = merge(
+  cases = merge(
     phecodes, diseaseDxPhecode, by.x = 'phecode', by.y = 'dx_phecode')
   cases = unique(cases[, .(person_id, disease_id)])
 return(cases)}

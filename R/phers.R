@@ -1,7 +1,7 @@
 #' @import checkmate
 #' @import MASS
 #' @import ggplot2
-#' @importFrom data.table data.table := set uniqueN
+#' @importFrom data.table data.table := set uniqueN copy
 #' @importFrom foreach foreach %do% %dopar%
 #' @importFrom stats lm rstudent confint glm
 NULL
