@@ -2,23 +2,21 @@
 % Please edit documentation in R/phers.R
 \name{getWeights}
 \alias{getWeights}
-\title{Calculate phenotype weights}
+\title{Calculate phecode-specific weights for phenotype risk scores}
 \usage{
-getWeights(demos, phecodes)
+getWeights(demos, phecodeOccurrences)
 }
 \arguments{
-\item{demos}{A data.table containing demographic information for each person
-in the population. The columns are \code{person_id}.}
+\item{demos}{A data.table having one row per person in the cohort. Must have
+a column \code{person_id}.}
 
-\item{phecodes}{A data.table containing phenotypes stored as phecodes
-for each person. The columns are \code{person_id} and \code{phecode}.}
+\item{phecodeOccurrences}{A data.table of occurrences of phecodes for each
+person in the cohort. Must have columns \code{person_id} and \code{phecode}.}
 }
 \value{
-A data.table where each row is a phecode and the population
-prevalence and weight corresponding to it.
-The columns are \code{phecode}, \code{prev}, \code{w}.
+A data.table containing the prevalence (\code{prev}) and weight (\code{w}) for
+each phecode.
 }
 \description{
-Calculate the population prevalence and weight for each phenotype.
-These weights will be used in the calculation of the phenotype risk score.
+The weights correspond to the -log10 prevalences in the cohort.
 }

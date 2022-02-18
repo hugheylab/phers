@@ -1,116 +1,104 @@
 #' @import checkmate
-#' @import MASS
-#' @import ggplot2
-#' @importFrom data.table data.table := set uniqueN copy
+#' @importFrom data.table data.table := set uniqueN CJ
 #' @importFrom foreach foreach %do% %dopar%
-#' @importFrom stats lm rstudent confint glm
 NULL
 
-#' Calculate phenotype weights
+
+#' Map ICD code occurrences to phecode occurrences
 #'
-#' Calculate the population prevalence and weight for each phenotype.
-#' These weights will be used in the calculation of the phenotype risk score.
+#' This function takes a data table of patient ICD codes and maps them to
+#' phecodes.
 #'
-#' @param demos A data.table containing demographic information for each person
-#'   in the population. The columns are `person_id`.
-#' @param phecodes A data.table containing phenotypes stored as phecodes
-#'   for each person. The columns are `person_id` and `phecode`.
+#' @param icdOccurrences A data.table of occurrences of ICD codes for each
+#'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
+#' @param icdPhecodeMap A data.table containing the mapping between ICD codes
+#'   and phecodes. Must have columns `icd`, `phecode`, and `flag`. By default uses
+#'   the mapping included in this package.
 #'
-#' @return A data.table where each row is a phecode and the population
-#'   prevalence and weight corresponding to it.
-#'   The columns are `phecode`, `prev`, `w`.
+#' @return A data.table of phecode occurrences for each person.
 #'
 #' @export
-getWeights = function(demos, phecodes) {
-  phecode = person_id = `.` = NULL
+getPhecodeOccurrences = function(
+  icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap) {
 
-  assertDataTable(demos)
-  assertNames(colnames(demos), must.include = c('person_id'))
+  assertDataTable(icdOccurrences)
+  assertNames(colnames(icdOccurrences),
+              must.include = c('person_id', 'icd', 'flag'),
+              disjunct.from = 'phecode')
+  assertCharacter(icdOccurrences$icd)
 
-  assertDataTable(phecodes)
-  assertNames(colnames(phecodes), must.include = c('person_id', 'phecode'))
-  assertCharacter(phecodes$phecode)
+  assertDataTable(icdPhecodeMap)
+  assertNames(colnames(icdPhecodeMap),
+              permutation.of = c('phecode', 'icd', 'flag'))
+  assertCharacter(icdPhecodeMap$icd)
+  assertCharacter(icdPhecodeMap$phecode)
+  assert(anyDuplicated(icdPhecodeMap) == 0)
 
-  # better error message?
-  assertNumber(uniqueN(phecodes$person_id),
-               upper = uniqueN(demos$person_id))
-
-
-  npop = uniqueN(demos$person_id)
-  weights = phecodes[, .(prev = uniqueN(person_id) / npop,
-                         w = -log(uniqueN(person_id) / npop)), by = phecode]
-
-return(weights)}
+  pheOccs = merge(icdOccurrences, icdPhecodeMap, by = c('icd', 'flag'))
+  pheOccs = pheOccs[, !c('icd', 'flag')]
+  return(pheOccs)}
 
 
-#' Calculate the Phenotype Risk Score
+#' Calculate phecode-specific weights for phenotype risk scores
 #'
-#' Calculate the phenotype risk score (PheRS) for a group of individuals and
-#' diseases
+#' The weights correspond to the -log10 prevalences in the cohort.
 #'
-#' @param demos A data.table containing demographic information for each person
-#'   in the population. The columns are `person_id`, `sex`, `uniq_age`,
-#'   `first_age`, and `last_age`. The age columns specify the number of
-#'   unique years with ICD codes, the age of the individual at first ICD code,
-#'   and the age of the individual at last ICD code.
-#' @param phecodes A data.table containing phenotypes stored as phecodes
-#'   for each person. The columns are `person_id` and `phecode`.
+#' @param demos A data.table having one row per person in the cohort. Must have
+#'   a column `person_id`.
+#' @param phecodeOccurrences A data.table of occurrences of phecodes for each
+#'   person in the cohort. Must have columns `person_id` and `phecode`.
+#'
+#' @return A data.table containing the prevalence (`prev`) and weight (`w`) for
+#'   each phecode.
+#'
+#' @export
+getWeights = function(demos, phecodeOccurrences) {
+  phecode = person_id = . = prev = w = NULL
+
+  checkDemos(demos)
+  checkPhecodeOccurrences(phecodeOccurrences, demos)
+
+  weights = phecodeOccurrences[, .(prev = uniqueN(person_id) / nrow(demos)),
+                               by = phecode]
+  weights[, w := -log10(prev)]
+  return(weights)}
+
+
+#' Calculate phenotype risk scores
+#'
+#' A person's phenotype risk score for a particular disease corresponds to the
+#' sum of the weights of the disease-relevant phecodes that the person has
+#' received.
+#'
+#' @param demos A data.table having one row per person in the cohort. Must have
+#'   a column `person_id`.
+#' @param phecodeOccurrences A data.table of occurrences of phecodes for each
+#'   person in the cohort. Must have columns `person_id` and `phecode`.
 #' @param weights A data.table where each row is a phecode and the weight
 #'   corresponding to it. The columns are `phecode` and `w`.
 #' @param diseasePhecodeMap A data.table containing the mapping between
-#'   diseases and phecodes. The columns are `disease_id` and `phecode`.
+#'   diseases and phecodes. Must have columns `disease_id` and `phecode`.
 #'
-#' @return A data.table of raw and residualized phenotype risk scores
-#'   with one row per person per disease. The columns are `person_id`,
-#'   `disease_id`, `phers`, `rphers`.
+#' @return A data.table containing the phenotype risk score for each person for
+#'   each disease.
 #'
 #' @export
-getPheRS = function(demos, phecodes, weights, diseasePhecodeMap){
-  person_id = disease_id = ID = w = rphers = `.` = NULL
+getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
+  person_id = phecode = disease_id = w = score = . = NULL
 
-  assertDataTable(demos)
-  assertNames(colnames(demos), must.include = c('person_id'))
+  checkDemos(demos)
+  checkPhecodeOccurrences(phecodeOccurrences, demos)
+  checkWeights(weights)
+  checkDiseasePhecodeMap(diseasePhecodeMap, weights)
 
-  assertDataTable(phecodes)
-  assertNames(colnames(phecodes), must.include = c('person_id', 'phecode'))
-  assertCharacter(phecodes$phecode)
+  pheOccWei = merge(unique(phecodeOccurrences[, .(person_id, phecode)]),
+                    weights, by = 'phecode')
 
-  assertDataTable(weights)
-  assertNames(colnames(weights), must.include = c('phecode', 'w'))
-  assertCharacter(weights$phecode)
-  assertNumeric(weights$w)
-
-  assertDataTable(diseasePhecodeMap)
-  assertNames(colnames(diseasePhecodeMap),
-              must.include = c('disease_id', 'phecode'))
-  assertCharacter(diseasePhecodeMap$phecode)
-
-  demos[, person_id := as.character(person_id)]
-  phecodes[, person_id := as.character(person_id)]
-
-  phecodesW = merge(phecodes, weights, by = 'phecode')
-
-  phersAll = foreach (ID = unique(diseasePhecodeMap$disease_id),
-                      .combine = rbind) %dopar% {
-    phecodesWSub = merge(
-      phecodesW, diseasePhecodeMap[disease_id == ID],
-      by = 'phecode', allow.cartesian = TRUE)
-    phers = phecodesWSub[, .(phers = sum(w)), by = 'person_id']
-
-    phers = merge(demos, phers, by = 'person_id', all.x = TRUE)
-    phers[is.na(phers), phers := 0]
-    phers[, disease_id := ID]
-
-    # rphersFit = lm(phers ~ sex + uniq_age + first_age + last_age,
-    #               data = phers)
-    # phers[, rphers := rstudent(rphersFit)]
-    # phers[, .(person_id, disease_id, phers, rphers)]
-
-    phers[, .(person_id, disease_id, phers)]}
-
-return(phersAll)}
-
-
-
-
-
+  rBig = merge(pheOccWei, diseasePhecodeMap, by = 'phecode',
+               allow.cartesian = TRUE)
+  rSum = rBig[, .(score = sum(w)), by = .(person_id, disease_id)]
+  r = merge(CJ(person_id = demos$person_id,
+               disease_id = unique(diseasePhecodeMap$disease_id)),
+            rSum, by = c('person_id', 'disease_id'), all.x = TRUE)
+  r[is.na(score), score := 0]
+  return(r)}

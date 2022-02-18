@@ -1,101 +1,91 @@
-test_that("getWeights output 1", {
+test_that('getWeights output 1', {
 
-  weightsOut = getWeights(demosTest, phecodesTest)
+  weightsOut = getWeights(demosTest, phecodeOccurrencesTest)
 
   expect_equal(weightsOut[phecode == '001']$prev, 0.5)
   expect_equal(weightsOut[phecode == '002']$prev, 0.5)
-  expect_equal(weightsOut$w, -log(weightsOut$prev))
-  expect_s3_class(weightsOut, "data.table")
+  expect_equal(weightsOut$w, -log10(weightsOut$prev))
+  expect_s3_class(weightsOut, 'data.table')
 })
 
-# # getWeights snapshot test
-# test_that("getWeights output 2", {
-#
-#   weightsObs = getWeights(demosTestL, phecodesTestL)
-#   weightsExp = snapshot(weightsObs, file.path(dataDir, 'weights.qs'))
-#   expect_equal(weightsObs, weightsExp)
-# })
 
-test_that("check getWeights Args", {
+test_that('check getWeights Args', {
 
   # no column named person_id
   demosTestErr = copy(demosTest)
   setnames(demosTestErr, 'person_id', 'person_id_Err')
-  expect_error(getWeights(demosTestErr, phecodesTest))
+  expect_error(getWeights(demosTestErr, phecodeOccurrencesTest))
 
   # no column named person_id in phecodes
-  phecodesTestErr = copy(phecodesTest)
-  setnames(phecodesTestErr, 'person_id', 'person_id_Err')
-  expect_error(getWeights(demosTest, phecodesTestErr))
+  phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
+  setnames(phecodeOccurrencesTestErr, 'person_id', 'person_id_Err')
+  expect_error(getWeights(demosTest, phecodeOccurrencesTestErr))
 
-  # phecodes is a data.frame
-  phecodesTestErr = copy(phecodesTest)
-  phecodesTestErr = data.frame(phecodesTestErr)
-  expect_error(getWeights(demosTest, phecodesTestErr))
+  # # phecodes is a data.frame
+  # phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
+  # phecodeOccurrencesTestErr = data.frame(phecodeOccurrencesTestErr)
+  # expect_error(getWeights(demosTest, phecodeOccurrencesTestErr))
 
-  # phecodes are numeric
-  phecodesTestErr = copy(phecodesTest)
-  phecodesTestErr[,phecode := as.numeric(phecode)]
-  expect_error(getWeights(demosTest, phecodesTestErr))
+  # # phecodes are numeric
+  # phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
+  # phecodeOccurrencesTestErr[,phecode := as.numeric(phecode)]
+  # expect_error(getWeights(demosTest, phecodeOccurrencesTestErr))
 
   # demo has less person_ids than phecodes
   demosTestErr = demosTest[1]
-  expect_error(getWeights(demosTestErr, phecodesTest))
-
+  expect_error(getWeights(demosTestErr, phecodeOccurrencesTest))
 })
 
 
-# # getPheRS snapshot test
-# test_that('check getPheRS output', {
+# # getScores snapshot test
+# test_that('check getScores output', {
 #
-#   phersObs = getPheRS(demosTestL, phecodesTestL, weightsTestL,
+#   phersObs = getScores(demosTestL, phecodeOccurrencesTestL, weightsTestL,
 #                        diseasePhecodeMapTest)
 #   phersExp = snapshot(phersObs, file.path(dataDir, 'phers.qs'))
 #   expect_equal(phersObs, phersExp)
 # })
 
-test_that("getPheRS output 1", {
+test_that('getScores output 1', {
 
-  phersOut = getPheRS(demosTest, phecodesTest, weightsTest,
+  phersOut = getScores(demosTest, phecodeOccurrencesTest, weightsTest,
                       diseasePhecodeMapTest)
 
-  expect_equal(phersOut[person_id == 1 & disease_id == 1]$phers, -log(0.5))
-  expect_equal(phersOut[person_id == 2 & disease_id == 1]$phers, 0)
-  expect_s3_class(phersOut, "data.table")
+  expect_equal(phersOut[person_id == 1 & disease_id == 1]$score, -log10(0.5))
+  expect_equal(phersOut[person_id == 2 & disease_id == 1]$score, 0)
+  expect_s3_class(phersOut, 'data.table')
 })
 
 
-test_that("check getPheRS Args",{
+test_that('check getScores Args', {
 
   # no column named person_id demos
   demosTestErr = copy(demosTest)
   setnames(demosTestErr, 'person_id', 'person_id_Err')
-  expect_error(getPheRS(demosTestErr, phecodesTest, weightsTest,
+  expect_error(getScores(demosTestErr, phecodeOccurrencesTest, weightsTest,
                          diseasePhecodeMapTest))
 
   # no column named person_id in phecodes
-  phecodesTestErr = copy(phecodesTest)
-  setnames(phecodesTestErr, 'person_id', 'person_id_Err')
-  expect_error(getPheRS(demosTestErr, phecodesTestErr, weightsTest,
+  phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
+  setnames(phecodeOccurrencesTestErr, 'person_id', 'person_id_Err')
+  expect_error(getScores(demosTestErr, phecodeOccurrencesTestErr, weightsTest,
                          diseasePhecodeMapTest))
 
   # phecodes is a data.frame
-  phecodesTestErr = copy(phecodesTest)
-  phecodesTestErr = data.frame(phecodesTestErr)
-  expect_error(getPheRS(demosTestErr, phecodesTestErr, weightsTest,
-                         diseasePhecodeMapTest))
+  # phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
+  # phecodeOccurrencesTestErr = data.frame(phecodeOccurrencesTestErr)
+  # expect_error(getScores(demosTestErr, phecodeOccurrencesTestErr, weightsTest,
+  #                        diseasePhecodeMapTest))
 
   # phecodes are numeric
-  phecodesTestErr = copy(phecodesTest)
-  phecodesTestErr[, phecode := as.numeric(phecode)]
-  expect_error(getPheRS(demosTestErr, phecodesTestErr, weightsTest,
+  phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
+  phecodeOccurrencesTestErr[, phecode := as.numeric(phecode)]
+  expect_error(getScores(demosTestErr, phecodeOccurrencesTestErr, weightsTest,
                          diseasePhecodeMapTest))
 
   # phecodes are numeric in weights
   weightsTestErr = copy(weightsTest)
   weightsTestErr[, phecode := as.numeric(phecode)]
-  expect_error(getPheRS(demosTestErr, phecodesTest, weightsTestErr,
+  expect_error(getScores(demosTestErr, phecodeOccurrencesTest, weightsTestErr,
                          diseasePhecodeMapTest))
-
 })
-
