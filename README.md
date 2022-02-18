@@ -5,6 +5,8 @@
 
 <!-- badges: start -->
 
+[![check-deploy](https://github.com/hugheylab/phers/workflows/check-deploy/badge.svg)](https://github.com/hugheylab/phers/actions)
+[![codecov](https://codecov.io/gh/hugheylab/phers/branch/master/graph/badge.svg)](https://codecov.io/gh/hugheylab/phers)
 <!-- badges: end -->
 
 `phers` is an R package for calculating phenotype risk scores that
