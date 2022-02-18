@@ -90,12 +90,10 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
   checkPhecodeOccurrences(phecodeOccurrences, demos)
   checkWeights(weights)
   checkDiseasePhecodeMap(diseasePhecodeMap, weights)
-  # assertFlag(dopar)
 
   pheOccWei = merge(unique(phecodeOccurrences[, .(person_id, phecode)]),
                     weights, by = 'phecode')
 
-  # TODO: realistic testing of time and memory usage
   rBig = merge(pheOccWei, diseasePhecodeMap, by = 'phecode',
                allow.cartesian = TRUE)
   rSum = rBig[, .(score = sum(w)), by = .(person_id, disease_id)]
@@ -103,19 +101,4 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
                disease_id = unique(diseasePhecodeMap$disease_id)),
             rSum, by = c('person_id', 'disease_id'), all.x = TRUE)
   r[is.na(score), score := 0]
-
-  # doOp = if (dopar) `%dopar%` else `%do%`
-  # ids = sort(unique(diseasePhecodeMap$disease_id))
-
-  # r = doOp(foreach(id = ids, .combine = rbind), {
-  #   pheOccWeiDis = merge(
-  #     pheOccWei, diseasePhecodeMap[disease_id == id], by = 'phecode',
-  #     allow.cartesian = TRUE)
-  #
-  #   rNow = pheOccWeiDis[, .(score = sum(w)), by = person_id]
-  #   rNow = merge(demos, rNow, by = 'person_id', all.x = TRUE)
-  #   rNow[is.na(score), score := 0]
-  #   rNow[, disease_id := id]})
-
-  # data.table::setcolorder(r, c('person_id', 'disease_id', 'score'))
   return(r)}

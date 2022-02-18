@@ -12,8 +12,7 @@ A data table with 166,143 rows and the 6 following columns:
 used for each annotation ('OMIM', 'DECIPHER', 'ORPHA')}
 \item{\code{disease_id}}{Numeric vector of the database identifier
 corresponding to the disease being annotated}
-\item{\code{disease_name}}{Character vector containing the name of the
-disease associated with \code{disease_id}}
+\item{\code{disease_name}}{Character vector of disease name}
 \item{\code{hpo_id}}{Character vector of the HPO identifier for the
 phenotype linked to \code{disease_id}}
 \item{\code{term_id}}{Numeric vector containing the numeric portion of
