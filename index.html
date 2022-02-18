@@ -77,16 +77,16 @@
 <div class="section level1">
 <div class="page-header"><h1 id="phers">phers<a class="anchor" aria-label="anchor" href="#phers"></a>
 </h1></div>
-<!-- badges: start -->
 
 <p><code>phers</code> is an R package for calculating phenotype risk scores that quantify a person’s likelihood of having a Mendelian disease given data from electronic health records. For details about the phenotype risk score model see <a href="https://pubmed.ncbi.nlm.nih.gov/29590070/" class="external-link">Bastarache et. al. (2018)</a></p>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
-<p>You can install the development version of phers from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
+<p>You can install the development version of phers with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
-<span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"hugheylab/phers"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/ns-load.html" class="external-link">requireNamespace</a></span><span class="op">(</span><span class="st">'remotes'</span>, quietly <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span>
+  <span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">'remotes'</span><span class="op">)</span>
+<span class="fu">remotes</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">'hugheylab/phers'</span><span class="op">)</span></code></pre></div>
 </div>
 </div>
   </div>
