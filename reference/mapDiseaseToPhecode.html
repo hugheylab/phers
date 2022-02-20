@@ -63,8 +63,7 @@ clinical features mapped to them as phecodes.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mapDiseaseToPhecode</span><span class="op">(</span>
-  diseaseIDs <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseHpoMap.html">diseaseHpoMap</a></span><span class="op">[</span><span class="va">db_name</span> <span class="op">==</span> <span class="st">"OMIM"</span><span class="op">]</span><span class="op">$</span><span class="va">disease_id</span><span class="op">)</span>,
-  dbName <span class="op">=</span> <span class="st">"OMIM"</span>,
+  diseaseIds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseHpoMap.html">diseaseHpoMap</a></span><span class="op">$</span><span class="va">disease_id</span><span class="op">)</span>,
   diseaseHpoMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseHpoMap.html">diseaseHpoMap</a></span>,
   hpoPhecodeMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="hpoPhecodeMap.html">hpoPhecodeMap</a></span>
 <span class="op">)</span></code></pre></div>
@@ -72,18 +71,15 @@ clinical features mapped to them as phecodes.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>diseaseIDs</dt>
-<dd><p>A numeric vector of disease identifiers to be mapped</p></dd>
-<dt>dbName</dt>
-<dd><p>A character string of the name of database used for mapping.
-One of either 'OMIM', 'ORPHA', and 'DECIPHER'.</p></dd>
+    <dl><dt>diseaseIds</dt>
+<dd><p>A numeric vector of OMIM disease identifiers to be mapped.</p></dd>
 <dt>diseaseHpoMap</dt>
 <dd><p>A data.table containing the mapping between disease
-entities in <code>diseaseIDs</code> and HPO terms. The columns are <code>db_name</code>,
-<code>disease_id</code>, <code>term_id</code>. By default uses the map included in this package.</p></dd>
+entities in <code>diseaseIds</code> and HPO terms. Must have columns <code>disease_id</code> and
+<code>term_id</code>. By default uses the map included in this package.</p></dd>
 <dt>hpoPhecodeMap</dt>
 <dd><p>A data.table containing the mapping between HPO terms
-and phecodes. The columns are <code>term_id</code> and <code>phecode</code>. By default uses the
+and phecodes. Must have columns <code>term_id</code> and <code>phecode</code>. By default uses the
 map included in this package.</p></dd>
 </dl></div>
     <div id="value">

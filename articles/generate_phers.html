@@ -106,14 +106,11 @@
 <span class="co"># calculate weights </span>
 <span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="../reference/getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span>
 
-<span class="co"># vector of disease IDs to calculate PheRS for</span>
+<span class="co"># vector of OMIM disease IDs to calculate PheRS for</span>
 <span class="va">diseaseIds</span> <span class="op">=</span> <span class="fl">154700</span>
 
-<span class="co"># database name used for linking diseases to phenotypes</span>
-<span class="va">dbName</span> <span class="op">=</span> <span class="st">'OMIM'</span>
-
 <span class="co"># mape diseases to phecodes</span>
-<span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="va">diseaseIds</span>, <span class="va">dbName</span><span class="op">)</span>
+<span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="va">diseaseIds</span><span class="op">)</span>
 
 <span class="co"># calculate PheRS</span>
 <span class="fu"><a href="../reference/getScores.html">getScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span></code></pre></div>
