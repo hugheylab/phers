@@ -2,8 +2,7 @@ checkDemos = function(demos) {
   assertDataTable(demos)
   assertNames(colnames(demos), must.include = 'person_id',
               disjunct.from = c('phecode', 'w', 'disease_id'))
-  assert(anyDuplicated(demos$person_id) == 0)
-  invisible()}
+  assert(anyDuplicated(demos$person_id) == 0)}
 
 
 checkPhecodeOccurrences = function(phecodeOccurrences, demos) {

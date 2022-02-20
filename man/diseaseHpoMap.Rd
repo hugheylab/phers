@@ -8,9 +8,7 @@
 A data table with 166,143 rows and the 6 following columns:
 
 \describe{
-\item{\code{db_name}}{Character vector indicating the reference database
-used for each annotation ('OMIM', 'DECIPHER', 'ORPHA')}
-\item{\code{disease_id}}{Numeric vector of the database identifier
+\item{\code{disease_id}}{Numeric vector of OMIM disease identifiers
 corresponding to the disease being annotated}
 \item{\code{disease_name}}{Character vector of disease name}
 \item{\code{hpo_id}}{Character vector of the HPO identifier for the
@@ -29,8 +27,7 @@ diseaseHpoMap
 }
 \description{
 This table provides mapping between disease entities and the clinical
-features they are linked to using annotations from multiple
-databases (OMIM, Orphanet, and Decipher).
+features they are linked to using annotations from the OMIM database.
 }
 \seealso{
 \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}

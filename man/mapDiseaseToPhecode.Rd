@@ -5,24 +5,20 @@
 \title{Map diseases entities to phecodes using HPO terms}
 \usage{
 mapDiseaseToPhecode(
-  diseaseIDs = unique(phers::diseaseHpoMap[db_name == "OMIM"]$disease_id),
-  dbName = "OMIM",
+  diseaseIds = unique(phers::diseaseHpoMap$disease_id),
   diseaseHpoMap = phers::diseaseHpoMap,
   hpoPhecodeMap = phers::hpoPhecodeMap
 )
 }
 \arguments{
-\item{diseaseIDs}{A numeric vector of disease identifiers to be mapped}
-
-\item{dbName}{A character string of the name of database used for mapping.
-One of either 'OMIM', 'ORPHA', and 'DECIPHER'.}
+\item{diseaseIds}{A numeric vector of OMIM disease identifiers to be mapped.}
 
 \item{diseaseHpoMap}{A data.table containing the mapping between disease
-entities in \code{diseaseIDs} and HPO terms. The columns are \code{db_name},
-\code{disease_id}, \code{term_id}. By default uses the map included in this package.}
+entities in \code{diseaseIds} and HPO terms. Must have columns \code{disease_id} and
+\code{term_id}. By default uses the map included in this package.}
 
 \item{hpoPhecodeMap}{A data.table containing the mapping between HPO terms
-and phecodes. The columns are \code{term_id} and \code{phecode}. By default uses the
+and phecodes. Must have columns \code{term_id} and \code{phecode}. By default uses the
 map included in this package.}
 }
 \value{

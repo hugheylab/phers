@@ -12,7 +12,7 @@ usethis::use_data(icdPhecodeMap, overwrite = TRUE)
 #######################
 # map of disease ID and HPO terms
 
-diseaseHpoMap = fread(file.path(rawDir, 'disease_hpo_map.csv.gz'))
+diseaseHpoMap = fread(file.path(rawDir, 'disease_hpo_map_omim.csv.gz'))
 usethis::use_data(diseaseHpoMap, overwrite = TRUE)
 
 #######################

@@ -41,15 +41,14 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights 
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of disease IDs to calculate PheRS for
+# vector of OMIM disease IDs to calculate PheRS for
 diseaseIds = 154700
 
-# database name used for linking diseases to phenotypes
-dbName = 'OMIM'
-
 # mape diseases to phecodes
-diseasePhecodeMap = mapDiseaseToPhecode(diseaseIds, dbName)
+diseasePhecodeMap = mapDiseaseToPhecode(diseaseIds)
 
 # calculate PheRS
 getScores(demoSample, phecodeOccurrences, weights, diseasePhecodeMap)
 ```
+
+

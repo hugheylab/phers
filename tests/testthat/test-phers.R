@@ -2,8 +2,8 @@ test_that('getWeights output 1', {
 
   weightsOut = getWeights(demosTest, phecodeOccurrencesTest)
 
-  expect_equal(weightsOut[phecode == '001']$prev, 0.5)
-  expect_equal(weightsOut[phecode == '002']$prev, 0.5)
+  expect_equal(weightsOut[phecode == '001']$prev, 1/4)
+  expect_equal(weightsOut[phecode == '002']$prev, 2/4)
   expect_equal(weightsOut$w, -log10(weightsOut$prev))
   expect_s3_class(weightsOut, 'data.table')
 })
@@ -51,8 +51,11 @@ test_that('getScores output 1', {
   phersOut = getScores(demosTest, phecodeOccurrencesTest, weightsTest,
                       diseasePhecodeMapTest)
 
-  expect_equal(phersOut[person_id == 1 & disease_id == 1]$score, -log10(0.5))
-  expect_equal(phersOut[person_id == 2 & disease_id == 1]$score, 0)
+  expect_equal(phersOut[person_id == 1 & disease_id == 1]$score, -log10(1/4))
+  expect_equal(
+    phersOut[person_id == 2 & disease_id == 1]$score, -log10(1/4) + -log10(1/2))
+  expect_equal(phersOut[person_id == 3 & disease_id == 1]$score, -log10(1/2))
+  expect_equal(phersOut[person_id == 4 & disease_id == 1]$score, 0)
   expect_s3_class(phersOut, 'data.table')
 })
 
