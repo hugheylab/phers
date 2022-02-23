@@ -26,7 +26,7 @@ checkWeights = function(weights) {
   invisible()}
 
 
-checkDiseasePhecodeMap = function(diseasePhecodeMap, weights) {
+checkDiseasePhecodeMap = function(diseasePhecodeMap) {
   assertDataTable(diseasePhecodeMap)
   assertNames(colnames(diseasePhecodeMap),
               must.include = c('disease_id', 'phecode'),

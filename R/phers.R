@@ -61,7 +61,7 @@ getWeights = function(demos, phecodeOccurrences) {
   weights = phecodeOccurrences[, .(prev = uniqueN(person_id) / nrow(demos)),
                                by = phecode]
   weights[, w := -log10(prev)]
-  return(weights)}
+  return(weights[])}
 
 
 #' Calculate phenotype risk scores
@@ -89,7 +89,7 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
   checkDemos(demos)
   checkPhecodeOccurrences(phecodeOccurrences, demos)
   checkWeights(weights)
-  checkDiseasePhecodeMap(diseasePhecodeMap, weights)
+  checkDiseasePhecodeMap(diseasePhecodeMap)
 
   pheOccWei = merge(unique(phecodeOccurrences[, .(person_id, phecode)]),
                     weights, by = 'phecode')
@@ -101,4 +101,4 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
                disease_id = unique(diseasePhecodeMap$disease_id)),
             rSum, by = c('person_id', 'disease_id'), all.x = TRUE)
   r[is.na(score), score := 0]
-  return(r)}
+  return(r[])}
