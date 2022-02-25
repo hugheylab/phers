@@ -32,6 +32,16 @@ icdSample = data.table(
   person_id = c(rep(1L, 3), rep(2L, 3), rep(3L, 2), 4),
   icd = c('365', '366', '734', '524.0', '718.4', '441', '366', '734', '441'),
   flag = 9)
+
+npop = 5
+gene1 = 'FBN1'
+nvar = uniqueN(geneVarMap[gene == gene1]$vid)
+genoSample = data.table(person_id = 1:npop)
+genos = replicate(
+  nvar, sample(c(0, 1, 2), replace = TRUE, size = npop, prob = c(80, 15, 5)))
+colnames(genos) = unique(geneVarMap[gene == gene1]$vid)
+genos = as.data.table(genos)
+genoSample = cbind(genoSample, genos)
 ```
 
 ```{r}
@@ -48,7 +58,15 @@ diseaseIds = 154700
 diseasePhecodeMap = mapDiseaseToPhecode(diseaseIds)
 
 # calculate PheRS
-getScores(demoSample, phecodeOccurrences, weights, diseasePhecodeMap)
+scores = getScores(demoSample, phecodeOccurrences, weights, diseasePhecodeMap)
+
+scores
 ```
 
+perform genotype association 
+```{r}
+covariates = demoSample[, .(person_id, sex)]
+formStr =  as.formula('score ~ variant + sex')
+genoStats = genotypeAssociation(scores, genoSample, covariates, formStr, coding = 'genotypic')
+```
 

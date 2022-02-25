@@ -21,3 +21,27 @@ usethis::use_data(diseaseHpoMap, overwrite = TRUE)
 hpoPhecodeMap = fread(file.path(rawDir, 'hpo_phecode_map.csv.gz'),
                       colClasses = list(character = 'phecode'))
 usethis::use_data(hpoPhecodeMap, overwrite = TRUE)
+
+#######################
+# map of genes and variants
+
+geneVarMap = fread(file.path('data-raw', 'gene_variant_map.csv.gz'),
+                   select = c('Gene', 'SNP', 'rsID'))
+setnames(geneVarMap, c('Gene', 'SNP', 'rsID'), c('gene', 'vid', 'rsid'))
+usethis::use_data(geneVarMap, overwrite = TRUE)
+
+#######################
+# table of disease info (map of disease and gene)
+
+diseaseInfo = fread(file.path('data-raw', 'disease_info.csv.gz'),
+                    select = c('dID', 'disease', 'gene', 'sex_inc', 'skip'))
+diseaseInfo = unique(
+  diseaseInfo[skip == 0][sex_inc == 'B'][, .(dID, disease, gene)])
+setnames(diseaseInfo, c('dID', 'disease'),
+         c('disease_id', 'disease_name'))
+
+diseaseInfo = diseaseInfo[, .(disease_id, disease_name, gene)]
+
+usethis::use_data(diseaseInfo, overwrite = TRUE)
+
+

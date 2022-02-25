@@ -1,3 +1,42 @@
+#' Mapping of genes and variants
+#'
+#' This table provides mapping between genes and genetic variants using
+#' ANNOVAR annotations
+#'
+#' @format A data table with 65,808 rows and the 3 following columns:
+#'
+#' \describe{
+#'   \item{\code{gene}}{Character vector of gene names}
+#'   \item{\code{vid}}{Character vector of variant IDs based on position on
+#'   the chromosome}
+#'   \item{\code{rsid}}{Character vector of dbSNP Reference SNP numbers (rs)}
+#'}
+#'
+#' @source <https://annovar.openbioinformatics.org/en/latest/>
+#'
+#' @seealso [genotypeAssociation()]
+'geneVarMap'
+
+
+#' Mendelian disease annotation
+#'
+#' This table provides annotations for Mendelian diseases
+#'
+#' @format A data table with 63 rows and the 3 following columns:
+#'
+#' \describe{
+#'   \item{\code{disease_id}}{Numeric vector of OMIM disease identifiers}
+#'   \item{\code{disease_name}}{Character vector of disease names}
+#'   \item{\code{gene}}{Character vector containing the gene known to cause
+#'   the disease}
+#'}
+#'
+#' @source <>
+#'
+#' @seealso [genotypeAssociation()]
+'diseaseInfo'
+
+
 #' Mapping of disease entities and their clinical features
 #'
 #' This table provides mapping between disease entities and the clinical

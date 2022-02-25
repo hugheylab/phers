@@ -18,7 +18,8 @@ Imports:
   data.table (>= 1.5.0),
   foreach (>= 1.5.2),
   stats (>= 4.0.2),
-  qs (>= 0.25.2)
+  qs (>= 0.25.2),
+  MASS (>= 7.3-55)
 Suggests:
   doParallel (>= 1.0.17),
   knitr,
