@@ -12,6 +12,8 @@ snapshot = function(xObs, path) {
 
 
 # data for unit test
+
+# getWeights() and getScores() test data
 icdTest = data.table(
   person_id = c(1, rep(2L, 2), 3, 4),
   icd = c('001', '002', '003', '002', '004'), flag = 9)
@@ -35,6 +37,12 @@ icdPhecodeMapTest = data.table(
   icd = c('001', '002', '003', '004'),
   phecode = c('001', '002', '003', '004'), flag = 9)
 
+
+# runLinear() test data
+lmInputTest = data.table(score = c(5, 3, 4, 1, 0.5, 0),
+                         variant = c(2, 1, 1, 0, 0, 0),
+                         sex = c('F', 'M', 'F', 'M', 'F', 'M'))
+formStrTest = '~ sex'
 
 # # data for snapshot tests
 # dataDir = 'data'

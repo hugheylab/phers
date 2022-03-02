@@ -7,33 +7,45 @@
 genotypeAssociation(
   scores,
   genotypes,
-  covariates,
-  formStr = as.formula("score ~ ."),
-  coding = "additive"
+  demos,
+  diseaseGeneVarMap,
+  formStr = "~ .",
+  coding = "additive",
+  doPar = FALSE
 )
 }
 \arguments{
-\item{scores}{A data.table of phenotype risk scores. The columns are
+\item{scores}{A data.table of phenotype risk scores. Must have columns
 \code{person_id}, \code{disease_id}, \code{score}.}
 
-\item{genotypes}{A data.table of genotypes. The columns are \code{person_id}, and
-variant IDs to be tested.}
+\item{genotypes}{A data.table of genotypes. Must have columns \code{person_id},
+and variant IDs to be tested. each variant ID column should contain the
+number of copies of the minor allele each person has (additive model).}
 
-\item{covariates}{A data.table of covariates to be used in the association
-analysis.}
+\item{demos}{A data.table of covariates to be used in the association
+analysis. Must have column \code{person_id}.}
 
-\item{formStr}{a formula object representing the linear model for
-genetic associations. must have 'score' as the dependent variable
-and 'variant' as the independent variable. All other independent variables
-must be existing columns in \code{covariates}.}
+\item{diseaseGeneVarMap}{A data.table that maps diseases to genes and
+variants. Must have columns \code{disease_id}, \code{gene}, and \code{vid}.
+\code{disease_id} must include all disease IDs in \code{scores}.}
 
-\item{coding}{coding of the genotypes. Either 'additive' or 'genotypic'}
+\item{formStr}{A string representing the linear model of covariates to be
+used in genetic association tests. All covariates must be existing columns
+in \code{demos}. By default uses a simple linear model of all covariates
+in demos.}
+
+\item{coding}{Coding of the genotypes. Either 'additive' or 'genotypic'.}
+
+\item{doPar}{Logical indicating whether to run calculations in parallel if
+a parallel backend is already set up, e.g., using
+\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
 }
 \value{
 A data.table containing to results of the genotype association tests
 with the following columns. If the model fails to converge,
 NAs will be reported.
 \item{\code{disease_id}}{disease identifier}
+\item{\code{gene}}{name of the gene}
 \item{\code{vid}}{variant identifier}
 \item{\code{beta}}{The beta coefficient for the variant}
 \item{\code{se}}{The standard error for the beta coefficient}

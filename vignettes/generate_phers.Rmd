@@ -65,8 +65,11 @@ scores
 
 perform genotype association 
 ```{r}
-covariates = demoSample[, .(person_id, sex)]
-formStr =  as.formula('score ~ variant + sex')
-genoStats = genotypeAssociation(scores, genoSample, covariates, formStr, coding = 'genotypic')
+demos = demoSample[, .(person_id, sex)]
+diseaseGeneVarMap = merge(
+  diseaseInfo[disease_id %in% unique(scores$disease_id)], geneVarMap, 
+  by = 'gene')[, .(disease_id, gene, vid)]
+genoStats = genotypeAssociation(scores, genoSample, demos, diseaseGeneVarMap, 
+                                formStr = '~ sex', coding = 'genotypic')
 ```
 
