@@ -139,8 +139,9 @@ runLinear = function(lmInput, formStr = '~ .', coding = 'additive') {
     varNames = c('variant')
   }
   if(coding == 'genotypic'){
-    lmInput[, variant := as.factor(variant)]
-    fit = glm(formStr, data = lmInput)
+    lmInput1 = copy(lmInput)
+    lmInput1[, variant := as.factor(variant)]
+    fit = glm(formStr, data = lmInput1)
     varNames = c('variant1', 'variant2')
   }
 
@@ -165,4 +166,4 @@ runLinear = function(lmInput, formStr = '~ .', coding = 'additive') {
       setnames(glmStat, c0, paste0(c0, '_hom'))
     }
   }
-return(glmStat)}
+return(glmStat[])}

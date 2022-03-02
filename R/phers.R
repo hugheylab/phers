@@ -1,5 +1,5 @@
 #' @import checkmate
-#' @importFrom data.table data.table := set uniqueN CJ setnames melt .SD
+#' @importFrom data.table data.table := set uniqueN CJ setnames melt .SD copy
 #' @importFrom foreach foreach %do% %dopar%
 #' @importFrom stats lm rstudent confint glm as.formula
 #' @import MASS
