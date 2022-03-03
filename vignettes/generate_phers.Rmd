@@ -19,6 +19,7 @@ foreach::registerDoSEQ()
 ```{r setup}
 library('phers')
 library('data.table')
+library('iterators')
 
 # doParallel::registerDoParallel() # register a parallel backend to minimize runtime
 ```
@@ -33,6 +34,7 @@ icdSample = data.table(
   icd = c('365', '366', '734', '524.0', '718.4', '441', '366', '734', '441'),
   flag = 9)
 
+set.seed(1) 
 npop = 5
 gene1 = 'FBN1'
 nvar = uniqueN(geneVarMap[gene == gene1]$vid)
@@ -69,7 +71,12 @@ demos = demoSample[, .(person_id, sex)]
 diseaseGeneVarMap = merge(
   diseaseInfo[disease_id %in% unique(scores$disease_id)], geneVarMap, 
   by = 'gene')[, .(disease_id, gene, vid)]
-genoStats = genotypeAssociation(scores, genoSample, demos, diseaseGeneVarMap, 
-                                formStr = '~ sex', coding = 'genotypic')
+
+genoStats = genotypeAssociation(
+  scores, genoSample, demos, diseaseGeneVarMap, glmFormula = as.formula(~ sex), 
+  modelType = 'additive')
+
+genoStats
 ```
+
 

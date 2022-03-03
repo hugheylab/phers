@@ -40,9 +40,9 @@ icdPhecodeMapTest = data.table(
 
 # runLinear() test data
 lmInputTest = data.table(score = c(5, 3, 4, 1, 0.5, 0),
-                         variant = c(2, 1, 1, 0, 0, 0),
+                         allele_count = c(2, 1, 1, 0, 0, 0),
                          sex = c('F', 'M', 'F', 'M', 'F', 'M'))
-formStrTest = '~ sex'
+formStrTest = as.formula(~ sex)
 
 
 # genotypeAssociation() test data
@@ -55,7 +55,7 @@ genotypesTest = data.table(
 demosTest2 = data.table(person_id = 1:6, sex = c('F', 'M', 'F', 'M', 'F', 'M'))
 diseaseGeneVarMapTest = data.table(
   disease_id = c(1, 2), gene = c('a', 'b'), vid = c('snp1', 'snp2'))
-formStrTest = '~ sex'
+formStrTest = as.formula(~ sex)
 
 # # data for snapshot tests
 # dataDir = 'data'

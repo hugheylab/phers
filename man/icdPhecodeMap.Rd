@@ -6,12 +6,11 @@
 \title{Mapping of ICD and phecodes}
 \format{
 A data table with 156,641 rows and the 3 following columns:
-
-\describe{
-\item{\code{icd}}{Character vector representing the ICD code to be mapped}
-\item{\code{phecode}}{Character vector representing the phecode mapping}
-\item{\code{flag}}{Integer vector representing the vocabulary of the
-ICD code (\strong{9}: ICD-9-CM,  \strong{10}: ICD-10-CM)}
+\itemize{
+\item \code{icd}: Character vector representing the ICD code to be mapped
+\item \code{phecode}: Character vector representing the phecode mapping
+\item \code{flag}: Integer vector representing the vocabulary of the ICD code
+(\strong{9}: ICD-9-CM,  \strong{10}: ICD-10-CM)
 }
 }
 \source{

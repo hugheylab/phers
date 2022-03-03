@@ -6,17 +6,15 @@
 \title{Mapping of disease entities and their clinical features}
 \format{
 A data table with 166,143 rows and the 6 following columns:
-
-\describe{
-\item{\code{disease_id}}{Numeric vector of OMIM disease identifiers
-corresponding to the disease being annotated}
-\item{\code{disease_name}}{Character vector of disease name}
-\item{\code{hpo_id}}{Character vector of the HPO identifier for the
-phenotype linked to \code{disease_id}}
-\item{\code{term_id}}{Numeric vector containing the numeric portion of
-\code{hpo_id}}
-\item{\code{hpo_term_name}}{Character vector containing the description
-corresponding to \code{hpo_id}}
+\itemize{
+\item \code{disease_id}: Numeric vector of OMIM disease identifiers corresponding to
+the disease being annotated
+\item \code{disease_name}: Character vector of disease name
+\item \code{hpo_id}: Character vector of the HPO identifier for the
+phenotype linked to \code{disease_id}
+\item \code{term_id}: Numeric vector containing the numeric portion of \code{hpo_id}
+\item \code{hpo_term_name}: Character vector containing the description
+corresponding to \code{hpo_id}
 }
 }
 \source{

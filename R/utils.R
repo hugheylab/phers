@@ -64,26 +64,24 @@ checkDiseaseGeneVarMap = function(diseaseGeneVarMap, scores) {
   invisible()}
 
 
-assertFormulaString = function(formStr, demos) {
-  assertString(formStr, pattern = '~.+')
-  formVars = all.vars(as.formula(formStr))
-  if(formVars != '.') {
-    assertSubset(all.vars(as.formula(formStr)), colnames(demos))
-  }
+checkGlmFormula = function(glmFormula, demos) {
+  assertFormula(glmFormula)
+  assertSubset(all.vars(glmFormula), colnames(demos))
+  formVars = all.vars(glmFormula)
   invisible()}
 
 
-assertCoding = function(coding) {
-  assertCharacter(coding)
-  assert(coding == 'genotypic' | coding == 'additive')
+checkModelType = function(modelType) {
+  assertCharacter(modelType)
+  assert(modelType == 'genotypic' | modelType == 'additive')
   invisible()}
 
 
 checkLmInput = function(lmInput) {
 
   assertDataTable(lmInput)
-  assertNames(colnames(lmInput), must.include = c('score', 'variant'))
-  assertNumeric(lmInput$variant, finite = TRUE)
-  assertSubset(unique(lmInput$variant), c(0,1,2))
+  assertNames(colnames(lmInput), must.include = c('score', 'allele_count'))
+  assertNumeric(lmInput$allele_count, finite = TRUE)
+  assertSubset(unique(lmInput$allele_count), c(0,1,2))
 
   invisible()}

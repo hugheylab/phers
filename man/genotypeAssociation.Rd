@@ -9,9 +9,9 @@ genotypeAssociation(
   genotypes,
   demos,
   diseaseGeneVarMap,
-  formStr = "~ .",
-  coding = "additive",
-  doPar = FALSE
+  glmFormula,
+  modelType = "additive",
+  dopar = FALSE
 )
 }
 \arguments{
@@ -29,14 +29,13 @@ analysis. Must have column \code{person_id}.}
 variants. Must have columns \code{disease_id}, \code{gene}, and \code{vid}.
 \code{disease_id} must include all disease IDs in \code{scores}.}
 
-\item{formStr}{A string representing the linear model of covariates to be
-used in genetic association tests. All covariates must be existing columns
-in \code{demos}. By default uses a simple linear model of all covariates
-in demos.}
+\item{glmFormula}{A formula object representing the linear model of covariates
+to be used in the genetic association tests. All covariates must be
+existing columns in \code{demos}.}
 
-\item{coding}{Coding of the genotypes. Either 'additive' or 'genotypic'.}
+\item{modelType}{Coding of the genotypes. Either 'additive' or 'genotypic'.}
 
-\item{doPar}{Logical indicating whether to run calculations in parallel if
+\item{dopar}{Logical indicating whether to run calculations in parallel if
 a parallel backend is already set up, e.g., using
 \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
 }
@@ -44,14 +43,16 @@ a parallel backend is already set up, e.g., using
 A data.table containing to results of the genotype association tests
 with the following columns. If the model fails to converge,
 NAs will be reported.
-\item{\code{disease_id}}{disease identifier}
-\item{\code{gene}}{name of the gene}
-\item{\code{vid}}{variant identifier}
-\item{\code{beta}}{The beta coefficient for the variant}
-\item{\code{se}}{The standard error for the beta coefficient}
-\item{\code{p}}{The p-value for the variant}
-\item{\code{lower}}{The lower bound of the \code{confint} confidence interval}
-\item{\code{upper}}{The upper bound of the \code{confint} confidence interval}
+\itemize{
+\item \code{disease_id}: disease identifier
+\item \code{gene}: name of the gene
+\item \code{vid}: variant identifier
+\item \code{beta}: The beta coefficient for the variant
+\item \code{se}: The standard error for the beta coefficient
+\item \code{p}: The p-value for the variant
+\item \code{lower}: The lower bound of the \code{confint} confidence interval
+\item \code{upper}: The upper bound of the \code{confint} confidence interval
+}
 }
 \description{
 Perform association tests between the phenotype risk scores and genotypes

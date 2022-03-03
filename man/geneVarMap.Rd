@@ -6,12 +6,10 @@
 \title{Mapping of genes and variants}
 \format{
 A data table with 65,808 rows and the 3 following columns:
-
-\describe{
-\item{\code{gene}}{Character vector of gene names}
-\item{\code{vid}}{Character vector of variant IDs based on position on
-the chromosome}
-\item{\code{rsid}}{Character vector of dbSNP Reference SNP numbers (rs)}
+\itemize{
+\item \code{gene}: Character vector of gene names
+\item \code{vid}: Character vector of variant IDs based on position on the chromosome
+\item \code{rsid}: Character vector of dbSNP Reference SNP numbers (rs)
 }
 }
 \source{

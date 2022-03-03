@@ -5,12 +5,9 @@
 #'
 #' @format A data table with 65,808 rows and the 3 following columns:
 #'
-#' \describe{
-#'   \item{\code{gene}}{Character vector of gene names}
-#'   \item{\code{vid}}{Character vector of variant IDs based on position on
-#'   the chromosome}
-#'   \item{\code{rsid}}{Character vector of dbSNP Reference SNP numbers (rs)}
-#'}
+#' * `gene`: Character vector of gene names
+#' * `vid`: Character vector of variant IDs based on position on the chromosome
+#' * `rsid`: Character vector of dbSNP Reference SNP numbers (rs)
 #'
 #' @source <https://annovar.openbioinformatics.org/en/latest/>
 #'
@@ -24,12 +21,9 @@
 #'
 #' @format A data table with 63 rows and the 3 following columns:
 #'
-#' \describe{
-#'   \item{\code{disease_id}}{Numeric vector of OMIM disease identifiers}
-#'   \item{\code{disease_name}}{Character vector of disease names}
-#'   \item{\code{gene}}{Character vector containing the gene known to cause
-#'   the disease}
-#'}
+#' * `disease_id`: Numeric vector of OMIM disease identifiers
+#' * `disease_name`: Character vector of disease names
+#' * `gene`: Character vector containing the gene known to cause the disease
 #'
 #' @source <>
 #'
@@ -44,17 +38,14 @@
 #'
 #' @format A data table with 166,143 rows and the 6 following columns:
 #'
-#' \describe{
-#'   \item{\code{disease_id}}{Numeric vector of OMIM disease identifiers
-#'    corresponding to the disease being annotated}
-#'   \item{\code{disease_name}}{Character vector of disease name}
-#'   \item{\code{hpo_id}}{Character vector of the HPO identifier for the
-#'    phenotype linked to `disease_id`}
-#'   \item{\code{term_id}}{Numeric vector containing the numeric portion of
-#'    `hpo_id`}
-#'   \item{\code{hpo_term_name}}{Character vector containing the description
-#'    corresponding to `hpo_id`}
-#'}
+#' * `disease_id`: Numeric vector of OMIM disease identifiers corresponding to
+#'    the disease being annotated
+#' * `disease_name`: Character vector of disease name
+#' * `hpo_id`: Character vector of the HPO identifier for the
+#'    phenotype linked to `disease_id`
+#' * `term_id`: Numeric vector containing the numeric portion of `hpo_id`
+#' * `hpo_term_name`: Character vector containing the description
+#'    corresponding to `hpo_id`
 #'
 #' @source <https://hpo.jax.org/app/download/annotation>
 #'
@@ -69,15 +60,12 @@
 #'
 #' @format A data table with 14,160 rows and the 4 following columns:
 #'
-#' \describe{
-#'   \item{\code{term_id}}{Numeric vector representing the HPO term ID to be
-#'     mapped}
-#'   \item{\code{hpo_term_name}}{Character vector containing the description
-#'    corresponding to each HPO term ID}
-#'   \item{\code{phecode}}{Character vector representing the phecode mapping}
-#'   \item{\code{phecode_string}}{Character vector containing the description
-#'     corresponding to each phecode}
-#'}
+#' * `term_id`: Numeric vector representing the HPO term ID to be mapped
+#' * `hpo_term_name`: Character vector containing the description of each
+#'     HPO term ID
+#' * `phecode`: Character vector representing the phecode mapping
+#' * `phecode_string`: Character vector containing the description of each
+#'     phecode
 #'
 #' @source <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6857501/#sup1>
 #'
@@ -93,12 +81,10 @@
 #'
 #' @format A data table with 156,641 rows and the 3 following columns:
 #'
-#' \describe{
-#'   \item{\code{icd}}{Character vector representing the ICD code to be mapped}
-#'   \item{\code{phecode}}{Character vector representing the phecode mapping}
-#'   \item{\code{flag}}{Integer vector representing the vocabulary of the
-#'   ICD code (**9**: ICD-9-CM,  **10**: ICD-10-CM)}
-#'}
+#' * `icd`: Character vector representing the ICD code to be mapped
+#' * `phecode`: Character vector representing the phecode mapping
+#' * `flag`: Integer vector representing the vocabulary of the ICD code
+#'   (**9**: ICD-9-CM,  **10**: ICD-10-CM)
 #'
 #' @source <https://phewascatalog.org/phecodes_v1_1>
 #'

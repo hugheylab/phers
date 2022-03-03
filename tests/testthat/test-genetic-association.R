@@ -1,29 +1,29 @@
 test_that('runLinear output (additive)', {
 
-  linearOut = runLinear(lmInputTest, formStrTest, coding = 'additive')
+  linearOut = runLinear(lmInputTest, formStrTest, modelType = 'additive')
 
   expect_s3_class(linearOut, 'data.table')
   expect_equal(nrow(linearOut), 1)
   expect_named(linearOut, c('beta', 'se', 'p', 'lower', 'upper'),
                ignore.order = TRUE)
 
-  lmTest = glm(score~variant+sex, data = lmInputTest)
+  lmTest = glm(score~allele_count+sex, data = lmInputTest)
 
-  expect_equal(linearOut$beta, lmTest$coef[['variant']])
+  expect_equal(linearOut$beta, lmTest$coef[['allele_count']])
   expect_equal(linearOut$se,
-               summary(lmTest)$coef['variant', 'Std. Error'])
+               summary(lmTest)$coef['allele_count', 'Std. Error'])
   expect_equal(linearOut$p,
-               summary(lmTest)$coef['variant', 'Pr(>|t|)'])
+               summary(lmTest)$coef['allele_count', 'Pr(>|t|)'])
   expect_equal(
-    linearOut$lower, suppressMessages(confint(lmTest)['variant', '2.5 %']))
+    linearOut$lower, suppressMessages(confint(lmTest)['allele_count', '2.5 %']))
   expect_equal(
-    linearOut$upper, suppressMessages(confint(lmTest)['variant', '97.5 %']))
+    linearOut$upper, suppressMessages(confint(lmTest)['allele_count', '97.5 %']))
 })
 
 
 test_that('runLinear output (genotypic)', {
 
-  linearOut = runLinear(lmInputTest, formStrTest, coding = 'genotypic')
+  linearOut = runLinear(lmInputTest, formStrTest, modelType = 'genotypic')
 
   expect_s3_class(linearOut, 'data.table')
   expect_equal(nrow(linearOut), 1)
@@ -33,18 +33,18 @@ test_that('runLinear output (genotypic)', {
                ignore.order = TRUE)
 
   lmInputTestG = copy(lmInputTest)
-  lmInputTestG[, variant := factor(variant)]
-  lmTest = glm(score~variant+sex, data = lmInputTestG)
+  lmInputTestG[, allele_count := factor(allele_count)]
+  lmTest = glm(score~allele_count+sex, data = lmInputTestG)
 
-  expect_equal(linearOut$beta_het, lmTest$coef[['variant1']])
+  expect_equal(linearOut$beta_het, lmTest$coef[['allele_count1']])
   expect_equal(linearOut$se_het,
-               summary(lmTest)$coef['variant1', 'Std. Error'])
+               summary(lmTest)$coef['allele_count1', 'Std. Error'])
   expect_equal(linearOut$p_het,
-               summary(lmTest)$coef['variant1', 'Pr(>|t|)'])
+               summary(lmTest)$coef['allele_count1', 'Pr(>|t|)'])
   expect_equal(
-    linearOut$lower_het, suppressMessages(confint(lmTest)['variant1', '2.5 %']))
+    linearOut$lower_het, suppressMessages(confint(lmTest)['allele_count1', '2.5 %']))
   expect_equal(
-    linearOut$upper_het, suppressMessages(confint(lmTest)['variant1', '97.5 %']))
+    linearOut$upper_het, suppressMessages(confint(lmTest)['allele_count1', '97.5 %']))
 })
 
 
@@ -52,7 +52,7 @@ test_that('genotypeAssociation output (additive)', {
 
   genoOut = genotypeAssociation(scoresTest, genotypesTest, demosTest2,
                                 diseaseGeneVarMapTest, formStrTest,
-                                coding = 'additive')
+                                modelType = 'additive')
 
   expect_s3_class(genoOut, 'data.table')
   expect_equal(nrow(genoOut), 2)

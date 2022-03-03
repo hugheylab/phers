@@ -6,12 +6,10 @@
 \title{Mendelian disease annotation}
 \format{
 A data table with 63 rows and the 3 following columns:
-
-\describe{
-\item{\code{disease_id}}{Numeric vector of OMIM disease identifiers}
-\item{\code{disease_name}}{Character vector of disease names}
-\item{\code{gene}}{Character vector containing the gene known to cause
-the disease}
+\itemize{
+\item \code{disease_id}: Numeric vector of OMIM disease identifiers
+\item \code{disease_name}: Character vector of disease names
+\item \code{gene}: Character vector containing the gene known to cause the disease
 }
 }
 \source{
