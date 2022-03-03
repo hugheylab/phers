@@ -65,8 +65,9 @@ genotypeAssociation = function(
     lmInputSub = lmInput[disease_id == diseaseId][, !'disease_id']
     # making sure the snps we're looping through are in genotypes
     # and are not all 0
-    diseaseGeneVarMapSub = diseaseGeneVarMap[disease_id == diseaseId][vid %in%
-                                                                        okSnps]
+    diseaseGeneVarMapSub = unique(
+      diseaseGeneVarMap[disease_id == diseaseId][vid %in% okSnps])
+
     statsSnps = foreach(
       diseaseSnp1 = iter(
         diseaseGeneVarMapSub, by = 'row'), .combine = rbind) %do% {
