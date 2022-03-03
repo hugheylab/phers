@@ -25,7 +25,7 @@ usethis::use_data(hpoPhecodeMap, overwrite = TRUE)
 #######################
 # map of genes and variants
 
-geneVarMap = fread(file.path('data-raw', 'gene_variant_map.csv.gz'),
+geneVarMap = fread(file.path(rawDir, 'gene_variant_map.csv.gz'),
                    select = c('Gene', 'SNP', 'rsID'))
 setnames(geneVarMap, c('Gene', 'SNP', 'rsID'), c('gene', 'vid', 'rsid'))
 usethis::use_data(geneVarMap, overwrite = TRUE)
@@ -33,7 +33,7 @@ usethis::use_data(geneVarMap, overwrite = TRUE)
 #######################
 # table of disease info (map of disease and gene)
 
-diseaseInfo = fread(file.path('data-raw', 'disease_info.csv.gz'),
+diseaseInfo = fread(file.path(rawDir, 'disease_info.csv.gz'),
                     select = c('dID', 'disease', 'gene', 'sex_inc', 'skip'))
 diseaseInfo = unique(
   diseaseInfo[skip == 0][sex_inc == 'B'][, .(dID, disease, gene)])
@@ -44,4 +44,19 @@ diseaseInfo = diseaseInfo[, .(disease_id, disease_name, gene)]
 
 usethis::use_data(diseaseInfo, overwrite = TRUE)
 
+#######################
+# map of disease ID and diagnosis ICD codes
 
+diseaseDxIcdMap = fread(
+  file.path(rawDir, 'disease_dx_icd_map_omim.csv.gz'),
+  select = c('dID', 'disease', 'ICD', 'ICD_string', 'flag'),
+  colClasses = list(character = 'ICD'))
+
+diseaseDxIcdMap = diseaseDxIcdMap[dID != '-']
+diseaseDxIcdMap[, dID := as.numeric(dID)]
+
+setnames(
+  diseaseDxIcdMap, c('dID', 'disease', 'ICD', 'ICD_string'),
+  c('disease_id', 'disease_name', 'icd', 'icd_string'))
+
+usethis::use_data(diseaseDxIcdMap, overwrite = TRUE)
