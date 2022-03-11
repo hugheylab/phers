@@ -27,7 +27,7 @@ features they are linked to using annotations from the OMIM database."><!-- math
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -67,28 +67,15 @@ features they are linked to using annotations from the OMIM database.</p>
 
     <div id="format">
     <h2>Format</h2>
-    <p>A data table with 166,143 rows and the 6 following columns:</p>
-<dl><dt><code>disease_id</code></dt>
-<dd><p>Numeric vector of OMIM disease identifiers
-corresponding to the disease being annotated</p></dd>
-
-<dt><code>disease_name</code></dt>
-<dd><p>Character vector of disease name</p></dd>
-
-<dt><code>hpo_id</code></dt>
-<dd><p>Character vector of the HPO identifier for the
-phenotype linked to <code>disease_id</code></p></dd>
-
-<dt><code>term_id</code></dt>
-<dd><p>Numeric vector containing the numeric portion of
-<code>hpo_id</code></p></dd>
-
-<dt><code>hpo_term_name</code></dt>
-<dd><p>Character vector containing the description
-corresponding to <code>hpo_id</code></p></dd>
-
-
-</dl></div>
+    <p>A data table with 166,143 rows and the 6 following columns:</p><ul><li><p><code>disease_id</code>: Numeric vector of OMIM disease identifiers corresponding to
+the disease being annotated</p></li>
+<li><p><code>disease_name</code>: Character vector of disease name</p></li>
+<li><p><code>hpo_id</code>: Character vector of the HPO identifier for the
+phenotype linked to <code>disease_id</code></p></li>
+<li><p><code>term_id</code>: Numeric vector containing the numeric portion of <code>hpo_id</code></p></li>
+<li><p><code>hpo_term_name</code>: Character vector containing the description
+corresponding to <code>hpo_id</code></p></li>
+</ul></div>
     <div id="source">
     <h2>Source</h2>
     <p><a href="https://hpo.jax.org/app/download/annotation" class="external-link">https://hpo.jax.org/app/download/annotation</a></p>

@@ -28,7 +28,7 @@ Diseases 9th and 10th revisions (ICD-9-CM and ICD-10-CM) and phecodes
   <a href="../reference/index.html">Reference</a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     Articles
      
     <span class="caret"></span>
@@ -69,19 +69,11 @@ Diseases 9th and 10th revisions (ICD-9-CM and ICD-10-CM) and phecodes
 
     <div id="format">
     <h2>Format</h2>
-    <p>A data table with 156,641 rows and the 3 following columns:</p>
-<dl><dt><code>icd</code></dt>
-<dd><p>Character vector representing the ICD code to be mapped</p></dd>
-
-<dt><code>phecode</code></dt>
-<dd><p>Character vector representing the phecode mapping</p></dd>
-
-<dt><code>flag</code></dt>
-<dd><p>Integer vector representing the vocabulary of the
-ICD code (<strong>9</strong>: ICD-9-CM,  <strong>10</strong>: ICD-10-CM)</p></dd>
-
-
-</dl></div>
+    <p>A data table with 156,641 rows and the 3 following columns:</p><ul><li><p><code>icd</code>: Character vector representing the ICD code to be mapped</p></li>
+<li><p><code>phecode</code>: Character vector representing the phecode mapping</p></li>
+<li><p><code>flag</code>: Integer vector representing the vocabulary of the ICD code
+(<strong>9</strong>: ICD-9-CM,  <strong>10</strong>: ICD-10-CM)</p></li>
+</ul></div>
     <div id="source">
     <h2>Source</h2>
     <p><a href="https://phewascatalog.org/phecodes_v1_1" class="external-link">https://phewascatalog.org/phecodes_v1_1</a></p>

@@ -19,6 +19,15 @@
     <loc>https://phers.hugheylab.org/reference/diseaseHpoMap.html</loc>
   </url>
   <url>
+    <loc>https://phers.hugheylab.org/reference/diseaseInfo.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/geneVarMap.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/getGeneticAssociations.html</loc>
+  </url>
+  <url>
     <loc>https://phers.hugheylab.org/reference/getPhecodeOccurrences.html</loc>
   </url>
   <url>
@@ -38,5 +47,8 @@
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/mapDiseaseToPhecode.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/runLinear.html</loc>
   </url>
 </urlset>
