@@ -1,3 +1,23 @@
+#' Mapping of diseases and diagnostic ICD codes
+#'
+#' This table provides mapping between diseases and ICD9 and ICD10 codes that
+#' represent being diagnosed with them.
+#'
+#' @format A data table with 63 rows and the 3 following columns:
+#'
+#' * `disease_id`: Numeric vector of OMIM disease identifiers
+#' * `disease_name`: Character vector of disease names
+#' * `icd`: Character vector representing the diagnostic ICD code
+#' * `icd_string`: Character vector containing the description of each icd code
+#' * `flag`: Integer vector representing the vocabulary of the ICD code
+#'    (**9**: ICD-9-CM,  **10**: ICD-10-CM)
+#'
+#' @source <>
+#'
+#' @seealso []
+'diseaseDxIcdMap'
+
+
 #' Mapping of genes and variants
 #'
 #' This table provides mapping between genes and genetic variants using

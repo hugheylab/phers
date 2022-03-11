@@ -4,7 +4,11 @@
 \alias{getPhecodeOccurrences}
 \title{Map ICD code occurrences to phecode occurrences}
 \usage{
-getPhecodeOccurrences(icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap)
+getPhecodeOccurrences(
+  icdOccurrences,
+  icdPhecodeMap = phers::icdPhecodeMap,
+  DxIcd = NULL
+)
 }
 \arguments{
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
@@ -13,6 +17,8 @@ person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{
 \item{icdPhecodeMap}{A data.table containing the mapping between ICD codes
 and phecodes. Must have columns \code{icd}, \code{phecode}, and \code{flag}. By default uses
 the mapping included in this package.}
+
+\item{DxIcd}{character vector of diagnostic ICD codes to remove}
 }
 \value{
 A data.table of phecode occurrences for each person.

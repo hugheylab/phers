@@ -25,6 +25,7 @@ Suggests:
   doParallel (>= 1.0.17),
   knitr,
   rmarkdown,
-  testthat (>= 3.1.0)
+  testthat (>= 3.1.0),
+  ggplot2 (>= 3.3.5)
 Config/testthat/edition: 3
 VignetteBuilder: knitr

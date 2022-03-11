@@ -16,12 +16,13 @@ NULL
 #' @param icdPhecodeMap A data.table containing the mapping between ICD codes
 #'   and phecodes. Must have columns `icd`, `phecode`, and `flag`. By default uses
 #'   the mapping included in this package.
+#' @param DxIcd character vector of diagnostic ICD codes to remove
 #'
 #' @return A data.table of phecode occurrences for each person.
 #'
 #' @export
 getPhecodeOccurrences = function(
-  icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap) {
+  icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap, DxIcd = NULL) {
 
   assertDataTable(icdOccurrences)
   assertNames(colnames(icdOccurrences),
