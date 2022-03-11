@@ -16,6 +16,9 @@
     <loc>https://phers.hugheylab.org/index.html</loc>
   </url>
   <url>
+    <loc>https://phers.hugheylab.org/reference/diseaseDxIcdMap.html</loc>
+  </url>
+  <url>
     <loc>https://phers.hugheylab.org/reference/diseaseHpoMap.html</loc>
   </url>
   <url>
@@ -23,6 +26,9 @@
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/geneVarMap.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/getDxStatus.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/getGeneticAssociations.html</loc>

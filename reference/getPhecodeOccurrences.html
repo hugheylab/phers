@@ -62,7 +62,11 @@ phecodes.</p>
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getPhecodeOccurrences</span><span class="op">(</span><span class="va">icdOccurrences</span>, icdPhecodeMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="icdPhecodeMap.html">icdPhecodeMap</a></span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getPhecodeOccurrences</span><span class="op">(</span>
+  <span class="va">icdOccurrences</span>,
+  icdPhecodeMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="icdPhecodeMap.html">icdPhecodeMap</a></span>,
+  DxIcd <span class="op">=</span> <span class="cn">NULL</span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -74,6 +78,8 @@ person in the cohort. Must have columns <code>person_id</code>, <code>icd</code>
 <dd><p>A data.table containing the mapping between ICD codes
 and phecodes. Must have columns <code>icd</code>, <code>phecode</code>, and <code>flag</code>. By default uses
 the mapping included in this package.</p></dd>
+<dt>DxIcd</dt>
+<dd><p>character vector of diagnostic ICD codes to remove</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
