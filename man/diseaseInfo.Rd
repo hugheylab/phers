@@ -22,6 +22,6 @@ diseaseInfo
 This table provides annotations for Mendelian diseases
 }
 \seealso{
-\code{\link[=genotypeAssociation]{genotypeAssociation()}}
+\code{\link[=getGeneticAssociations]{getGeneticAssociations()}}
 }
 \keyword{datasets}

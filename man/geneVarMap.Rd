@@ -23,6 +23,6 @@ This table provides mapping between genes and genetic variants using
 ANNOVAR annotations
 }
 \seealso{
-\code{\link[=genotypeAssociation]{genotypeAssociation()}}
+\code{\link[=getGeneticAssociations]{getGeneticAssociations()}}
 }
 \keyword{datasets}

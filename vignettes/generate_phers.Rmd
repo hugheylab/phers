@@ -68,13 +68,15 @@ scores
 perform genotype association 
 ```{r}
 demos = demoSample[, .(person_id, sex)]
-diseaseGeneVarMap = merge(
+diseaseVariantMap = merge(
   diseaseInfo[disease_id %in% unique(scores$disease_id)], geneVarMap, 
   by = 'gene')[, .(disease_id, gene, vid)]
 
-genoStats = genotypeAssociation(
-  scores, genoSample, demos, diseaseGeneVarMap, glmFormula = as.formula(~ sex), 
+genoStats = getGeneticAssociations(
+  scores, genoSample, demos, diseaseVariantMap, glmFormula = as.formula(~ sex), 
   modelType = 'additive')
+
+genoStats = merge(geneVarMap[, .(gene, vid)], genoStats, by = 'vid')
 
 genoStats
 ```

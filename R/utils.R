@@ -54,26 +54,25 @@ checkGenotypes = function(genotypes) {
   invisible()}
 
 
-checkDiseaseGeneVarMap = function(diseaseGeneVarMap, scores) {
-  assertDataTable(diseaseGeneVarMap)
+checkDiseaseVariantMap = function(diseaseVariantMap, scores) {
+  assertDataTable(diseaseVariantMap)
   assertNames(
-    colnames(diseaseGeneVarMap), permutation.of = c('disease_id', 'gene', 'vid'))
-  assert(anyDuplicated(diseaseGeneVarMap[, c('disease_id', 'vid')]) == 0)
+    colnames(diseaseVariantMap), must.include = c('disease_id', 'vid'))
+  assert(anyDuplicated(diseaseVariantMap[, c('disease_id', 'vid')]) == 0)
   assertSubset(scores$disease_id,
-               diseaseGeneVarMap$disease_id, empty.ok = FALSE)
+               diseaseVariantMap$disease_id, empty.ok = FALSE)
   invisible()}
 
 
 checkGlmFormula = function(glmFormula, demos) {
   assertFormula(glmFormula)
-  assertSubset(all.vars(glmFormula), colnames(demos))
-  formVars = all.vars(glmFormula)
-  invisible()}
+  assertNames(
+    all.vars(glmFormula), subset.of = colnames(demos),
+    disjunct.from = c('score', 'allele_count', 'person_id'))
 
+  if (all.vars(update.formula(glmFormula, . ~ 1)) != '.'){
+    stop('provide a formula without the dependent variable')}
 
-checkModelType = function(modelType) {
-  assertCharacter(modelType)
-  assert(modelType == 'genotypic' | modelType == 'additive')
   invisible()}
 
 
@@ -83,5 +82,14 @@ checkLmInput = function(lmInput) {
   assertNames(colnames(lmInput), must.include = c('score', 'allele_count'))
   assertNumeric(lmInput$allele_count, finite = TRUE)
   assertSubset(unique(lmInput$allele_count), c(0,1,2))
-
   invisible()}
+
+
+getAlleleCounts = function(lmInput) {
+  n_het = n_hom = n_wt = NULL
+
+  dCounts = data.table(n_total = nrow(lmInput))
+  dCounts[, n_wt := sum(lmInput$allele_count == 0)]
+  dCounts[, n_het := sum(lmInput$allele_count == 1)]
+  dCounts[, n_hom := sum(lmInput$allele_count == 2)]
+return(dCounts)}

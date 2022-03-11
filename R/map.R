@@ -11,7 +11,7 @@
 #'
 #' @source <https://annovar.openbioinformatics.org/en/latest/>
 #'
-#' @seealso [genotypeAssociation()]
+#' @seealso [getGeneticAssociations()]
 'geneVarMap'
 
 
@@ -27,7 +27,7 @@
 #'
 #' @source <>
 #'
-#' @seealso [genotypeAssociation()]
+#' @seealso [getGeneticAssociations()]
 'diseaseInfo'
 
 

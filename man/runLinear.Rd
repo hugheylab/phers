@@ -4,7 +4,13 @@
 \alias{runLinear}
 \title{Perform a single genotype association test}
 \usage{
-runLinear(lmInput, glmFormula, modelType = "additive")
+runLinear(
+  lmInput,
+  glmFormula,
+  modelType = c("additive", "genotypic"),
+  diseaseId,
+  snp
+)
 }
 \arguments{
 \item{lmInput}{A data.table of of the input to the genetic association model.
@@ -17,12 +23,19 @@ to be used in the genetic association test. All covariates must be existing
 columns in \code{lmInput}.}
 
 \item{modelType}{Coding of the genotypes. Either 'additive' or 'genotypic'}
+
+\item{diseaseId}{Numeric value of the disease ID in the association test.}
+
+\item{snp}{String value of the variant ID in the association test.}
 }
 \value{
 A data.table containing to results of the genotype association test
 with the following columns. If the model fails to converge,
 NAs will be reported.
 \itemize{
+\item \code{disease_id}: disease identifier
+\item \code{gene}: name of the gene
+\item \code{vid}: variant identifier
 \item \code{beta}: The beta coefficient for the variant
 \item \code{se}: The standard error for the beta coefficient
 \item \code{p}: The p-value for the variant
