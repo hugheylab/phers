@@ -63,7 +63,6 @@ clinical features mapped to them as phecodes.</p>
 
     <div id="ref-usage">
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">mapDiseaseToPhecode</span><span class="op">(</span>
-  diseaseIds <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseHpoMap.html">diseaseHpoMap</a></span><span class="op">$</span><span class="va">disease_id</span><span class="op">)</span>,
   diseaseHpoMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseHpoMap.html">diseaseHpoMap</a></span>,
   hpoPhecodeMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="hpoPhecodeMap.html">hpoPhecodeMap</a></span>
 <span class="op">)</span></code></pre></div>
@@ -71,9 +70,7 @@ clinical features mapped to them as phecodes.</p>
 
     <div id="arguments">
     <h2>Arguments</h2>
-    <dl><dt>diseaseIds</dt>
-<dd><p>A numeric vector of OMIM disease identifiers to be mapped.</p></dd>
-<dt>diseaseHpoMap</dt>
+    <dl><dt>diseaseHpoMap</dt>
 <dd><p>A data.table containing the mapping between disease
 entities in <code>diseaseIds</code> and HPO terms. Must have columns <code>disease_id</code> and
 <code>term_id</code>. By default uses the map included in this package.</p></dd>

@@ -123,18 +123,12 @@
 <span class="va">diseaseIds</span> <span class="op">=</span> <span class="fl">154700</span>
 
 <span class="co"># mape diseases to phecodes</span>
-<span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="va">diseaseIds</span><span class="op">)</span>
+<span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># calculate PheRS</span>
-<span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="../reference/getScores.html">getScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span>
-
-<span class="va">scores</span>
-<span class="co">#&gt;    person_id disease_id   score</span>
-<span class="co">#&gt; 1:         1     154700 1.49485</span>
-<span class="co">#&gt; 2:         2     154700 1.79588</span>
-<span class="co">#&gt; 3:         3     154700 0.79588</span>
-<span class="co">#&gt; 4:         4     154700 0.39794</span>
-<span class="co">#&gt; 5:         5     154700 0.00000</span></code></pre></div>
+<span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="../reference/getScores.html">getScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseIds</span><span class="op">]</span><span class="op">)</span>
+ 
+<span class="va">rscores</span> <span class="op">=</span> <span class="fu"><a href="../reference/getResidualScores.html">getResidualScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, glmFormula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p>perform genotype association</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">demos</span> <span class="op">=</span> <span class="va">demoSample</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">person_id</span>, <span class="va">sex</span><span class="op">)</span><span class="op">]</span>
