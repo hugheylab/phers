@@ -1,7 +1,7 @@
 #' @import checkmate
 #' @import data.table
 #' @importFrom foreach foreach %do% %dopar%
-#' @importFrom stats confint glm as.formula update.formula
+#' @importFrom stats confint glm as.formula update.formula rstandard
 #' @importFrom iterators iter
 NULL
 
@@ -37,7 +37,8 @@ getPhecodeOccurrences = function(
   assertCharacter(icdPhecodeMap$phecode)
   assert(anyDuplicated(icdPhecodeMap) == 0)
 
-  pheOccs = merge(icdOccurrences, icdPhecodeMap, by = c('icd', 'flag'))
+  pheOccs = merge(
+    icdOccurrences, icdPhecodeMap, by = c('icd', 'flag'), allow.cartesian = TRUE)
   pheOccs = pheOccs[, !c('icd', 'flag')]
   return(pheOccs)}
 
@@ -105,3 +106,49 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
             rSum, by = c('person_id', 'disease_id'), all.x = TRUE)
   r[is.na(score), score := 0]
   return(r[])}
+
+
+#' Calculate residual phenotype risk scores
+#'
+#' The residual phenotype risk score corresponds to how much a person's
+#' phenotype risk score deviates from what is expected given
+#' their characteristics (e.g. age, sex, and race)
+#'
+#' @param demos A data.table of covariates to be used in the calculation
+#'   of residual phenotype risk score. Must have column `person_id`.
+#' @param scores A data.table containing the phenotype risk score for each person for
+#'   each disease. Must have columns `person_id`, `disease_id`, and `score`.
+#' @param glmFormula A formula object representing the linear model of covariates
+#'   to be used in the calculation of residual phenotype risk score.
+#'   All covariates must be existing columns in `demos`.
+#' @param dopar Logical indicating whether to run calculations in parallel if
+#'   a parallel backend is already set up, e.g., using
+#'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
+#'
+#' @return A data.table containing the phenotype risk score and the residual
+#'   phenotype risk score for each person for each disease.
+#'
+#' @export
+getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
+  disease_id = diseaseId = r_score = . = person_id = score = NULL
+
+  checkDemos(demos)
+  checkScores(scores)
+  checkGlmFormula(glmFormula, demos)
+  assertFlag(dopar)
+
+  rInput = merge(scores, demos, by = 'person_id')
+  glmFormula = update.formula(glmFormula, score ~ .)
+
+  reg = foreach::getDoParRegistered()
+  doOp = if (dopar && reg) `%dopar%` else `%do%`
+  foe = foreach(diseaseId = unique(scores$disease_id), .combine = rbind)
+
+  rScores = doOp(foe, {
+    rInputSub = rInput[disease_id == diseaseId]
+    rFit = glm(glmFormula, data = rInputSub)
+    rInputSub[, r_score := rstandard(rFit)]})
+
+  rScores = rScores[, .(person_id, disease_id, score, r_score)]
+return(rScores[])}
+

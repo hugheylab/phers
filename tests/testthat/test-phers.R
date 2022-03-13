@@ -101,3 +101,22 @@ test_that('check getScores Args', {
   expect_error(getScores(demosTestErr, phecodeOccurrencesTest, weightsTestErr,
                          diseasePhecodeMapTest))
 })
+
+
+test_that('getResidualScores output', {
+  rphersOut = getResidualScores(demosTest2, scoresTest, formTest)
+
+  expect_s3_class(rphersOut, 'data.table')
+  expect_equal(nrow(rphersOut), nrow(scoresTest))
+  expect_named(
+    rphersOut, c('person_id', 'disease_id', 'score', 'r_score'),
+    ignore.order = TRUE)
+
+  rInputTest = merge(scoresTest, demosTest2, by = 'person_id')
+  rFitTest1 = glm(score ~ sex, data = rInputTest[disease_id == 1])
+  rFitTest2 = glm(score ~ sex, data = rInputTest[disease_id == 2])
+
+  expect_equal(rphersOut[disease_id == 1]$r_score, unname(rstandard(rFitTest1)))
+  expect_equal(rphersOut[disease_id == 2]$r_score, unname(rstandard(rFitTest2)))
+
+})

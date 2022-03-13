@@ -25,19 +25,9 @@ test_that('check mapICDToPhecode Args', {
 test_that('check mapDiseaseToPhecode output', {
 
   diseaseToPhecodeOut = mapDiseaseToPhecode(
-    c(1), diseaseHpoMap = diseaseHpoMapTest, hpoPhecodeMap = hpoPhecodeMapTest)
+    diseaseHpoMap = diseaseHpoMapTest, hpoPhecodeMap = hpoPhecodeMapTest)
   setkey(diseaseToPhecodeOut)
   expect_equal(diseaseToPhecodeOut, diseasePhecodeMapTest)
 
   expect_s3_class(diseaseToPhecodeOut, 'data.table')
-})
-
-
-test_that('check mapDiseaseToPhecode Args', {
-
-  # unknown disease ID
-  diseaseIdsTestErr = c(0)
-  expect_error(
-    mapDiseaseToPhecode(diseaseIdsTestErr, diseaseHPOMapTest, HPOPhecodeMapTest))
-
 })

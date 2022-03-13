@@ -58,12 +58,12 @@ weights = getWeights(demoSample, phecodeOccurrences)
 diseaseIds = 154700
 
 # mape diseases to phecodes
-diseasePhecodeMap = mapDiseaseToPhecode(diseaseIds)
+diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate PheRS
-scores = getScores(demoSample, phecodeOccurrences, weights, diseasePhecodeMap)
-
-scores
+scores = getScores(demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseIds])
+ 
+rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
 ```
 
 perform genotype association 
@@ -91,4 +91,3 @@ plotInput = merge(scores, dxStatus, by = c('person_id', 'disease_id'))
 
 ggplot(plotInput) + geom_boxplot(aes(x = factor(dx_status), y = score))
 ```
-

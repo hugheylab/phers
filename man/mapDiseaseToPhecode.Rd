@@ -5,14 +5,11 @@
 \title{Map diseases entities to phecodes using HPO terms}
 \usage{
 mapDiseaseToPhecode(
-  diseaseIds = unique(phers::diseaseHpoMap$disease_id),
   diseaseHpoMap = phers::diseaseHpoMap,
   hpoPhecodeMap = phers::hpoPhecodeMap
 )
 }
 \arguments{
-\item{diseaseIds}{A numeric vector of OMIM disease identifiers to be mapped.}
-
 \item{diseaseHpoMap}{A data.table containing the mapping between disease
 entities in \code{diseaseIds} and HPO terms. Must have columns \code{disease_id} and
 \code{term_id}. By default uses the map included in this package.}

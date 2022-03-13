@@ -117,7 +117,6 @@
 #' This function takes a list of disease identifiers and returns the
 #' clinical features mapped to them as phecodes.
 #'
-#' @param diseaseIds A numeric vector of OMIM disease identifiers to be mapped.
 #' @param diseaseHpoMap A data.table containing the mapping between disease
 #'   entities in `diseaseIds` and HPO terms. Must have columns `disease_id` and
 #'   `term_id`. By default uses the map included in this package.
@@ -130,15 +129,10 @@
 #'
 #' @export
 mapDiseaseToPhecode = function(
-  diseaseIds = unique(phers::diseaseHpoMap$disease_id),
   diseaseHpoMap = phers::diseaseHpoMap,
   hpoPhecodeMap = phers::hpoPhecodeMap) {
 
-  phecode = disease_id = NULL
-
-  # change error message
-  assertChoice(
-    as.numeric(diseaseIds), unique(diseaseHpoMap$disease_id))
+  phecode = NULL
 
   assertDataTable(diseaseHpoMap)
   assertNames(
@@ -151,8 +145,7 @@ mapDiseaseToPhecode = function(
   assertNumeric(hpoPhecodeMap$term_id)
   assertCharacter(hpoPhecodeMap$phecode)
 
-  diseaseHpoMapSub = diseaseHpoMap[disease_id %in% diseaseIds]
-  diseasePhecodeMap = merge(diseaseHpoMapSub, hpoPhecodeMap, by = 'term_id')
+  diseasePhecodeMap = merge(diseaseHpoMap, hpoPhecodeMap, by = 'term_id')
   diseasePhecodeMap = unique(
     diseasePhecodeMap[phecode != ''][, c('disease_id', 'phecode')])
 

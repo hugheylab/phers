@@ -68,7 +68,7 @@ checkGlmFormula = function(glmFormula, demos) {
   assertFormula(glmFormula)
   assertNames(
     all.vars(glmFormula), subset.of = colnames(demos),
-    disjunct.from = c('score', 'allele_count', 'person_id'))
+    disjunct.from = c('score', 'allele_count', 'person_id', 'disease_id'))
 
   if (all.vars(update.formula(glmFormula, . ~ 1)) != '.'){
     stop('provide a formula without the dependent variable')}

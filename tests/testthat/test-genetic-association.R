@@ -1,6 +1,6 @@
 test_that('runLinear output (additive)', {
 
-  linearOut = runLinear(lmInputTest, formStrTest, modelType = 'additive', 1, 'snp1')
+  linearOut = runLinear(lmInputTest, formTest, modelType = 'additive', 1, 'snp1')
 
   expect_s3_class(linearOut, 'data.table')
   expect_equal(nrow(linearOut), 1)
@@ -32,7 +32,7 @@ test_that('runLinear output (additive)', {
 
 test_that('runLinear output (genotypic)', {
 
-  linearOut = runLinear(lmInputTest, formStrTest, modelType = 'genotypic', 1, 'snp1')
+  linearOut = runLinear(lmInputTest, formTest, modelType = 'genotypic', 1, 'snp1')
 
   expect_s3_class(linearOut, 'data.table')
   expect_equal(nrow(linearOut), 1)
@@ -65,10 +65,10 @@ test_that('runLinear output (genotypic)', {
 })
 
 
-test_that('geneticAssociation output (additive)', {
+test_that('getGeneticAssociations output (additive)', {
 
   genoOut = getGeneticAssociations(scoresTest, genotypesTest, demosTest2,
-                                diseaseGeneVarMapTest, formStrTest,
+                                diseaseGeneVarMapTest, formTest,
                                 modelType = 'additive')
 
   expect_s3_class(genoOut, 'data.table')

@@ -26,7 +26,6 @@ weightsTest = data.table(
   phecode = c('001', '002', '003', '004'),
   prev = c(1/4, 2/4, 1/4, 1/4), w = -log10(c(1/4, 2/4, 1/4, 1/4)))
 
-diseaseIdsTest = 1
 diseaseHpoMapTest = data.table(disease_id = 1, term_id = c(1, 2, 3))
 hpoPhecodeMapTest = data.table(
   term_id = c(1, 2, 3), phecode = c('001', '002', '003'))
@@ -42,7 +41,7 @@ icdPhecodeMapTest = data.table(
 lmInputTest = data.table(score = c(5, 3, 4, 1, 0.5, 0),
                          allele_count = c(2, 1, 1, 0, 0, 0),
                          sex = c('F', 'M', 'F', 'M', 'F', 'M'))
-formStrTest = as.formula(~ sex)
+formTest = as.formula(~ sex)
 
 
 # genotypeAssociation() test data
@@ -55,7 +54,7 @@ genotypesTest = data.table(
 demosTest2 = data.table(person_id = 1:6, sex = c('F', 'M', 'F', 'M', 'F', 'M'))
 diseaseGeneVarMapTest = data.table(
   disease_id = c(1, 2), gene = c('a', 'b'), vid = c('snp1', 'snp2'))
-formStrTest = as.formula(~ sex)
+formTest = as.formula(~ sex)
 
 # # data for snapshot tests
 # dataDir = 'data'
