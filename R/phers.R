@@ -16,13 +16,17 @@ NULL
 #' @param icdPhecodeMap A data.table containing the mapping between ICD codes
 #'   and phecodes. Must have columns `icd`, `phecode`, and `flag`. By default uses
 #'   the mapping included in this package.
-#' @param DxIcd character vector of diagnostic ICD codes to remove
+#' @param dxIcd A data.table of diagnostic ICD codes to remove for every person.
+#'   Must have columns `icd` and `flag`. By default uses a table provided in
+#'   this package with mapping between diseases and ICD codes used to indicate
+#'   their diagnosis.
 #'
 #' @return A data.table of phecode occurrences for each person.
 #'
 #' @export
 getPhecodeOccurrences = function(
-  icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap, DxIcd = NULL) {
+  icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap,
+  dxIcd = phers::diseaseDxIcdMap) {
 
   assertDataTable(icdOccurrences)
   assertNames(colnames(icdOccurrences),
@@ -147,8 +151,8 @@ getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
   rScores = doOp(foe, {
     rInputSub = rInput[disease_id == diseaseId]
     rFit = glm(glmFormula, data = rInputSub)
-    rInputSub[, r_score := rstandard(rFit)]})
+    rOut = rInputSub[, .(person_id, disease_id, score)]
+    rOut[, r_score := rstandard(rFit)]})
 
-  rScores = rScores[, .(person_id, disease_id, score, r_score)]
 return(rScores[])}
 

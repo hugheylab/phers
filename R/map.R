@@ -143,10 +143,9 @@ mapDiseaseToPhecode = function(
   assertNames(
     colnames(hpoPhecodeMap), must.include = c('term_id', 'phecode'))
   assertNumeric(hpoPhecodeMap$term_id)
-  assertCharacter(hpoPhecodeMap$phecode)
+  assertCharacter(hpoPhecodeMap$phecode, any.missing = FALSE, min.chars = 1)
 
   diseasePhecodeMap = merge(diseaseHpoMap, hpoPhecodeMap, by = 'term_id')
-  diseasePhecodeMap = unique(
-    diseasePhecodeMap[phecode != ''][, c('disease_id', 'phecode')])
+  diseasePhecodeMap = unique(diseasePhecodeMap[, c('disease_id', 'phecode')])
 
   return(diseasePhecodeMap)}

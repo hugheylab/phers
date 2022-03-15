@@ -20,6 +20,7 @@ usethis::use_data(diseaseHpoMap, overwrite = TRUE)
 
 hpoPhecodeMap = fread(file.path(rawDir, 'hpo_phecode_map.csv.gz'),
                       colClasses = list(character = 'phecode'))
+hpoPhecodeMap = hpoPhecodeMap[phecode != ''][!is.na(phecode)]
 usethis::use_data(hpoPhecodeMap, overwrite = TRUE)
 
 #######################

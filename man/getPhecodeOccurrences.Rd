@@ -7,7 +7,7 @@
 getPhecodeOccurrences(
   icdOccurrences,
   icdPhecodeMap = phers::icdPhecodeMap,
-  DxIcd = NULL
+  dxIcd = phers::diseaseDxIcdMap
 )
 }
 \arguments{
@@ -18,7 +18,10 @@ person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{
 and phecodes. Must have columns \code{icd}, \code{phecode}, and \code{flag}. By default uses
 the mapping included in this package.}
 
-\item{DxIcd}{character vector of diagnostic ICD codes to remove}
+\item{dxIcd}{A data.table of diagnostic ICD codes to remove for every person.
+Must have columns \code{icd} and \code{flag}. By default uses a table provided in
+this package with mapping between diseases and ICD codes used to indicate
+their diagnosis.}
 }
 \value{
 A data.table of phecode occurrences for each person.
