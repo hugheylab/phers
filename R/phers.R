@@ -27,6 +27,7 @@ NULL
 getPhecodeOccurrences = function(
   icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap,
   dxIcd = phers::diseaseDxIcdMap) {
+  flag = icd = person_id = . = NULL
 
   assertDataTable(icdOccurrences)
   assertNames(colnames(icdOccurrences),
@@ -40,6 +41,21 @@ getPhecodeOccurrences = function(
   assertCharacter(icdPhecodeMap$icd)
   assertCharacter(icdPhecodeMap$phecode)
   assert(anyDuplicated(icdPhecodeMap) == 0)
+
+  if (!is.null(dxIcd)) {
+  assertDataTable(dxIcd)
+  assertNames(colnames(dxIcd),
+              must.include = c('icd', 'flag'),
+              disjunct.from = 'person_id')
+  assertCharacter(dxIcd$icd)}
+
+  # remove diagnostic codes
+  if (!is.null(dxIcd)) {
+    dxIcd = unique(dxIcd[, .(icd, flag)])[, rm := 1]
+    icdOccurrences = merge(
+      icdOccurrences, dxIcd, by = c('icd', 'flag'), all.x = TRUE)
+    icdOccurrences = icdOccurrences[is.na(rm), .(person_id, icd, flag)]}
+
 
   pheOccs = merge(
     icdOccurrences, icdPhecodeMap, by = c('icd', 'flag'), allow.cartesian = TRUE)

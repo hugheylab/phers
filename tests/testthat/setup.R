@@ -15,8 +15,8 @@ snapshot = function(xObs, path) {
 
 # getWeights() and getScores() test data
 icdTest = data.table(
-  person_id = c(1, rep(2L, 2), 3, 4),
-  icd = c('001', '002', '003', '002', '004'), flag = 9)
+  person_id = c(1, rep(2L, 2), 3, rep(4L, 2)),
+  icd = c('001', '002', '003', '002', '004', '005'), flag = 9)
 demosTest = data.table(person_id = 1:4)
 phecodeOccurrencesTest = data.table(
   person_id = c(1, rep(2L, 2), 3, 4),
@@ -26,6 +26,7 @@ weightsTest = data.table(
   phecode = c('001', '002', '003', '004'),
   prev = c(1/4, 2/4, 1/4, 1/4), w = -log10(c(1/4, 2/4, 1/4, 1/4)))
 
+dxIcdTest = data.table(icd = '005', flag = 9)
 diseaseHpoMapTest = data.table(disease_id = 1, term_id = c(1, 2, 3))
 hpoPhecodeMapTest = data.table(
   term_id = c(1, 2, 3), phecode = c('001', '002', '003'))

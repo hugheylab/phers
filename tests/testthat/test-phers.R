@@ -1,3 +1,27 @@
+test_that('check getPhecodeOccurrences output', {
+
+  icdToPhecodeOut = getPhecodeOccurrences(
+    icdTest, icdPhecodeMap = icdPhecodeMapTest, dxIcd = dxIcdTest)
+  setkey(icdToPhecodeOut)
+  expect_equal(icdToPhecodeOut, phecodeOccurrencesTest)
+  expect_s3_class(icdToPhecodeOut, 'data.table')
+})
+
+
+test_that('check getPhecodeOccurrences Args', {
+
+  # ICD is numeric
+  icdTestErr = copy(icdTest)
+  icdTestErr[, icd := as.numeric(icd)]
+  expect_error(getPhecodeOccurrences(icdTestErr))
+
+  # no ICD flags
+  icdTestErr = icdTest[, .(person_id, icd)]
+  expect_error(getPhecodeOccurrences(icdTestErr))
+
+})
+
+
 test_that('getWeights output 1', {
 
   weightsOut = getWeights(demosTest, phecodeOccurrencesTest)
