@@ -132,8 +132,6 @@ mapDiseaseToPhecode = function(
   diseaseHpoMap = phers::diseaseHpoMap,
   hpoPhecodeMap = phers::hpoPhecodeMap) {
 
-  phecode = NULL
-
   assertDataTable(diseaseHpoMap)
   assertNames(
     colnames(diseaseHpoMap), must.include = c('disease_id', 'term_id'))

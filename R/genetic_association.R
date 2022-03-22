@@ -61,11 +61,11 @@ getGeneticAssociations = function(
 
   statsAll = doOp(foe, {
 
-    lmInputSub = lmInput[disease_id == diseaseId][, !'disease_id']
+    lmInputSub = lmInput[disease_id == diseaseId, !'disease_id']
     # making sure the snps we're looping through are in genotypes
     # and are not all 0
     diseaseVariantMapSub = unique(
-      diseaseVariantMap[disease_id == diseaseId][vid %in% okSnps])
+      diseaseVariantMap[disease_id == diseaseId & vid %in% okSnps])
 
     statsSnps = foreach(
       snp = diseaseVariantMapSub$vid, .combine = rbind) %do% {
