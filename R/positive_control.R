@@ -19,6 +19,15 @@ getDxStatus = function(
   demos, icdOccurrences, diseaseDxIcdMap = phers::diseaseDxIcdMap) {
   dx_status = NULL
 
+  checkDemos(demos)
+  checkIcdOccurrences(icdOccurrences)
+
+  assertDataTable(diseaseDxIcdMap)
+  assertNames(colnames(diseaseDxIcdMap),
+              must.include = c('disease_id', 'icd', 'flag'),
+              disjunct.from = 'person_id')
+  assertCharacter(diseaseDxIcdMap$icd)
+
   cases = merge(icdOccurrences, diseaseDxIcdMap, by = c('icd', 'flag'))
   cases = unique(cases[, c('person_id', 'disease_id')])
   cases[, dx_status := 1]

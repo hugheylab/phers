@@ -19,7 +19,7 @@ NULL
 #' @param dxIcd A data.table of diagnostic ICD codes to remove for every person.
 #'   Must have columns `icd` and `flag`. By default uses a table provided in
 #'   this package with mapping between diseases and ICD codes used to indicate
-#'   their diagnosis.
+#'   their diagnosis. If `NULL` no ICD codes will be removed.
 #'
 #' @return A data.table of phecode occurrences for each person.
 #'
@@ -29,11 +29,7 @@ getPhecodeOccurrences = function(
   dxIcd = phers::diseaseDxIcdMap) {
   flag = icd = person_id = . = NULL
 
-  assertDataTable(icdOccurrences)
-  assertNames(colnames(icdOccurrences),
-              must.include = c('person_id', 'icd', 'flag'),
-              disjunct.from = 'phecode')
-  assertCharacter(icdOccurrences$icd)
+  checkIcdOccurrences(icdOccurrences)
 
   assertDataTable(icdPhecodeMap)
   assertNames(colnames(icdPhecodeMap),
@@ -42,6 +38,8 @@ getPhecodeOccurrences = function(
   assertCharacter(icdPhecodeMap$phecode)
   assert(anyDuplicated(icdPhecodeMap) == 0)
 
+
+  assert(checkDataTable(dxIcd), checkNull(dxIcd))
   if (!is.null(dxIcd)) {
   assertDataTable(dxIcd)
   assertNames(colnames(dxIcd),
@@ -51,11 +49,7 @@ getPhecodeOccurrences = function(
 
   # remove diagnostic codes
   if (!is.null(dxIcd)) {
-    dxIcd = unique(dxIcd[, .(icd, flag)])[, rm := 1]
-    icdOccurrences = merge(
-      icdOccurrences, dxIcd, by = c('icd', 'flag'), all.x = TRUE)
-    icdOccurrences = icdOccurrences[is.na(rm), .(person_id, icd, flag)]}
-
+    icdOccurrences = icdOccurrences[!dxIcd, on = c('icd', 'flag')]}
 
   pheOccs = merge(
     icdOccurrences, icdPhecodeMap, by = c('icd', 'flag'), allow.cartesian = TRUE)

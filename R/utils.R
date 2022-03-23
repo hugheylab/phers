@@ -6,6 +6,16 @@ checkDemos = function(demos) {
   invisible()}
 
 
+checkIcdOccurrences = function(icdOccurrences) {
+
+  assertDataTable(icdOccurrences)
+  assertNames(colnames(icdOccurrences),
+              must.include = c('person_id', 'icd', 'flag'),
+              disjunct.from = c('phecode', 'disease_id'))
+  assertCharacter(icdOccurrences$icd)
+  invisible()}
+
+
 checkPhecodeOccurrences = function(phecodeOccurrences, demos) {
   assertDataTable(phecodeOccurrences)
   assertNames(colnames(phecodeOccurrences),

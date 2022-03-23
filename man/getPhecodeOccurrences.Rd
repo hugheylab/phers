@@ -21,7 +21,7 @@ the mapping included in this package.}
 \item{dxIcd}{A data.table of diagnostic ICD codes to remove for every person.
 Must have columns \code{icd} and \code{flag}. By default uses a table provided in
 this package with mapping between diseases and ICD codes used to indicate
-their diagnosis.}
+their diagnosis. If \code{NULL} no ICD codes will be removed.}
 }
 \value{
 A data.table of phecode occurrences for each person.

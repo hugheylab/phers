@@ -18,15 +18,21 @@ icdTest = data.table(
   person_id = c(1, rep(2L, 2), 3, rep(4L, 2)),
   icd = c('001', '002', '003', '002', '004', '005'), flag = 9)
 demosTest = data.table(person_id = 1:4)
+
 phecodeOccurrencesTest = data.table(
   person_id = c(1, rep(2L, 2), 3, 4),
   phecode = c('001', '002', '003', '002', '004'))
 setkey(phecodeOccurrencesTest)
+phecodeOccurrencesTest2 = data.table(
+  person_id = c(1, rep(2L, 2), 3, rep(4L, 2)),
+  phecode = c('001', '002', '003', '002', '004', '005'))
+setkey(phecodeOccurrencesTest2)
+
 weightsTest = data.table(
   phecode = c('001', '002', '003', '004'),
   prev = c(1/4, 2/4, 1/4, 1/4), w = -log10(c(1/4, 2/4, 1/4, 1/4)))
 
-dxIcdTest = data.table(icd = '005', flag = 9)
+dxIcdTest = data.table(disease_id = 1, icd = '005', flag = 9)
 diseaseHpoMapTest = data.table(disease_id = 1, term_id = c(1, 2, 3))
 hpoPhecodeMapTest = data.table(
   term_id = c(1, 2, 3), phecode = c('001', '002', '003'))
@@ -34,8 +40,8 @@ diseasePhecodeMapTest = data.table(
   disease_id = 1, phecode = c('001', '002', '003'))
 setkey(diseasePhecodeMapTest)
 icdPhecodeMapTest = data.table(
-  icd = c('001', '002', '003', '004'),
-  phecode = c('001', '002', '003', '004'), flag = 9)
+  icd = c('001', '002', '003', '004', '005'),
+  phecode = c('001', '002', '003', '004', '005'), flag = 9)
 
 
 # runLinear() test data
@@ -56,6 +62,11 @@ demosTest2 = data.table(person_id = 1:6, sex = c('F', 'M', 'F', 'M', 'F', 'M'))
 diseaseGeneVarMapTest = data.table(
   disease_id = c(1, 2), gene = c('a', 'b'), vid = c('snp1', 'snp2'))
 formTest = as.formula(~ sex)
+
+# getDxStatus() test data
+dxStatusTest = data.table(
+  person_id = 1:4, disease_id = 1, dx_status = c(rep(0L, 3), 1))
+setkey(dxStatusTest)
 
 # # data for snapshot tests
 # dataDir = 'data'

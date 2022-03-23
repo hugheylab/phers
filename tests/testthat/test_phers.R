@@ -1,10 +1,20 @@
 test_that('check getPhecodeOccurrences output', {
 
-  icdToPhecodeOut = getPhecodeOccurrences(
+  phecodeOccurrencesOut = getPhecodeOccurrences(
     icdTest, icdPhecodeMap = icdPhecodeMapTest, dxIcd = dxIcdTest)
-  setkey(icdToPhecodeOut)
-  expect_equal(icdToPhecodeOut, phecodeOccurrencesTest)
-  expect_s3_class(icdToPhecodeOut, 'data.table')
+  expect_s3_class(phecodeOccurrencesOut, 'data.table')
+  expect_named(
+    phecodeOccurrencesOut, c('person_id', 'phecode'), ignore.order = TRUE)
+  setkey(phecodeOccurrencesOut)
+  expect_equal(phecodeOccurrencesOut, phecodeOccurrencesTest)
+
+  phecodeOccurrencesOut2 = getPhecodeOccurrences(
+    icdTest, icdPhecodeMap = icdPhecodeMapTest, dxIcd = NULL)
+  expect_s3_class(phecodeOccurrencesOut2, 'data.table')
+  expect_named(
+    phecodeOccurrencesOut2, c('person_id', 'phecode'), ignore.order = TRUE)
+  setkey(phecodeOccurrencesOut2)
+  expect_equal(phecodeOccurrencesOut2, phecodeOccurrencesTest2)
 })
 
 
