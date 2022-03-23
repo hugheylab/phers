@@ -60,7 +60,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getWeights</span><span class="op">(</span><span class="va">demos</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getWeights</span><span class="op">(</span><span class="va">demos</span>, <span class="va">phecodeOccurrences</span>, preCalcWeights <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -71,6 +71,10 @@ a column <code>person_id</code>.</p></dd>
 <dt>phecodeOccurrences</dt>
 <dd><p>A data.table of occurrences of phecodes for each
 person in the cohort. Must have columns <code>person_id</code> and <code>phecode</code>.</p></dd>
+<dt>preCalcWeights</dt>
+<dd><p>Logical value indicating whether to return weights
+calculated using data from Vanderbilt University Medical Center.
+Recommended when data provided by the user has low sample size.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
