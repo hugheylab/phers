@@ -61,3 +61,24 @@ setnames(
   c('disease_id', 'disease_name', 'icd', 'icd_string'))
 
 usethis::use_data(diseaseDxIcdMap, overwrite = TRUE)
+
+
+#######################
+# pre-calculated weights
+
+# add Netezza query to get demo and ICD data from SD.
+
+# phecodeSD = getPhecodeOccurrences(icdSD)
+
+demoSD = readRDS('~/Dropbox (VUMC)/TimeAwarePheRS/data/demo.rds')
+setnames(demoSD, 'GRID', 'person_id')
+phecodeSD = readRDS('~/Dropbox (VUMC)/TimeAwarePheRS/data/phecodes.rds')
+setnames(phecodeSD, 'GRID', 'person_id')
+phecodeSD = phecodeSD[person_id %in% demoSD$person_id]
+
+preCalcWeights = getWeights(demoSD, phecodeSD)
+
+usethis::use_data(preCalcWeights, overwrite = TRUE)
+
+
+

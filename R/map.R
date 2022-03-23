@@ -1,3 +1,20 @@
+#' pre-calculated weights
+#'
+#' This table provides weights for 1868 phecodes calculated using data from
+#' Vanderbilt University Medical Center Synthetic Derivative (SD)
+#'
+#' @format A data table with 1868 rows and the 3 following columns:
+#'
+#' * `phecode`: Character vector of phecodes
+#' * `prev`: Prevelance of each phecode within SD
+#' * `w`: Weight calculated for each phecode using the PheRS model
+#'
+#' @source <>
+#'
+#' @seealso [getWeights()]
+'preCalcWeights'
+
+
 #' Mapping of diseases and diagnostic ICD codes
 #'
 #' This table provides mapping between diseases and ICD9 and ICD10 codes that

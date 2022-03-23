@@ -65,16 +65,23 @@ getPhecodeOccurrences = function(
 #'   a column `person_id`.
 #' @param phecodeOccurrences A data.table of occurrences of phecodes for each
 #'   person in the cohort. Must have columns `person_id` and `phecode`.
+#' @param preCalcWeights Logical value indicating whether to return weights
+#'   calculated using data from Vanderbilt University Medical Center.
+#'   Recommended when data provided by the user has low sample size.
 #'
 #' @return A data.table containing the prevalence (`prev`) and weight (`w`) for
 #'   each phecode.
 #'
 #' @export
-getWeights = function(demos, phecodeOccurrences) {
+getWeights = function(demos, phecodeOccurrences, preCalcWeights = FALSE) {
   phecode = person_id = . = prev = w = NULL
 
   checkDemos(demos)
   checkPhecodeOccurrences(phecodeOccurrences, demos)
+
+  if(preCalcWeights) {
+    weights = phers::preCalcWeights[phecode %in% unique(phecodeOccurrences$phecode)]
+    return(weights)}
 
   weights = phecodeOccurrences[, .(prev = uniqueN(person_id) / nrow(demos)),
                                by = phecode]
