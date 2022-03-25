@@ -9,7 +9,7 @@ test_that('runLinear output (additive)', {
                  'beta', 'se', 'pval', 'lower', 'upper'),
     ignore.order = TRUE)
 
-  lmTest = glm(score~allele_count+sex, data = lmInputTest)
+  lmTest = glm(score ~ allele_count + sex, data = lmInputTest)
 
   expect_equal(linearOut$disease_id, 1)
   expect_equal(linearOut$vid, 'snp1')
@@ -44,7 +44,7 @@ test_that('runLinear output (genotypic)', {
 
   lmInputTestG = copy(lmInputTest)
   lmInputTestG[, allele_count := factor(allele_count)]
-  lmTest = glm(score~allele_count+sex, data = lmInputTestG)
+  lmTest = glm(score ~ allele_count + sex, data = lmInputTestG)
 
   expect_equal(linearOut$disease_id, 1)
   expect_equal(linearOut$vid, 'snp1')
@@ -80,9 +80,9 @@ test_that('getGeneticAssociations output (additive)', {
     ignore.order = TRUE)
 
   lmInputTest2 = merge(
-    merge(scoresTest, demosTest2, by = 'person_id') ,
+    merge(scoresTest, demosTest2, by = 'person_id'),
     genotypesTest, by = 'person_id')
-  lmTest2 = glm(score~snp2+sex, data = lmInputTest2[disease_id == 2])
+  lmTest2 = glm(score ~ snp2 + sex, data = lmInputTest2[disease_id == 2])
 
   expect_equal(genoOut$disease_id, c(1, 2))
   expect_equal(genoOut$vid, c('snp1', 'snp2'))
@@ -103,5 +103,3 @@ test_that('getGeneticAssociations output (additive)', {
 
 
 })
-
-

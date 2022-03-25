@@ -124,11 +124,11 @@ runLinear = function(
 
   glmFormula = update.formula(glmFormula, score ~ allele_count + .)
 
-  if (modelType == 'additive'){
+  if (modelType == 'additive') {
     fit = glm(glmFormula, data = lmInput)
     varNames = 'allele_count'}
 
-  if (modelType == 'genotypic'){
+  if (modelType == 'genotypic') {
     lmInput1 = copy(lmInput)
     lmInput1[, allele_count := as.factor(allele_count)]
     fit = glm(glmFormula, data = lmInput1)

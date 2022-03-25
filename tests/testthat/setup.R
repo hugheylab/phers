@@ -30,7 +30,7 @@ setkey(phecodeOccurrencesTest2)
 
 weightsTest = data.table(
   phecode = c('001', '002', '003', '004'),
-  prev = c(1/4, 2/4, 1/4, 1/4), w = -log10(c(1/4, 2/4, 1/4, 1/4)))
+  prev = c(1 / 4, 2 / 4, 1 / 4, 1 / 4), w = -log10(c(1 / 4, 2 / 4, 1 / 4, 1 / 4)))
 
 dxIcdTest = data.table(disease_id = 1, icd = '005', flag = 9)
 diseaseHpoMapTest = data.table(disease_id = 1, term_id = c(1, 2, 3))

@@ -79,7 +79,7 @@ getWeights = function(demos, phecodeOccurrences, preCalcWeights = FALSE) {
   checkDemos(demos)
   checkPhecodeOccurrences(phecodeOccurrences, demos)
 
-  if(preCalcWeights) {
+  if (preCalcWeights) {
     weights = phers::preCalcWeights[phecode %in% unique(phecodeOccurrences$phecode)]
     return(weights)}
 
@@ -172,4 +172,3 @@ getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
     rOut[, r_score := rstandard(rFit)]})
 
 return(rScores[])}
-
