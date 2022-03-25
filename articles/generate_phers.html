@@ -93,26 +93,6 @@
 
 <span class="co"># doParallel::registerDoParallel() # register a parallel backend to minimize runtime</span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">demoSample</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>
-  person_id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">5</span>,
-  sex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'F'</span>, <span class="st">'M'</span>, <span class="st">'M'</span>, <span class="st">'F'</span>, <span class="st">'F'</span><span class="op">)</span><span class="op">)</span>
-
-<span class="va">icdSample</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>
-  person_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1L</span>, <span class="fl">3</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">2L</span>, <span class="fl">4</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">3L</span>, <span class="fl">2</span><span class="op">)</span>, <span class="fl">4</span><span class="op">)</span>,
-  icd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'365'</span>, <span class="st">'366'</span>, <span class="st">'734'</span>, <span class="st">'759.82'</span>, <span class="st">'524.0'</span>, <span class="st">'718.4'</span>, <span class="st">'441'</span>, <span class="st">'366'</span>, <span class="st">'734'</span>, <span class="st">'441'</span><span class="op">)</span>,
-  flag <span class="op">=</span> <span class="fl">9</span><span class="op">)</span>
-
-<span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> 
-<span class="va">npop</span> <span class="op">=</span> <span class="fl">5</span>
-<span class="va">gene1</span> <span class="op">=</span> <span class="st">'FBN1'</span>
-<span class="va">nvar</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">uniqueN</a></span><span class="op">(</span><span class="va">geneVarMap</span><span class="op">[</span><span class="va">gene</span> <span class="op">==</span> <span class="va">gene1</span><span class="op">]</span><span class="op">$</span><span class="va">vid</span><span class="op">)</span>
-<span class="va">genoSample</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>person_id <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">npop</span><span class="op">)</span>
-<span class="va">genos</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">replicate</a></span><span class="op">(</span>
-  <span class="va">nvar</span>, <span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span>, size <span class="op">=</span> <span class="va">npop</span>, prob <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">15</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>
-<span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">genos</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">geneVarMap</span><span class="op">[</span><span class="va">gene</span> <span class="op">==</span> <span class="va">gene1</span><span class="op">]</span><span class="op">$</span><span class="va">vid</span><span class="op">)</span>
-<span class="va">genos</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/as.data.table.html" class="external-link">as.data.table</a></span><span class="op">(</span><span class="va">genos</span><span class="op">)</span>
-<span class="va">genoSample</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">genoSample</span>, <span class="va">genos</span><span class="op">)</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># map ICD codes to phecodes</span>
 <span class="va">phecodeOccurrences</span> <span class="op">=</span> <span class="fu"><a href="../reference/getPhecodeOccurrences.html">getPhecodeOccurrences</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span>
 
@@ -120,14 +100,14 @@
 <span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="../reference/getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span>
 
 <span class="co"># vector of OMIM disease IDs to calculate PheRS for</span>
-<span class="va">diseaseIds</span> <span class="op">=</span> <span class="fl">154700</span>
+<span class="va">diseaseIds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span>
 
 <span class="co"># mape diseases to phecodes</span>
 <span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="../reference/mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="op">)</span>
 
 <span class="co"># calculate PheRS</span>
 <span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="../reference/getScores.html">getScores</a></span><span class="op">(</span>
-  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseIds</span><span class="op">]</span><span class="op">)</span>
+  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">diseaseIds</span><span class="op">]</span><span class="op">)</span>
  
 <span class="co"># calculate residual PheRS</span>
 <span class="va">rscores</span> <span class="op">=</span> <span class="fu"><a href="../reference/getResidualScores.html">getResidualScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, glmFormula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span>
@@ -137,51 +117,58 @@
 <span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="../reference/getScores.html">getScores</a></span><span class="op">(</span>
   <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">pWeights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseIds</span><span class="op">]</span><span class="op">)</span></code></pre></div>
 <p>perform genotype association</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="va">demos</span> <span class="op">=</span> <span class="va">demoSample</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">person_id</span>, <span class="va">sex</span><span class="op">)</span><span class="op">]</span>
-<span class="va">diseaseVariantMap</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span>
-  <span class="va">diseaseInfo</span><span class="op">[</span><span class="va">disease_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/duplicated.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">scores</span><span class="op">$</span><span class="va">disease_id</span><span class="op">)</span><span class="op">]</span>, <span class="va">geneVarMap</span>, 
-  by <span class="op">=</span> <span class="st">'gene'</span><span class="op">)</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">disease_id</span>, <span class="va">gene</span>, <span class="va">vid</span><span class="op">)</span><span class="op">]</span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span class="co"># create a map of diseases and variants</span>
+<span class="va">diseaseGeneMap</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>disease_id <span class="op">=</span> <span class="fl">154700</span>, gene <span class="op">=</span> <span class="st">'FBN1'</span><span class="op">)</span>
+<span class="va">geneVarMap</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>gene <span class="op">=</span> <span class="st">'FBN1'</span>, vid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'snp'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span>
+<span class="va">diseaseVariantMap</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">diseaseGeneMap</span>, <span class="va">geneVarMap</span>, by <span class="op">=</span> <span class="st">'gene'</span><span class="op">)</span>
 
+<span class="co"># run genetic association tests</span>
 <span class="va">genoStats</span> <span class="op">=</span> <span class="fu"><a href="../reference/getGeneticAssociations.html">getGeneticAssociations</a></span><span class="op">(</span>
-  <span class="va">scores</span>, <span class="va">genoSample</span>, <span class="va">demos</span>, <span class="va">diseaseVariantMap</span>, glmFormula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span><span class="op">)</span>, 
+  <span class="va">scores</span>, <span class="va">genoSample</span>, <span class="va">demoSample</span>, <span class="va">diseaseVariantMap</span>, glmFormula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span><span class="op">)</span>, 
   modelType <span class="op">=</span> <span class="st">'additive'</span><span class="op">)</span>
 
 <span class="va">genoStats</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">geneVarMap</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">gene</span>, <span class="va">vid</span><span class="op">)</span><span class="op">]</span>, <span class="va">genoStats</span>, by <span class="op">=</span> <span class="st">'vid'</span><span class="op">)</span>
 
 <span class="va">genoStats</span>
-<span class="co">#&gt;                  vid gene disease_id n_total n_wt n_het n_hom       beta</span>
-<span class="co">#&gt;   1: 15:48703179:A:G FBN1     154700       5    4     1     0 -0.6461531</span>
-<span class="co">#&gt;   2: 15:48703187:T:C FBN1     154700       5    3     2     0  4.1360425</span>
-<span class="co">#&gt;   3: 15:48703252:T:C FBN1     154700       5    4     0     1 -1.7751742</span>
-<span class="co">#&gt;   4: 15:48703260:T:G FBN1     154700       5    4     1     0  4.5753131</span>
-<span class="co">#&gt;   5: 15:48703261:T:C FBN1     154700       5    4     1     0 -0.6461531</span>
-<span class="co">#&gt;  ---                                                                    </span>
-<span class="co">#&gt; 567: 15:48936888:C:T FBN1     154700       5    3     2     0 -1.8908082</span>
-<span class="co">#&gt; 568: 15:48936891:C:G FBN1     154700       5    4     1     0 -0.6461531</span>
-<span class="co">#&gt; 569: 15:48936892:C:T FBN1     154700       5    4     1     0 -3.5503484</span>
-<span class="co">#&gt; 570: 15:48936908:T:C FBN1     154700       5    4     1     0  3.5503484</span>
-<span class="co">#&gt; 571: 15:48936913:C:G FBN1     154700       5    4     1     0 -3.9291599</span>
-<span class="co">#&gt;            se       pval       lower     upper</span>
-<span class="co">#&gt;   1: 4.096487 0.88915293  -8.6751208  7.382815</span>
-<span class="co">#&gt;   2: 1.074769 0.06137359   2.0295343  6.242551</span>
-<span class="co">#&gt;   3: 2.021806 0.47253900  -5.7378414  2.187493</span>
-<span class="co">#&gt;   4: 2.554060 0.21510860  -0.4305518  9.581178</span>
-<span class="co">#&gt;   5: 4.096487 0.88915293  -8.6751208  7.382815</span>
-<span class="co">#&gt;  ---                                          </span>
-<span class="co">#&gt; 567: 2.814422 0.57090321  -7.4069749  3.625358</span>
-<span class="co">#&gt; 568: 4.096487 0.88915293  -8.6751208  7.382815</span>
-<span class="co">#&gt; 569: 4.043612 0.47253900 -11.4756829  4.374986</span>
-<span class="co">#&gt; 570: 4.043612 0.47253900  -4.3749862 11.475683</span>
-<span class="co">#&gt; 571: 3.044802 0.32595567  -9.8968614  2.038542</span></code></pre></div>
+<span class="co">#&gt;       vid gene disease_id n_total n_wt n_het n_hom       beta       se</span>
+<span class="co">#&gt;  1:  snp1 FBN1     154700       5    4     1     0 -0.6461531 4.096487</span>
+<span class="co">#&gt;  2: snp11 FBN1     154700       5    4     1     0  3.5503484 4.043612</span>
+<span class="co">#&gt;  3: snp13 FBN1     154700       5    4     1     0  4.5753131 2.554060</span>
+<span class="co">#&gt;  4: snp14 FBN1     154700       5    4     1     0 -3.9291599 3.044802</span>
+<span class="co">#&gt;  5: snp15 FBN1     154700       5    4     1     0  3.5503484 4.043612</span>
+<span class="co">#&gt;  6: snp16 FBN1     154700       5    2     2     1 -0.1653988 2.125319</span>
+<span class="co">#&gt;  7: snp19 FBN1     154700       5    4     1     0 -0.6461531 4.096487</span>
+<span class="co">#&gt;  8:  snp2 FBN1     154700       5    3     2     0  4.1360425 1.074769</span>
+<span class="co">#&gt;  9: snp20 FBN1     154700       5    4     1     0 -0.6461531 4.096487</span>
+<span class="co">#&gt; 10:  snp4 FBN1     154700       5    4     0     1 -1.7751742 2.021806</span>
+<span class="co">#&gt; 11:  snp5 FBN1     154700       5    4     1     0  4.5753131 2.554060</span>
+<span class="co">#&gt; 12:  snp6 FBN1     154700       5    4     1     0 -0.6461531 4.096487</span>
+<span class="co">#&gt; 13:  snp7 FBN1     154700       5    4     1     0 -3.9291599 3.044802</span>
+<span class="co">#&gt; 14:  snp9 FBN1     154700       5    4     1     0  4.5753131 2.554060</span>
+<span class="co">#&gt;           pval      lower     upper</span>
+<span class="co">#&gt;  1: 0.88915293 -8.6751208  7.382815</span>
+<span class="co">#&gt;  2: 0.47253900 -4.3749862 11.475683</span>
+<span class="co">#&gt;  3: 0.21510860 -0.4305518  9.581178</span>
+<span class="co">#&gt;  4: 0.32595567 -9.8968614  2.038542</span>
+<span class="co">#&gt;  5: 0.47253900 -4.3749862 11.475683</span>
+<span class="co">#&gt;  6: 0.94505392 -4.3309467  4.000149</span>
+<span class="co">#&gt;  7: 0.88915293 -8.6751208  7.382815</span>
+<span class="co">#&gt;  8: 0.06137359  2.0295343  6.242551</span>
+<span class="co">#&gt;  9: 0.88915293 -8.6751208  7.382815</span>
+<span class="co">#&gt; 10: 0.47253900 -5.7378414  2.187493</span>
+<span class="co">#&gt; 11: 0.21510860 -0.4305518  9.581178</span>
+<span class="co">#&gt; 12: 0.88915293 -8.6751208  7.382815</span>
+<span class="co">#&gt; 13: 0.32595567 -9.8968614  2.038542</span>
+<span class="co">#&gt; 14: 0.21510860 -0.4305518  9.581178</span></code></pre></div>
 <p>run positive control analysis</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dxStatus</span> <span class="op">=</span> <span class="fu"><a href="../reference/getDxStatus.html">getDxStatus</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">icdSample</span><span class="op">)</span>
 
 <span class="va">plotInput</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">rscores</span>, <span class="va">dxStatus</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'person_id'</span>, <span class="st">'disease_id'</span><span class="op">)</span><span class="op">)</span>
 
 <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plotInput</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dx_status</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">r_score</span><span class="op">)</span><span class="op">)</span></code></pre></div>
-<p><img src="generate_phers_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p><img src="generate_phers_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">

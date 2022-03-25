@@ -16,16 +16,16 @@
     <loc>https://phers.hugheylab.org/index.html</loc>
   </url>
   <url>
+    <loc>https://phers.hugheylab.org/reference/demoSample.html</loc>
+  </url>
+  <url>
     <loc>https://phers.hugheylab.org/reference/diseaseDxIcdMap.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/diseaseHpoMap.html</loc>
   </url>
   <url>
-    <loc>https://phers.hugheylab.org/reference/diseaseInfo.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/geneVarMap.html</loc>
+    <loc>https://phers.hugheylab.org/reference/genoSample.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/getDxStatus.html</loc>
@@ -50,6 +50,9 @@
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/icdPhecodeMap.html</loc>
+  </url>
+  <url>
+    <loc>https://phers.hugheylab.org/reference/icdSample.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/index.html</loc>

@@ -90,6 +90,32 @@ a parallel backend is already set up, e.g., using
 phenotype risk score for each person for each disease.</p>
     </div>
 
+    <div id="ref-examples">
+    <h2>Examples</h2>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-datatable.com" class="external-link">'data.table'</a></span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># map ICD codes to phecodes</span></span>
+<span class="r-in"><span class="va">phecodeOccurrences</span> <span class="op">=</span> <span class="fu"><a href="getPhecodeOccurrences.html">getPhecodeOccurrences</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># calculate weights</span></span>
+<span class="r-in"><span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># vector of OMIM disease IDs to calculate PheRS for</span></span>
+<span class="r-in"><span class="va">diseaseIds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># mape diseases to phecodes</span></span>
+<span class="r-in"><span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># calculate PheRS</span></span>
+<span class="r-in"><span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="getScores.html">getScores</a></span><span class="op">(</span></span>
+<span class="r-in">  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">diseaseIds</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># calculate residual PheRS</span></span>
+<span class="r-in"><span class="va">rscores</span> <span class="op">=</span> <span class="fu">getResidualScores</span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, glmFormula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in">  </span>
+</code></pre></div>
+    </div>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top"><h2 data-toc-skip>Contents</h2>
