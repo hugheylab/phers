@@ -1,5 +1,7 @@
 library('data.table')
-foreach::registerDoSEQ()
+library('foreach')
+library('qs')
+registerDoSEQ()
 
 
 snapshot = function(xObs, path) {

@@ -1,32 +1,20 @@
 test_that('runLinear output (additive)', {
 
-  linearOut = runLinear(lmInputTest, formTest, modelType = 'additive', 1, 'snp1')
+  dObs = phers:::runLinear(lmInputTest, formTest, modelType = 'additive', 1, 'snp1')
+  dExp = data.table(
+    disease_id = 1,
+    vid = 'snp1',
+    n_total = 6,
+    n_wt = 3,
+    n_het = 2,
+    n_hom = 1,
+    beta = 2.3125,
+    se = 0.44341243,
+    pval = 0.0137074787,
+    lower = 1.4434276,
+    upper = 3.1815724)
 
-  expect_s3_class(linearOut, 'data.table')
-  expect_equal(nrow(linearOut), 1)
-  expect_named(
-    linearOut, c('disease_id', 'vid', 'n_total', 'n_wt', 'n_het', 'n_hom',
-                 'beta', 'se', 'pval', 'lower', 'upper'),
-    ignore.order = TRUE)
-
-  lmTest = glm(score ~ allele_count + sex, data = lmInputTest)
-
-  expect_equal(linearOut$disease_id, 1)
-  expect_equal(linearOut$vid, 'snp1')
-  expect_equal(linearOut$n_total, 6)
-  expect_equal(linearOut$n_wt, 3)
-  expect_equal(linearOut$n_het, 2)
-  expect_equal(linearOut$n_hom, 1)
-
-  expect_equal(linearOut$beta, lmTest$coef[['allele_count']])
-  expect_equal(linearOut$se,
-               summary(lmTest)$coef['allele_count', 'Std. Error'])
-  expect_equal(linearOut$pval,
-               summary(lmTest)$coef['allele_count', 'Pr(>|t|)'])
-  expect_equal(
-    linearOut$lower, suppressMessages(confint(lmTest)['allele_count', '2.5 %']))
-  expect_equal(
-    linearOut$upper, suppressMessages(confint(lmTest)['allele_count', '97.5 %']))
+  expect_equal(dObs, dExp)
 })
 
 
