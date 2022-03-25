@@ -32,6 +32,8 @@
 #'   * `lower`: The lower bound of the `confint` confidence interval
 #'   * `upper`: The upper bound of the `confint` confidence interval
 #'
+#' @eval example3()
+#'
 #' @export
 getGeneticAssociations = function(
   scores, genotypes, demos, diseaseVariantMap, glmFormula,

@@ -30,3 +30,27 @@ The residual phenotype risk score corresponds to how much a person's
 phenotype risk score deviates from what is expected given
 their characteristics (e.g. age, sex, and race)
 }
+\examples{
+library('data.table')
+
+# map ICD codes to phecodes
+phecodeOccurrences = getPhecodeOccurrences(icdSample)
+
+# calculate weights
+weights = getWeights(demoSample, phecodeOccurrences)
+
+# vector of OMIM disease IDs to calculate PheRS for
+diseaseIds = c(154700)
+
+# mape diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode()
+
+# calculate PheRS
+scores = getScores(
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id \%in\% diseaseIds])
+
+# calculate residual PheRS
+rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
+
+  
+}

@@ -25,3 +25,10 @@ and \code{dx_status}.
 \description{
 This function Identifies cases and controls of Mendelian diseases.
 }
+\examples{
+library('data.table')
+
+dxStatus = getDxStatus(demoSample, icdSample)
+
+  
+}

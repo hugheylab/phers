@@ -28,3 +28,27 @@ A person's phenotype risk score for a particular disease corresponds to the
 sum of the weights of the disease-relevant phecodes that the person has
 received.
 }
+\examples{
+library('data.table')
+
+# map ICD codes to phecodes
+phecodeOccurrences = getPhecodeOccurrences(icdSample)
+
+# calculate weights
+weights = getWeights(demoSample, phecodeOccurrences)
+
+# vector of OMIM disease IDs to calculate PheRS for
+diseaseIds = c(154700)
+
+# mape diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode()
+
+# calculate PheRS
+scores = getScores(
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id \%in\% diseaseIds])
+
+# calculate residual PheRS
+rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
+
+  
+}

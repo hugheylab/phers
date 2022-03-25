@@ -1,3 +1,45 @@
+#' Sample diagnostic code dataset
+#'
+#' This table contains a sample dataset of patient diagnostic codes
+#' (ICD-9-CM and ICD-10-CM).
+#'
+#' @format A data table with 9 rows and the 3 following columns:
+#'
+#' * `person_id`: Character vector of the identifier for each
+#'    person
+#' * `icd`: Character vector containing the ICD codes recorded
+#'    for each person
+#' * `flag`: Numeric vector representing the vocabulary of the
+#'    ICD code (**9**: ICD-9-CM,  **10**: ICD-10-CM)
+#'
+#' @seealso [getPhecodeOccurrences()], [getWeights()], [getScores()]
+'icdSample'
+
+
+#' Sample demographics dataset
+#'
+#' This table contains a sample dataset of patient demographics information.
+#'
+#' @format A data table with 5 rows and the 2 following columns:
+#'
+#' * `person_id`: Character vector of the identifier for each
+#'      person in the cohort
+#' * `sex`: Character vector indicating biological sex
+#'
+#' @seealso [getWeights()], [getScores()]
+'demoSample'
+
+
+#' Sample genotype dataset
+#'
+#' This table contains a sample dataset of genotypes.
+#'
+#' @format A data table with 5 rows and the 21 columns. The first column is
+#'   `person_id` and the rest are variant IDs.
+#'
+'genoSample'
+
+
 #' pre-calculated weights
 #'
 #' This table provides weights for 1868 phecodes calculated using data from
@@ -33,39 +75,6 @@
 #'
 #' @seealso []
 'diseaseDxIcdMap'
-
-
-#' Mapping of genes and variants
-#'
-#' This table provides mapping between genes and genetic variants using
-#' ANNOVAR annotations
-#'
-#' @format A data table with 65,808 rows and the 3 following columns:
-#'
-#' * `gene`: Character vector of gene names
-#' * `vid`: Character vector of variant IDs based on position on the chromosome
-#' * `rsid`: Character vector of dbSNP Reference SNP numbers (rs)
-#'
-#' @source <https://annovar.openbioinformatics.org/en/latest/>
-#'
-#' @seealso [getGeneticAssociations()]
-'geneVarMap'
-
-
-#' Mendelian disease annotation
-#'
-#' This table provides annotations for Mendelian diseases
-#'
-#' @format A data table with 63 rows and the 3 following columns:
-#'
-#' * `disease_id`: Numeric vector of OMIM disease identifiers
-#' * `disease_name`: Character vector of disease names
-#' * `gene`: Character vector containing the gene known to cause the disease
-#'
-#' @source <>
-#'
-#' @seealso [getGeneticAssociations()]
-'diseaseInfo'
 
 
 #' Mapping of disease entities and their clinical features
@@ -143,6 +152,8 @@
 #'
 #' @return A data.table containing the mapping between diseases and phecodes.
 #'   The columns are `disease_id` and `phecode`.
+#'
+#' @eval example1()
 #'
 #' @export
 mapDiseaseToPhecode = function(

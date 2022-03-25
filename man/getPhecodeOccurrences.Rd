@@ -30,3 +30,27 @@ A data.table of phecode occurrences for each person.
 This function takes a data table of patient ICD codes and maps them to
 phecodes.
 }
+\examples{
+library('data.table')
+
+# map ICD codes to phecodes
+phecodeOccurrences = getPhecodeOccurrences(icdSample)
+
+# calculate weights
+weights = getWeights(demoSample, phecodeOccurrences)
+
+# vector of OMIM disease IDs to calculate PheRS for
+diseaseIds = c(154700)
+
+# mape diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode()
+
+# calculate PheRS
+scores = getScores(
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id \%in\% diseaseIds])
+
+# calculate residual PheRS
+rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
+
+  
+}

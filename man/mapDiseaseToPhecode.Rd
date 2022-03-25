@@ -26,3 +26,27 @@ The columns are \code{disease_id} and \code{phecode}.
 This function takes a list of disease identifiers and returns the
 clinical features mapped to them as phecodes.
 }
+\examples{
+library('data.table')
+
+# map ICD codes to phecodes
+phecodeOccurrences = getPhecodeOccurrences(icdSample)
+
+# calculate weights
+weights = getWeights(demoSample, phecodeOccurrences)
+
+# vector of OMIM disease IDs to calculate PheRS for
+diseaseIds = c(154700)
+
+# mape diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode()
+
+# calculate PheRS
+scores = getScores(
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id \%in\% diseaseIds])
+
+# calculate residual PheRS
+rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
+
+  
+}

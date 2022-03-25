@@ -24,28 +24,6 @@ hpoPhecodeMap = hpoPhecodeMap[phecode != '' & !is.na(phecode)]
 usethis::use_data(hpoPhecodeMap, overwrite = TRUE)
 
 #######################
-# map of genes and variants
-
-geneVarMap = fread(file.path(rawDir, 'gene_variant_map.csv.gz'),
-                   select = c('Gene', 'SNP', 'rsID'))
-setnames(geneVarMap, c('Gene', 'SNP', 'rsID'), c('gene', 'vid', 'rsid'))
-usethis::use_data(geneVarMap, overwrite = TRUE)
-
-#######################
-# table of disease info (map of disease and gene)
-
-diseaseInfo = fread(file.path(rawDir, 'disease_info.csv.gz'),
-                    select = c('dID', 'disease', 'gene', 'sex_inc', 'skip'))
-diseaseInfo = unique(
-  diseaseInfo[skip == 0 & sex_inc == 'B', .(dID, disease, gene)])
-setnames(diseaseInfo, c('dID', 'disease'),
-         c('disease_id', 'disease_name'))
-
-diseaseInfo = diseaseInfo[, .(disease_id, disease_name, gene)]
-
-usethis::use_data(diseaseInfo, overwrite = TRUE)
-
-#######################
 # map of disease ID and diagnosis ICD codes
 
 diseaseDxIcdMap = fread(
@@ -81,4 +59,32 @@ preCalcWeights = getWeights(demoSD, phecodeSD)
 usethis::use_data(preCalcWeights, overwrite = TRUE)
 
 
+#######################
+# sample demographic, ICD code, and genotype data
 
+# demographic data
+demoSample = data.table(
+  person_id = 1:5,
+  sex = c('female', 'male', 'male', 'female', 'female'))
+usethis::use_data(demoSample, overwrite = TRUE)
+
+# ICD codes
+icdSample = data.table(
+  person_id = c(rep(1L, 3), rep(2L, 4), rep(3L, 2), 4),
+  icd = c('365', '366', '734', '759.82', '524.0', '718.4', '441', '366', '734', '441'),
+  flag = 9)
+usethis::use_data(icdSample, overwrite = TRUE)
+
+# genotype data
+set.seed(1)
+npop = 5
+gene1 = 'FBN1'
+nvar = 20
+genoSample = data.table(person_id = 1:npop)
+genos = replicate(
+  nvar, sample(c(0, 1, 2), replace = TRUE, size = npop, prob = c(80, 15, 5)))
+colnames(genos) = paste0('snp', 1:nvar)
+genos = as.data.table(genos)
+genoSample = cbind(genoSample, genos)
+
+usethis::use_data(genoSample, overwrite = TRUE)

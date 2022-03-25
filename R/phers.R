@@ -23,6 +23,8 @@ NULL
 #'
 #' @return A data.table of phecode occurrences for each person.
 #'
+#' @eval example1()
+#'
 #' @export
 getPhecodeOccurrences = function(
   icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap,
@@ -72,6 +74,8 @@ getPhecodeOccurrences = function(
 #' @return A data.table containing the prevalence (`prev`) and weight (`w`) for
 #'   each phecode.
 #'
+#' @eval example1()
+#'
 #' @export
 getWeights = function(demos, phecodeOccurrences, preCalcWeights = FALSE) {
   phecode = person_id = . = prev = w = NULL
@@ -81,7 +85,7 @@ getWeights = function(demos, phecodeOccurrences, preCalcWeights = FALSE) {
 
   if(preCalcWeights) {
     weights = phers::preCalcWeights[phecode %in% unique(phecodeOccurrences$phecode)]
-    return(weights)}
+    return(weights[])}
 
   weights = phecodeOccurrences[, .(prev = uniqueN(person_id) / nrow(demos)),
                                by = phecode]
@@ -106,6 +110,8 @@ getWeights = function(demos, phecodeOccurrences, preCalcWeights = FALSE) {
 #'
 #' @return A data.table containing the phenotype risk score for each person for
 #'   each disease.
+#'
+#' @eval example1()
 #'
 #' @export
 getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
@@ -149,6 +155,8 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
 #' @return A data.table containing the phenotype risk score and the residual
 #'   phenotype risk score for each person for each disease.
 #'
+#' @eval example1()
+#'
 #' @export
 getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
   disease_id = diseaseId = r_score = . = person_id = score = NULL
@@ -172,4 +180,3 @@ getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
     rOut[, r_score := rstandard(rFit)]})
 
 return(rScores[])}
-

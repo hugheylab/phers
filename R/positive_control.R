@@ -14,6 +14,8 @@
 #'   `diseaseDxIcdMap`. The columns are `person_id`, `disease_id`,
 #'   and `dx_status`.
 #'
+#' @eval example2()
+#'
 #' @export
 getDxStatus = function(
   demos, icdOccurrences, diseaseDxIcdMap = phers::diseaseDxIcdMap) {
