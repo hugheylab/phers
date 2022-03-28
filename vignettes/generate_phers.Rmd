@@ -46,7 +46,8 @@ scores = getScores(
 rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
 
 # calculate PheRS using pre-calculated weights
-pWeights = getWeights(demoSample, phecodeOccurrences, preCalcWeights = TRUE)
+# Recommended when data provided by the user has low sample size
+pWeights =  preCalcWeights[phecode %in% unique(phecodeOccurrences$phecode)]
 scores = getScores(
   demoSample, phecodeOccurrences, pWeights, diseasePhecodeMap[disease_id == diseaseIds])
 ```

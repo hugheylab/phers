@@ -4,7 +4,7 @@
 \alias{getWeights}
 \title{Calculate phecode-specific weights for phenotype risk scores}
 \usage{
-getWeights(demos, phecodeOccurrences, preCalcWeights = FALSE)
+getWeights(demos, phecodeOccurrences)
 }
 \arguments{
 \item{demos}{A data.table having one row per person in the cohort. Must have
@@ -12,10 +12,6 @@ a column \code{person_id}.}
 
 \item{phecodeOccurrences}{A data.table of occurrences of phecodes for each
 person in the cohort. Must have columns \code{person_id} and \code{phecode}.}
-
-\item{preCalcWeights}{Logical value indicating whether to return weights
-calculated using data from Vanderbilt University Medical Center.
-Recommended when data provided by the user has low sample size.}
 }
 \value{
 A data.table containing the prevalence (\code{prev}) and weight (\code{w}) for
