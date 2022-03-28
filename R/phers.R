@@ -23,6 +23,8 @@ NULL
 #'
 #' @return A data.table of phecode occurrences for each person.
 #'
+#' @eval example1()
+#'
 #' @export
 getPhecodeOccurrences = function(
   icdOccurrences, icdPhecodeMap = phers::icdPhecodeMap,
@@ -41,11 +43,11 @@ getPhecodeOccurrences = function(
 
   assert(checkDataTable(dxIcd), checkNull(dxIcd))
   if (!is.null(dxIcd)) {
-  assertDataTable(dxIcd)
-  assertNames(colnames(dxIcd),
-              must.include = c('icd', 'flag'),
-              disjunct.from = 'person_id')
-  assertCharacter(dxIcd$icd)}
+    assertDataTable(dxIcd)
+    assertNames(colnames(dxIcd),
+                must.include = c('icd', 'flag'),
+                disjunct.from = 'person_id')
+    assertCharacter(dxIcd$icd)}
 
   # remove diagnostic codes
   if (!is.null(dxIcd)) {
@@ -65,23 +67,18 @@ getPhecodeOccurrences = function(
 #'   a column `person_id`.
 #' @param phecodeOccurrences A data.table of occurrences of phecodes for each
 #'   person in the cohort. Must have columns `person_id` and `phecode`.
-#' @param preCalcWeights Logical value indicating whether to return weights
-#'   calculated using data from Vanderbilt University Medical Center.
-#'   Recommended when data provided by the user has low sample size.
 #'
 #' @return A data.table containing the prevalence (`prev`) and weight (`w`) for
 #'   each phecode.
 #'
+#' @eval example1()
+#'
 #' @export
-getWeights = function(demos, phecodeOccurrences, preCalcWeights = FALSE) {
+getWeights = function(demos, phecodeOccurrences) {
   phecode = person_id = . = prev = w = NULL
 
   checkDemos(demos)
   checkPhecodeOccurrences(phecodeOccurrences, demos)
-
-  if (preCalcWeights) {
-    weights = phers::preCalcWeights[phecode %in% unique(phecodeOccurrences$phecode)]
-    return(weights)}
 
   weights = phecodeOccurrences[, .(prev = uniqueN(person_id) / nrow(demos)),
                                by = phecode]
@@ -106,6 +103,8 @@ getWeights = function(demos, phecodeOccurrences, preCalcWeights = FALSE) {
 #'
 #' @return A data.table containing the phenotype risk score for each person for
 #'   each disease.
+#'
+#' @eval example1()
 #'
 #' @export
 getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
@@ -149,6 +148,8 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
 #' @return A data.table containing the phenotype risk score and the residual
 #'   phenotype risk score for each person for each disease.
 #'
+#' @eval example1()
+#'
 #' @export
 getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
   disease_id = diseaseId = r_score = . = person_id = score = NULL
@@ -171,4 +172,4 @@ getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
     rOut = rInputSub[, .(person_id, disease_id, score)]
     rOut[, r_score := rstandard(rFit)]})
 
-return(rScores[])}
+  return(rScores[])}
