@@ -11,68 +11,39 @@ snapshot = function(xObs, path) {
     qs::qsave(xObs, path)
     xExp = xObs}
   return(xExp)}
+dataDir = 'data'
 
 
 # data for unit test
-
-# getWeights() and getScores() test data
 icdTest = data.table(
   person_id = c(1, rep(2L, 2), 3, rep(4L, 2)),
   icd = c('001', '002', '003', '002', '004', '005'), flag = 9)
 demosTest = data.table(person_id = 1:4)
-
 phecodeOccurrencesTest = data.table(
   person_id = c(1, rep(2L, 2), 3, 4),
   phecode = c('001', '002', '003', '002', '004'))
 setkey(phecodeOccurrencesTest)
-phecodeOccurrencesTest2 = data.table(
-  person_id = c(1, rep(2L, 2), 3, rep(4L, 2)),
-  phecode = c('001', '002', '003', '002', '004', '005'))
-setkey(phecodeOccurrencesTest2)
-
+# weightsTest could probably be placed at the top of test_phers.R
+# since it is only used in that script, unless it might be used in other test scripts.
 weightsTest = data.table(
   phecode = c('001', '002', '003', '004'),
   prev = c(1 / 4, 2 / 4, 1 / 4, 1 / 4), w = -log10(c(1 / 4, 2 / 4, 1 / 4, 1 / 4)))
-
 dxIcdTest = data.table(disease_id = 1, icd = '005', flag = 9)
-diseaseHpoMapTest = data.table(disease_id = 1, term_id = c(1, 2, 3))
-hpoPhecodeMapTest = data.table(
-  term_id = c(1, 2, 3), phecode = c('001', '002', '003'))
 diseasePhecodeMapTest = data.table(
   disease_id = 1, phecode = c('001', '002', '003'))
 setkey(diseasePhecodeMapTest)
+# icdPhecodeMapTest could probably be placed at the top of test_phers.R
+# since it is only used in that script, unless it might be used in other test scripts.
 icdPhecodeMapTest = data.table(
   icd = c('001', '002', '003', '004', '005'),
   phecode = c('001', '002', '003', '004', '005'), flag = 9)
-
-
-# runLinear() test data
+# lmInputTest could probably be placed at the top of test_genetic_association.R
+# since it is only used in that script, unless it might be used in other test scripts.
 lmInputTest = data.table(score = c(5, 3, 4, 1, 0.5, 0),
                          allele_count = c(2, 1, 1, 0, 0, 0),
                          sex = c('F', 'M', 'F', 'M', 'F', 'M'))
-formTest = as.formula(~ sex)
-
-
-# genotypeAssociation() test data
 scoresTest = data.table(
   person_id = rep(1:6, 2), disease_id = c(rep(1, 6), rep(2, 6)),
   score = c(5, 3, 4, 1, 0.5, 0, 2, 1, 0, 1, 2, 0.5))
-genotypesTest = data.table(
-  person_id = 1:6, snp1 = c(2, 1, 1, 0, 0, 0),
-  snp2 = c(0, 1, 0, 0, 0, 1))
 demosTest2 = data.table(person_id = 1:6, sex = c('F', 'M', 'F', 'M', 'F', 'M'))
-diseaseGeneVarMapTest = data.table(
-  disease_id = c(1, 2), gene = c('a', 'b'), vid = c('snp1', 'snp2'))
 formTest = as.formula(~ sex)
-
-# getDxStatus() test data
-dxStatusTest = data.table(
-  person_id = 1:4, disease_id = 1, dx_status = c(rep(0L, 3), 1))
-setkey(dxStatusTest)
-
-# # data for snapshot tests
-# dataDir = 'data'
-# phecodesTestL = qread(file.path(dataDir, 'phecodes_test.qs'))
-# demosTestL = qread(file.path(dataDir, 'demos_test.qs'))
-# weightsTestL = qread(file.path(dataDir, 'weights.qs'))
-# diseasePhecodeMapTestL = qread(file.path(dataDir, 'disease_to_phecode_map.qs'))
