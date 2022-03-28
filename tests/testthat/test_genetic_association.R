@@ -54,7 +54,7 @@ test_that('getGeneticAssociations output (additive)', {
                                 diseaseGeneVarMapTest, formTest,
                                 modelType = 'additive')
   resExp = data.table(
-    disease_id = c(1,2),
+    disease_id = c(1, 2),
     vid = c('snp1', 'snp2'),
     n_total = c(6, 6),
     n_wt = c(3, 4),
