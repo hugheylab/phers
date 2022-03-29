@@ -1,9 +1,9 @@
-test_that('check getDxStatus output', {
-  dxStatusOut = getDxStatus(demosTest, icdTest, diseaseDxIcdMap = dxIcdTest)
-  expect_s3_class(dxStatusOut, 'data.table')
+test_that('getDxStatus output', {
+  resObs = getDxStatus(demosTest, icdTest, diseaseDxIcdMap = dxIcdTest)
+  resExp = data.table(
+    person_id = seq_len(4),
+    disease_id = rep(1, 4),
+    dx_status = c(0, 0, 0, 1))
 
-  expect_named(
-    dxStatusOut, c('disease_id', 'person_id', 'dx_status'), ignore.order = TRUE)
-  setkey(dxStatusOut)
-  expect_equal(dxStatusOut, dxStatusTest)
+  expect_equal(resObs, resExp, ignore_attr = TRUE)
 })
