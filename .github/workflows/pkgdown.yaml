@@ -14,3 +14,4 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: hugheylab/actions/pkgdown@main
+    timeout-minutes: 30

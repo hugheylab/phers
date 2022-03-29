@@ -11,3 +11,4 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: hugheylab/actions/test-coverage@main
+    timeout-minutes: 30
