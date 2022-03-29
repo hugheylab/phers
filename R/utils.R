@@ -80,7 +80,7 @@ checkGlmFormula = function(glmFormula, demos) {
     all.vars(glmFormula), subset.of = colnames(demos),
     disjunct.from = c('score', 'allele_count', 'person_id', 'disease_id'))
 
-  if (all.vars(update.formula(glmFormula, . ~ 1)) != '.'){
+  if (all.vars(update.formula(glmFormula, . ~ 1)) != '.') {
     stop('provide a formula without the dependent variable')}
 
   invisible()}
@@ -91,7 +91,7 @@ checkLmInput = function(lmInput) {
   assertDataTable(lmInput)
   assertNames(colnames(lmInput), must.include = c('score', 'allele_count'))
   assertNumeric(lmInput$allele_count, finite = TRUE)
-  assertSubset(unique(lmInput$allele_count), c(0,1,2))
+  assertSubset(unique(lmInput$allele_count), c(0, 1, 2))
   invisible()}
 
 
