@@ -75,7 +75,7 @@ jobs:
         id: issues
         uses: lee-dohm/select-matching-issues@v1.2.0
         with:
-          query: "label:lint-styling is:open"
+          query: "label:lint is:open"
           token: ${{ secrets.GITHUB_TOKEN }}
       - name: Close found issues
         run: |
