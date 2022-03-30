@@ -10,7 +10,7 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
+  comment = '#>',
   retina = 2)
 
 foreach::registerDoSEQ()
@@ -29,7 +29,7 @@ library('ggplot2')
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
 
-# calculate weights 
+# calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # vector of OMIM disease IDs to calculate PheRS for
@@ -61,7 +61,7 @@ diseaseVariantMap = merge(diseaseGeneMap, geneVarMap, by = 'gene')
 
 # run genetic association tests
 genoStats = getGeneticAssociations(
-  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = as.formula(~ sex), 
+  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = as.formula(~ sex),
   modelType = 'additive')
 
 genoStats = merge(geneVarMap[, .(gene, vid)], genoStats, by = 'vid')
