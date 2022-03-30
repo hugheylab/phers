@@ -68,7 +68,7 @@ jobs:
         shell: Rscript {0}
 
   close_open_lint:
-    name: Close all issues labeled "lint-styling"
+    name: Close all issues labeled "lint"
     runs-on: ubuntu-latest
     steps:
       - name: Find all cran update issues
@@ -113,4 +113,4 @@ jobs:
           body: |
             ${{ needs.lint_package.outputs.style_text }}
           labels: |
-            lint-styling
+            lint
