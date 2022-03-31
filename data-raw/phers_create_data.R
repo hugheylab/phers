@@ -79,7 +79,7 @@ usethis::use_data(icdSample, overwrite = TRUE)
 set.seed(1)
 npop = 5
 gene1 = 'FBN1'
-nvar = 20
+nvar = 10
 genoSample = data.table(person_id = 1:npop)
 genos = replicate(
   nvar, sample(c(0, 1, 2), replace = TRUE, size = npop, prob = c(80, 15, 5)))
