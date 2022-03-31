@@ -81,9 +81,7 @@ scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # create a map of diseases and variants
-diseaseGeneMap = data.table(disease_id = diseaseId, gene = 'FBN1')
-geneVarMap = data.table(gene = 'FBN1', vid = paste0('snp', 1:20))
-diseaseVariantMap = merge(diseaseGeneMap, geneVarMap, by = 'gene')
+diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:20))
 
 # run genetic association tests
 genoStats = getGeneticAssociations(

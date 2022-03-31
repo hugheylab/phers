@@ -153,8 +153,8 @@ runLinear = function(
       glmStat[, se := fitSnpCoefs['Std. Error']]
       glmStat[, pval := fitSnpCoefs['Pr(>|t|)']]
       ci =  suppressMessages(confint(fit, level = level))
-      glmStat[, ci_lower := ci[varName, '2.5 %']]
-      glmStat[, ci_upper := ci[varName, '97.5 %']]}
+      glmStat[, ci_lower := ci[varName, 1]]
+      glmStat[, ci_upper := ci[varName, 2]]}
 
     c0 = c('beta', 'se', 'pval', 'ci_lower', 'ci_upper')
     c1 = if (varName == 'allele_count1') '_het' else if (
