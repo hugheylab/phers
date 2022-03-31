@@ -1,3 +1,11 @@
+weightsTest = data.table(
+  phecode = c('001', '002', '003', '004'),
+  prev = c(1 / 4, 2 / 4, 1 / 4, 1 / 4), w = -log10(c(1 / 4, 2 / 4, 1 / 4, 1 / 4)))
+
+icdPhecodeMapTest = data.table(
+  icd = c('001', '002', '003', '004', '005'),
+  phecode = c('001', '002', '003', '004', '005'), flag = 9)
+
 test_that('getPhecodeOccurrences output', {
 
   resObs = getPhecodeOccurrences(
