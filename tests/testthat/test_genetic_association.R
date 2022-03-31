@@ -1,107 +1,39 @@
+lmInputTest = data.table(score = c(5, 3, 4, 1, 0.5, 0),
+                         allele_count = c(2, 1, 1, 0, 0, 0),
+                         sex = c('female', 'male', 'female', 'male', 'female', 'male'))
+
+
 test_that('runLinear output (additive)', {
 
-  linearOut = runLinear(lmInputTest, formTest, modelType = 'additive', 1, 'snp1')
+  resObs = runLinear(lmInputTest, formTest, modelType = 'additive', 1, 'snp1')
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_additive_output.qs'))
 
-  expect_s3_class(linearOut, 'data.table')
-  expect_equal(nrow(linearOut), 1)
-  expect_named(
-    linearOut, c('disease_id', 'vid', 'n_total', 'n_wt', 'n_het', 'n_hom',
-                 'beta', 'se', 'pval', 'lower', 'upper'),
-    ignore.order = TRUE)
-
-  lmTest = glm(score~allele_count+sex, data = lmInputTest)
-
-  expect_equal(linearOut$disease_id, 1)
-  expect_equal(linearOut$vid, 'snp1')
-  expect_equal(linearOut$n_total, 6)
-  expect_equal(linearOut$n_wt, 3)
-  expect_equal(linearOut$n_het, 2)
-  expect_equal(linearOut$n_hom, 1)
-
-  expect_equal(linearOut$beta, lmTest$coef[['allele_count']])
-  expect_equal(linearOut$se,
-               summary(lmTest)$coef['allele_count', 'Std. Error'])
-  expect_equal(linearOut$pval,
-               summary(lmTest)$coef['allele_count', 'Pr(>|t|)'])
-  expect_equal(
-    linearOut$lower, suppressMessages(confint(lmTest)['allele_count', '2.5 %']))
-  expect_equal(
-    linearOut$upper, suppressMessages(confint(lmTest)['allele_count', '97.5 %']))
+  expect_equal(resObs, resExp)
 })
 
 
 test_that('runLinear output (genotypic)', {
 
-  linearOut = runLinear(lmInputTest, formTest, modelType = 'genotypic', 1, 'snp1')
+  resObs = runLinear(lmInputTest, formTest, modelType = 'genotypic', 1, 'snp1')
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_genotypic_output.qs'))
 
-  expect_s3_class(linearOut, 'data.table')
-  expect_equal(nrow(linearOut), 1)
-  expect_named(
-    linearOut, c('disease_id', 'vid', 'n_total', 'n_wt', 'n_het', 'n_hom',
-                 'beta_het', 'se_het', 'pval_het', 'lower_het', 'upper_het',
-                 'beta_hom', 'se_hom', 'pval_hom', 'lower_hom', 'upper_hom'),
-               ignore.order = TRUE)
-
-  lmInputTestG = copy(lmInputTest)
-  lmInputTestG[, allele_count := factor(allele_count)]
-  lmTest = glm(score~allele_count+sex, data = lmInputTestG)
-
-  expect_equal(linearOut$disease_id, 1)
-  expect_equal(linearOut$vid, 'snp1')
-  expect_equal(linearOut$n_total, 6)
-  expect_equal(linearOut$n_wt, 3)
-  expect_equal(linearOut$n_het, 2)
-  expect_equal(linearOut$n_hom, 1)
-
-  expect_equal(linearOut$beta_het, lmTest$coef[['allele_count1']])
-  expect_equal(linearOut$se_het,
-               summary(lmTest)$coef['allele_count1', 'Std. Error'])
-  expect_equal(linearOut$pval_het,
-               summary(lmTest)$coef['allele_count1', 'Pr(>|t|)'])
-  expect_equal(
-    linearOut$lower_het, suppressMessages(confint(lmTest)['allele_count1', '2.5 %']))
-  expect_equal(
-    linearOut$upper_het, suppressMessages(confint(lmTest)['allele_count1', '97.5 %']))
+  expect_equal(resObs, resExp)
 })
 
 
 test_that('getGeneticAssociations output (additive)', {
 
-  genoOut = getGeneticAssociations(scoresTest, genotypesTest, demosTest2,
+  genotypesTest = data.table(
+    person_id = 1:6, snp1 = c(2, 1, 1, 0, 0, 0),
+    snp2 = c(0, 1, 0, 0, 0, 1))
+  diseaseGeneVarMapTest = data.table(
+    disease_id = c(1, 2), gene = c('a', 'b'), vid = c('snp1', 'snp2'))
+  resObs = getGeneticAssociations(scoresTest, genotypesTest, demosTest2,
                                 diseaseGeneVarMapTest, formTest,
                                 modelType = 'additive')
 
-  expect_s3_class(genoOut, 'data.table')
-  expect_equal(nrow(genoOut), 2)
-  expect_named(
-    genoOut,
-    c('disease_id', 'vid', 'n_total', 'n_wt', 'n_het', 'n_hom',
-      'beta', 'se', 'pval', 'lower', 'upper'),
-    ignore.order = TRUE)
+  resExp = snapshot(
+    resObs, file.path(dataDir, 'get_genetic_associations_additive_output.qs'))
 
-  lmInputTest2 = merge(
-    merge(scoresTest, demosTest2, by = 'person_id') ,
-    genotypesTest, by = 'person_id')
-  lmTest2 = glm(score~snp2+sex, data = lmInputTest2[disease_id == 2])
-
-  expect_equal(genoOut$disease_id, c(1, 2))
-  expect_equal(genoOut$vid, c('snp1', 'snp2'))
-  expect_equal(genoOut$n_total, c(6, 6))
-  expect_equal(genoOut$n_wt, c(3, 4))
-  expect_equal(genoOut$n_het, c(2, 2))
-  expect_equal(genoOut$n_hom, c(1, 0))
-
-  expect_equal(genoOut$beta[2], lmTest2$coef[['snp2']])
-  expect_equal(genoOut$se[2],
-               summary(lmTest2)$coef['snp2', 'Std. Error'])
-  expect_equal(genoOut$pval[2],
-               summary(lmTest2)$coef['snp2', 'Pr(>|t|)'])
-  expect_equal(
-    genoOut$lower[2], suppressMessages(confint(lmTest2)['snp2', '2.5 %']))
-  expect_equal(
-    genoOut$upper[2], suppressMessages(confint(lmTest2)['snp2', '97.5 %']))
-
-
+  expect_equal(resObs, resExp)
 })
-
-

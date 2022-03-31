@@ -36,17 +36,17 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # vector of OMIM disease IDs to calculate PheRS for
-diseaseIds = c(154700)
+diseaseId = 154700
 
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate PheRS
 scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id \%in\% diseaseIds])
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual PheRS
-rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
+rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   
 }

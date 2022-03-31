@@ -11,17 +11,17 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # vector of OMIM disease IDs to calculate PheRS for
-diseaseIds = c(154700)
+diseaseId = 154700
 
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate PheRS
 scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id %in% diseaseIds])
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual PheRS
-rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
+rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   "
   return(strsplit(ex, split = '\n')[[1L]])}
@@ -52,23 +52,21 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # vector of OMIM disease IDs to calculate PheRS for
-diseaseIds = c(154700)
+diseaseId = 154700
 
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate PheRS
 scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id %in% diseaseIds])
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # create a map of diseases and variants
-diseaseGeneMap = data.table(disease_id = 154700, gene = 'FBN1')
-geneVarMap = data.table(gene = 'FBN1', vid = paste0('snp', 1:20))
-diseaseVariantMap = merge(diseaseGeneMap, geneVarMap, by = 'gene')
+diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:20))
 
 # run genetic association tests
 genoStats = getGeneticAssociations(
-  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = as.formula(~ sex),
+  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = ~ sex,
   modelType = 'additive')
 
   "

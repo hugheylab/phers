@@ -4,7 +4,7 @@
 \alias{getResidualScores}
 \title{Calculate residual phenotype risk scores}
 \usage{
-getResidualScores(demos, scores, glmFormula, dopar = FALSE)
+getResidualScores(demos, scores, glmFormula)
 }
 \arguments{
 \item{demos}{A data.table of covariates to be used in the calculation
@@ -16,10 +16,6 @@ each disease. Must have columns \code{person_id}, \code{disease_id}, and \code{s
 \item{glmFormula}{A formula object representing the linear model of covariates
 to be used in the calculation of residual phenotype risk score.
 All covariates must be existing columns in \code{demos}.}
-
-\item{dopar}{Logical indicating whether to run calculations in parallel if
-a parallel backend is already set up, e.g., using
-\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
 }
 \value{
 A data.table containing the phenotype risk score and the residual
@@ -40,17 +36,17 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # vector of OMIM disease IDs to calculate PheRS for
-diseaseIds = c(154700)
+diseaseId = 154700
 
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate PheRS
 scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id \%in\% diseaseIds])
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual PheRS
-rscores = getResidualScores(demoSample, scores, glmFormula = as.formula(~ sex))
+rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   
 }
