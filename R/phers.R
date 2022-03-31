@@ -141,9 +141,6 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
 #' @param glmFormula A formula object representing the linear model of covariates
 #'   to be used in the calculation of residual phenotype risk score.
 #'   All covariates must be existing columns in `demos`.
-#' @param dopar Logical indicating whether to run calculations in parallel if
-#'   a parallel backend is already set up, e.g., using
-#'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
 #'
 #' @return A data.table containing the phenotype risk score and the residual
 #'   phenotype risk score for each person for each disease.
@@ -151,25 +148,20 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
 #' @eval example1()
 #'
 #' @export
-getResidualScores = function(demos, scores, glmFormula, dopar = FALSE) {
-  disease_id = diseaseId = r_score = . = person_id = score = NULL
+getResidualScores = function(demos, scores, glmFormula) {
+  disease_id = diseaseId = resid_score = . = person_id = score = NULL
 
   checkDemos(demos)
   checkScores(scores)
   checkGlmFormula(glmFormula, demos)
-  assertFlag(dopar)
 
   rInput = merge(scores, demos, by = 'person_id')
   glmFormula = update.formula(glmFormula, score ~ .)
 
-  reg = foreach::getDoParRegistered()
-  doOp = if (dopar && reg) `%dopar%` else `%do%`
-  foe = foreach(diseaseId = unique(scores$disease_id), .combine = rbind)
-
-  rScores = doOp(foe, {
-    rInputSub = rInput[disease_id == diseaseId]
-    rFit = glm(glmFormula, data = rInputSub)
-    rOut = rInputSub[, .(person_id, disease_id, score)]
-    rOut[, r_score := rstandard(rFit)]})
+  rScores = rInput[
+    , .(person_id, score,
+        resid_score = rstandard(glm(glmFormula, data = .SD))),
+    by = disease_id]
+  setcolorder(rScores, c('person_id', 'disease_id', 'score', 'resid_score'))
 
 return(rScores[])}

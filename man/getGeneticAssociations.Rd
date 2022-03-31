@@ -11,6 +11,7 @@ getGeneticAssociations(
   diseaseVariantMap,
   glmFormula,
   modelType = c("additive", "genotypic"),
+  level = 0.95,
   dopar = FALSE
 )
 }
@@ -35,6 +36,9 @@ existing columns in \code{demos}.}
 
 \item{modelType}{Coding of the genotypes. Either 'additive' or 'genotypic'.}
 
+\item{level}{Confidence level used for calculating confidence intervals.
+Default is 0.95.}
+
 \item{dopar}{Logical indicating whether to run calculations in parallel if
 a parallel backend is already set up, e.g., using
 \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
@@ -47,11 +51,11 @@ NAs will be reported.
 \item \code{disease_id}: disease identifier
 \item \code{gene}: name of the gene
 \item \code{vid}: variant identifier
-\item \code{beta}: The beta coefficient for the variant
+\item \code{beta}: The beta coefficient for the association
 \item \code{se}: The standard error for the beta coefficient
-\item \code{p}: The p-value for the variant
-\item \code{lower}: The lower bound of the \code{confint} confidence interval
-\item \code{upper}: The upper bound of the \code{confint} confidence interval
+\item \code{pval}: The p-value for the association
+\item \code{ci_lower}: The lower bound of the \code{confint} confidence interval
+\item \code{ci_upper}: The upper bound of the \code{confint} confidence interval
 }
 }
 \description{
@@ -67,23 +71,23 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # vector of OMIM disease IDs to calculate PheRS for
-diseaseIds = c(154700)
+diseaseId = 154700
 
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate PheRS
 scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id \%in\% diseaseIds])
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # create a map of diseases and variants
-diseaseGeneMap = data.table(disease_id = 154700, gene = 'FBN1')
+diseaseGeneMap = data.table(disease_id = diseaseId, gene = 'FBN1')
 geneVarMap = data.table(gene = 'FBN1', vid = paste0('snp', 1:20))
 diseaseVariantMap = merge(diseaseGeneMap, geneVarMap, by = 'gene')
 
 # run genetic association tests
 genoStats = getGeneticAssociations(
-  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = as.formula(~ sex),
+  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = ~ sex,
   modelType = 'additive')
 
   

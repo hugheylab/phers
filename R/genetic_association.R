@@ -16,6 +16,8 @@
 #'   to be used in the genetic association tests. All covariates must be
 #'   existing columns in `demos`.
 #' @param modelType Coding of the genotypes. Either 'additive' or 'genotypic'.
+#' @param level Confidence level used for calculating confidence intervals.
+#'   Default is 0.95.
 #' @param dopar Logical indicating whether to run calculations in parallel if
 #'   a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
@@ -26,18 +28,18 @@
 #'   * `disease_id`: disease identifier
 #'   * `gene`: name of the gene
 #'   * `vid`: variant identifier
-#'   * `beta`: The beta coefficient for the variant
+#'   * `beta`: The beta coefficient for the association
 #'   * `se`: The standard error for the beta coefficient
-#'   * `p`: The p-value for the variant
-#'   * `lower`: The lower bound of the `confint` confidence interval
-#'   * `upper`: The upper bound of the `confint` confidence interval
+#'   * `pval`: The p-value for the association
+#'   * `ci_lower`: The lower bound of the `confint` confidence interval
+#'   * `ci_upper`: The upper bound of the `confint` confidence interval
 #'
 #' @eval example3()
 #'
 #' @export
 getGeneticAssociations = function(
   scores, genotypes, demos, diseaseVariantMap, glmFormula,
-  modelType = c('additive', 'genotypic'), dopar = FALSE) {
+  modelType = c('additive', 'genotypic'), level = 0.95, dopar = FALSE) {
   diseaseId = disease_id = snp = allele_count = count = N = vid = NULL
 
   checkScores(scores)
@@ -80,7 +82,7 @@ getGeneticAssociations = function(
         lmInputSub1 = lmInputSub1[!is.na(allele_count)]
 
         glmStat = runLinear(
-          lmInputSub1, glmFormula, modelType = modelType, diseaseId, snp)}
+          lmInputSub1, glmFormula, modelType = modelType, diseaseId, snp, level)}
   })
   return(statsAll[])}
 
@@ -101,6 +103,8 @@ getGeneticAssociations = function(
 #' @param modelType Coding of the genotypes. Either 'additive' or 'genotypic'
 #' @param diseaseId Numeric value of the disease ID in the association test.
 #' @param snp String value of the variant ID in the association test.
+#' @param level Confidence level used for calculating confidence intervals.
+#'   Default is 0.95.
 #'
 #' @return A data.table containing to results of the genotype association test
 #'   with the following columns. If the model fails to converge,
@@ -109,15 +113,16 @@ getGeneticAssociations = function(
 #'   * `disease_id`: disease identifier
 #'   * `gene`: name of the gene
 #'   * `vid`: variant identifier
-#'   * `beta`: The beta coefficient for the variant
+#'   * `beta`: The beta coefficient for the association
 #'   * `se`: The standard error for the beta coefficient
-#'   * `p`: The p-value for the variant
-#'   * `lower`: The lower bound of the `confint` confidence interval
-#'   * `upper`: The upper bound of the `confint` confidence interval
+#'   * `pval`: The p-value for the association
+#'   * `ci_lower`: The lower bound of the `confint` confidence interval
+#'   * `ci_upper`: The upper bound of the `confint` confidence interval
 #'
 runLinear = function(
-  lmInput, glmFormula, modelType = c('additive', 'genotypic'), diseaseId, snp) {
-  lower = melt = pval = se = upper = allele_count = varName = n_het = n_hom =
+  lmInput, glmFormula, modelType = c('additive', 'genotypic'),
+  diseaseId, snp, level = 0.95) {
+  ci_lower = melt = pval = se = ci_upper = allele_count = varName = n_het = n_hom =
     n_total = n_wt = NULL
 
   checkLmInput(lmInput)
@@ -130,7 +135,7 @@ runLinear = function(
     fit = glm(glmFormula, data = lmInput)
     varNames = 'allele_count'}
 
-  if (modelType == 'genotypic') {
+  else if (modelType == 'genotypic') {
     lmInput1 = copy(lmInput)
     lmInput1[, allele_count := as.factor(allele_count)]
     fit = glm(glmFormula, data = lmInput1)
@@ -140,18 +145,18 @@ runLinear = function(
   stat = cbind(stat, getAlleleCounts(lmInput))
 
   glmStats = foreach(varName = varNames, .combine = cbind) %do% {
-    glmStat = data.table(beta = NA, se = NA, pval = NA, lower = NA, upper = NA)
+    glmStat = data.table(beta = NA, se = NA, pval = NA, ci_lower = NA, ci_upper = NA)
 
     if (!is.na(fit$coefficients[varName])) {
       fitSnpCoefs = summary(fit)$coefficients[varName, ]
       glmStat[, beta := fitSnpCoefs['Estimate']]
       glmStat[, se := fitSnpCoefs['Std. Error']]
       glmStat[, pval := fitSnpCoefs['Pr(>|t|)']]
-      ci =  suppressMessages(confint(fit))
-      glmStat[, lower := ci[varName, '2.5 %']]
-      glmStat[, upper := ci[varName, '97.5 %']]}
+      ci =  suppressMessages(confint(fit, level = level))
+      glmStat[, ci_lower := ci[varName, '2.5 %']]
+      glmStat[, ci_upper := ci[varName, '97.5 %']]}
 
-    c0 = c('beta', 'se', 'pval', 'lower', 'upper')
+    c0 = c('beta', 'se', 'pval', 'ci_lower', 'ci_upper')
     c1 = if (varName == 'allele_count1') '_het' else if (
       varName == 'allele_count2') '_hom' else ''
     setnames(glmStat, c0, paste0(c0, c1))}

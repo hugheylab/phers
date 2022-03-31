@@ -76,5 +76,5 @@ dxStatus = getDxStatus(demoSample, icdSample)
 
 plotInput = merge(rscores, dxStatus, by = c('person_id', 'disease_id'))
 
-ggplot(plotInput) + geom_boxplot(aes(x = factor(dx_status), y = r_score))
+ggplot(plotInput) + geom_boxplot(aes(x = factor(dx_status), y = resid_score))
 ```

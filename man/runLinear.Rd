@@ -9,7 +9,8 @@ runLinear(
   glmFormula,
   modelType = c("additive", "genotypic"),
   diseaseId,
-  snp
+  snp,
+  level = 0.95
 )
 }
 \arguments{
@@ -27,6 +28,9 @@ columns in \code{lmInput}.}
 \item{diseaseId}{Numeric value of the disease ID in the association test.}
 
 \item{snp}{String value of the variant ID in the association test.}
+
+\item{level}{Confidence level used for calculating confidence intervals.
+Default is 0.95.}
 }
 \value{
 A data.table containing to results of the genotype association test
@@ -36,11 +40,11 @@ NAs will be reported.
 \item \code{disease_id}: disease identifier
 \item \code{gene}: name of the gene
 \item \code{vid}: variant identifier
-\item \code{beta}: The beta coefficient for the variant
+\item \code{beta}: The beta coefficient for the association
 \item \code{se}: The standard error for the beta coefficient
-\item \code{p}: The p-value for the variant
-\item \code{lower}: The lower bound of the \code{confint} confidence interval
-\item \code{upper}: The upper bound of the \code{confint} confidence interval
+\item \code{pval}: The p-value for the association
+\item \code{ci_lower}: The lower bound of the \code{confint} confidence interval
+\item \code{ci_upper}: The upper bound of the \code{confint} confidence interval
 }
 }
 \description{
