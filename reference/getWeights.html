@@ -60,7 +60,7 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getWeights</span><span class="op">(</span><span class="va">demos</span>, <span class="va">phecodeOccurrences</span>, preCalcWeights <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getWeights</span><span class="op">(</span><span class="va">demos</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -71,10 +71,6 @@ a column <code>person_id</code>.</p></dd>
 <dt>phecodeOccurrences</dt>
 <dd><p>A data.table of occurrences of phecodes for each
 person in the cohort. Must have columns <code>person_id</code> and <code>phecode</code>.</p></dd>
-<dt>preCalcWeights</dt>
-<dd><p>Logical value indicating whether to return weights
-calculated using data from Vanderbilt University Medical Center.
-Recommended when data provided by the user has low sample size.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
@@ -93,17 +89,17 @@ each phecode.</p>
 <span class="r-in"><span class="va">weights</span> <span class="op">=</span> <span class="fu">getWeights</span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># vector of OMIM disease IDs to calculate PheRS for</span></span>
-<span class="r-in"><span class="va">diseaseIds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">diseaseId</span> <span class="op">=</span> <span class="fl">154700</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># mape diseases to phecodes</span></span>
 <span class="r-in"><span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># calculate PheRS</span></span>
 <span class="r-in"><span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="getScores.html">getScores</a></span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">diseaseIds</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in">  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseId</span><span class="op">]</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># calculate residual PheRS</span></span>
-<span class="r-in"><span class="va">rscores</span> <span class="op">=</span> <span class="fu"><a href="getResidualScores.html">getResidualScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, glmFormula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">rscores</span> <span class="op">=</span> <span class="fu"><a href="getResidualScores.html">getResidualScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, glmFormula <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in">  </span>
 </code></pre></div>

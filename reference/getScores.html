@@ -99,17 +99,17 @@ each disease.</p>
 <span class="r-in"><span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># vector of OMIM disease IDs to calculate PheRS for</span></span>
-<span class="r-in"><span class="va">diseaseIds</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">154700</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">diseaseId</span> <span class="op">=</span> <span class="fl">154700</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># mape diseases to phecodes</span></span>
 <span class="r-in"><span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># calculate PheRS</span></span>
 <span class="r-in"><span class="va">scores</span> <span class="op">=</span> <span class="fu">getScores</span><span class="op">(</span></span>
-<span class="r-in">  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="va">diseaseIds</span><span class="op">]</span><span class="op">)</span></span>
+<span class="r-in">  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseId</span><span class="op">]</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># calculate residual PheRS</span></span>
-<span class="r-in"><span class="va">rscores</span> <span class="op">=</span> <span class="fu"><a href="getResidualScores.html">getResidualScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, glmFormula <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/formula.html" class="external-link">as.formula</a></span><span class="op">(</span><span class="op">~</span> <span class="va">sex</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"><span class="va">rscores</span> <span class="op">=</span> <span class="fu"><a href="getResidualScores.html">getResidualScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, glmFormula <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in">  </span>
 </code></pre></div>
