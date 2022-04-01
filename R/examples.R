@@ -71,3 +71,22 @@ genoStats = getGeneticAssociations(
 
   "
   return(strsplit(ex, split = '\n')[[1L]])}
+
+
+example4 = function() {
+  ex = "
+
+@examples
+library('data.table')
+
+# vector of OMIM disease IDs to calculate PheRS for
+diseaseId = 154700
+
+# mape diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode()
+
+# calculate PheRS
+scores = runPhers(demoSample, icdSample, diseaseId, diseasePhecodeMap)
+
+  "
+  return(strsplit(ex, split = '\n')[[1L]])}

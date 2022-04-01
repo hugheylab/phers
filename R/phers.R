@@ -164,4 +164,47 @@ getResidualScores = function(demos, scores, glmFormula) {
     by = disease_id]
   setcolorder(rScores, c('person_id', 'disease_id', 'score', 'resid_score'))
 
-return(rScores[])}
+  return(rScores[])}
+
+
+#' Run through the workflow for calculating phenotype risk scores
+#'
+#' This function calculates phenotype risk scores given patient ICD codes
+#' and demographic data without requiring intermediate steps for
+#' calculating phecode occurrences and their weights.
+#'
+#' @param demos A data.table having one row per person in the cohort. Must have
+#'   a column `person_id`.
+#' @param icdOccurrences A data.table of occurrences of ICD codes for each
+#'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
+#' @param diseaseIds A numeric vector of OMIM disease IDs to calculate
+#'   phenotype risk scores for.
+#' @param diseasePhecodeMap A data.table containing the mapping between
+#'   diseases and phecodes. Must have columns `disease_id` and `phecode`.
+#' @param icdPhecodeMap A data.table containing the mapping between ICD codes
+#'   and phecodes. Must have columns `icd`, `phecode`, and `flag`. By default uses
+#'   the mapping included in this package.
+#' @param dxIcd A data.table of diagnostic ICD codes to remove for every person.
+#'   Must have columns `icd` and `flag`. By default uses a table provided in
+#'   this package with mapping between diseases and ICD codes used to indicate
+#'   their diagnosis. If `NULL` no ICD codes will be removed.
+#'
+#' @return A data.table containing the phenotype risk score for each person for
+#'   each disease.
+#'
+#' @eval example4()
+#'
+#' @export
+runPhers = function(
+  demos, icdOccurrences, diseaseIds, diseasePhecodeMap,
+  icdPhecodeMap = phers::icdPhecodeMap, dxIcd = phers::diseaseDxIcdMap) {
+  disease_id = NULL
+
+  phecodeOccurrences = getPhecodeOccurrences(
+    icdOccurrences, icdPhecodeMap = icdPhecodeMap, dxIcd = dxIcd)
+  weights = getWeights(demos, phecodeOccurrences)
+  scores = getScores(
+    demos, phecodeOccurrences, weights,
+    diseasePhecodeMap[disease_id %in% diseaseIds])
+
+  return(scores[])}

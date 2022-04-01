@@ -74,7 +74,7 @@ test_that('getWeights args error', {
   expect_error(getWeights(demosTestErr, phecodeOccurrencesTest))
 })
 
-test_that('getScores output 1', {
+test_that('getScores output', {
 
   resObs = getScores(demosTest, phecodeOccurrencesTest, weightsTest,
                      diseasePhecodeMapTest)
@@ -121,3 +121,20 @@ test_that('getResidualScores output', {
 
   expect_equal(resObs, resExp)
 })
+
+
+test_that('runPhers output', {
+
+  diseaseIdTest = 1
+  resObs = runPhers(
+    demosTest,  icdTest, diseaseIdTest, diseasePhecodeMapTest,
+    icdPhecodeMap = icdPhecodeMapTest, dxIcd = dxIcdTest)
+
+  resExp = data.table(
+    person_id = seq_len(4),
+    disease_id = rep(1, 4),
+    score = c(0.60206, 0.90309, 0.30103, 0.00000))
+
+  expect_equal(resObs, resExp, ignore_attr = TRUE)
+})
+
