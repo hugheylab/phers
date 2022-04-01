@@ -132,35 +132,36 @@
 <span class="va">genoStats</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">geneVarMap</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">gene</span>, <span class="va">vid</span><span class="op">)</span><span class="op">]</span>, <span class="va">genoStats</span>, by <span class="op">=</span> <span class="st">'vid'</span><span class="op">)</span>
 
 <span class="va">genoStats</span>
-<span class="co">#&gt;       vid gene disease_id n_total n_wt n_het n_hom       beta       se</span>
-<span class="co">#&gt;  1:  snp1 FBN1     154700       5    4     1     0 -0.6461531 4.096487</span>
-<span class="co">#&gt;  2: snp10 FBN1     154700       5    4     0     1  2.2876565 1.277030</span>
-<span class="co">#&gt;  3:  snp2 FBN1     154700       5    4     1     0  3.5503484 4.043612</span>
-<span class="co">#&gt;  4:  snp3 FBN1     154700       5    4     0     1 -0.3230766 2.048244</span>
-<span class="co">#&gt;  5:  snp4 FBN1     154700       5    5     0     0         NA       NA</span>
-<span class="co">#&gt;  6:  snp5 FBN1     154700       5    5     0     0         NA       NA</span>
-<span class="co">#&gt;  7:  snp6 FBN1     154700       5    4     1     0  3.5503484 4.043612</span>
-<span class="co">#&gt;  8:  snp7 FBN1     154700       5    5     0     0         NA       NA</span>
-<span class="co">#&gt;  9:  snp8 FBN1     154700       5    4     0     1 -1.9645800 1.522401</span>
-<span class="co">#&gt; 10:  snp9 FBN1     154700       5    2     2     1 -2.4752089 1.088192</span>
-<span class="co">#&gt;          pval   ci_lower   ci_upper</span>
-<span class="co">#&gt;  1: 0.8891529 -8.6751208  7.3828145</span>
-<span class="co">#&gt;  2: 0.2151086 -0.2152759  4.7905890</span>
-<span class="co">#&gt;  3: 0.4725390 -4.3749862 11.4756829</span>
-<span class="co">#&gt;  4: 0.8891529 -4.3375604  3.6914073</span>
-<span class="co">#&gt;  5:        NA         NA         NA</span>
-<span class="co">#&gt;  6:        NA         NA         NA</span>
-<span class="co">#&gt;  7: 0.4725390 -4.3749862 11.4756829</span>
-<span class="co">#&gt;  8:        NA         NA         NA</span>
-<span class="co">#&gt;  9: 0.3259557 -4.9484307  1.0192708</span>
-<span class="co">#&gt; 10: 0.1507597 -4.6080260 -0.3423918</span></code></pre></div>
+<span class="co">#&gt;       vid gene disease_id n_total n_wt n_het n_hom        beta        se</span>
+<span class="co">#&gt;  1:  snp1 FBN1     154700      50   37     6     7  0.09127495 0.3104743</span>
+<span class="co">#&gt;  2: snp10 FBN1     154700      50   38     8     4  0.13439432 0.3551369</span>
+<span class="co">#&gt;  3:  snp2 FBN1     154700      50   38     8     4 -0.26837334 0.3512867</span>
+<span class="co">#&gt;  4:  snp3 FBN1     154700      50   40     8     2 -0.12225112 0.4215441</span>
+<span class="co">#&gt;  5:  snp4 FBN1     154700      50   39     9     2 -0.03967130 0.4137205</span>
+<span class="co">#&gt;  6:  snp5 FBN1     154700      50   38     8     4 -0.50278048 0.3451162</span>
+<span class="co">#&gt;  7:  snp6 FBN1     154700      50   38     7     5 -0.42262633 0.3265978</span>
+<span class="co">#&gt;  8:  snp7 FBN1     154700      50   40    10     0 -0.26154723 0.5389608</span>
+<span class="co">#&gt;  9:  snp8 FBN1     154700      50   42     7     1  0.15215544 0.4996790</span>
+<span class="co">#&gt; 10:  snp9 FBN1     154700      50   43     6     1 -0.54231663 0.5121399</span>
+<span class="co">#&gt;          pval   ci_lower  ci_upper</span>
+<span class="co">#&gt;  1: 0.7700634 -0.5172435 0.6997934</span>
+<span class="co">#&gt;  2: 0.7068155 -0.5616613 0.8304499</span>
+<span class="co">#&gt;  3: 0.4487021 -0.9568826 0.4201359</span>
+<span class="co">#&gt;  4: 0.7730859 -0.9484624 0.7039602</span>
+<span class="co">#&gt;  5: 0.9240163 -0.8505486 0.7712060</span>
+<span class="co">#&gt;  6: 0.1518083 -1.1791958 0.1736348</span>
+<span class="co">#&gt;  7: 0.2019789 -1.0627463 0.2174937</span>
+<span class="co">#&gt;  8: 0.6297318 -1.3178911 0.7947966</span>
+<span class="co">#&gt;  9: 0.7620864 -0.8271975 1.1315083</span>
+<span class="co">#&gt; 10: 0.2950469 -1.5460924 0.4614591</span></code></pre></div>
 <p>run positive control analysis</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dxStatus</span> <span class="op">=</span> <span class="fu"><a href="../reference/getDxStatus.html">getDxStatus</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">icdSample</span><span class="op">)</span>
 
 <span class="va">plotInput</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">rscores</span>, <span class="va">dxStatus</span>, by <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'person_id'</span>, <span class="st">'disease_id'</span><span class="op">)</span><span class="op">)</span>
 
-<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plotInput</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">dx_status</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">resid_score</span><span class="op">)</span><span class="op">)</span></code></pre></div>
+<span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">plotInput</span><span class="op">)</span> <span class="op">+</span> 
+  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_boxplot.html" class="external-link">geom_boxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">dx_status</span>, y <span class="op">=</span> <span class="va">resid_score</span>, color <span class="op">=</span> <span class="va">dx_status</span><span class="op">)</span><span class="op">)</span></code></pre></div>
 <p><img src="generate_phers_files/figure-html/unnamed-chunk-4-1.png" width="700"></p>
   </div>
 
