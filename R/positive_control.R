@@ -32,10 +32,10 @@ getDxStatus = function(
 
   cases = merge(icdOccurrences, diseaseDxIcdMap, by = c('icd', 'flag'))
   cases = unique(cases[, c('person_id', 'disease_id')])
-  cases[, dx_status := 1]
+  cases[, dx_status := 'case']
 
   dxStatus = merge(CJ(person_id = demos$person_id,
            disease_id = unique(diseaseDxIcdMap$disease_id)),
         cases, by = c('person_id', 'disease_id'), all.x = TRUE)
-  dxStatus[is.na(dx_status), dx_status := 0]
+  dxStatus[is.na(dx_status), dx_status := 'control']
   return(dxStatus[])}

@@ -5,7 +5,7 @@
 \alias{genoSample}
 \title{Sample genotype dataset}
 \format{
-A data table with 5 rows and the 21 columns. The first column is
+A data table with 50 rows and the 11 columns. The first column is
 \code{person_id} and the rest are variant IDs.
 }
 \usage{

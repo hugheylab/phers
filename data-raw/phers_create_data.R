@@ -61,30 +61,47 @@ usethis::use_data(preCalcWeights, overwrite = TRUE)
 
 #######################
 # sample demographic, ICD code, and genotype data
+npop = 50
+set.seed(1)
 
 # demographic data
 demoSample = data.table(
-  person_id = 1:5,
-  sex = c('female', 'male', 'male', 'female', 'female'))
+  person_id = 1:npop,
+  sex = sample(c('male', 'female'),
+               size = npop, replace = TRUE, prob = c(0.5, 0.5)))
 usethis::use_data(demoSample, overwrite = TRUE)
 
 # ICD codes
-icdSample = data.table(
-  person_id = c(rep(1L, 3), rep(2L, 4), rep(3L, 2), 4),
-  icd = c('365', '366', '734', '759.82', '524.0', '718.4', '441', '366', '734', '441'),
-  flag = 9)
+maxIcdCount = 5
+npopAll = 45
+npopMarfan = 4
+marfanId = 154700
+flag1 = 9
+IcdCodes = icdPhecodeMap[flag == flag1 & !(icd %in% diseaseDxIcdMap[disease_id == marfanId]$icd)]$icd
+
+icdCounts = replicate(npopAll,  sample(1:maxIcdCount, 1))
+icdSampleAll = lapply(
+  icdCounts, sample, x = IcdCodes, replace = TRUE)
+
+icdSampleAll = data.table(
+  person_id = rep(npopMarfan+1:npopAll, icdCounts),
+  icd = unlist(icdSampleAll), flag = flag1)
+
+icdSampleMarfan = data.table(
+  person_id = c(rep(1L, 4), rep(2L, 4), rep(3L, 2), 4),
+  icd = c('759.82', '365', '366', '734', '759.82',
+          '524.0', '718.4', '441', '366', '734', '441'),
+  flag = flag1)
+
+icdSample = rbind(icdSampleMarfan, icdSampleAll)
+
 usethis::use_data(icdSample, overwrite = TRUE)
 
 # genotype data
-set.seed(1)
-npop = 5
-gene1 = 'FBN1'
 nvar = 10
-genoSample = data.table(person_id = 1:npop)
 genos = replicate(
   nvar, sample(c(0, 1, 2), replace = TRUE, size = npop, prob = c(80, 15, 5)))
 colnames(genos) = paste0('snp', 1:nvar)
-genos = as.data.table(genos)
-genoSample = cbind(genoSample, genos)
+genoSample = data.table(person_id = 1:npop, genos)
 
 usethis::use_data(genoSample, overwrite = TRUE)

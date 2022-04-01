@@ -3,7 +3,7 @@
 #' This table contains a sample dataset of patient diagnostic codes
 #' (ICD-9-CM and ICD-10-CM).
 #'
-#' @format A data table with 9 rows and the 3 following columns:
+#' @format A data table with 134 rows and the 3 following columns:
 #'
 #' * `person_id`: Character vector of the identifier for each
 #'    person
@@ -20,7 +20,7 @@
 #'
 #' This table contains a sample dataset of patient demographics information.
 #'
-#' @format A data table with 5 rows and the 2 following columns:
+#' @format A data table with 50 rows and the 2 following columns:
 #'
 #' * `person_id`: Character vector of the identifier for each
 #'      person in the cohort
@@ -34,7 +34,7 @@
 #'
 #' This table contains a sample dataset of genotypes.
 #'
-#' @format A data table with 5 rows and the 21 columns. The first column is
+#' @format A data table with 50 rows and the 11 columns. The first column is
 #'   `person_id` and the rest are variant IDs.
 #'
 'genoSample'

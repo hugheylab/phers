@@ -5,7 +5,7 @@
 \alias{demoSample}
 \title{Sample demographics dataset}
 \format{
-A data table with 5 rows and the 2 following columns:
+A data table with 50 rows and the 2 following columns:
 \itemize{
 \item \code{person_id}: Character vector of the identifier for each
 person in the cohort

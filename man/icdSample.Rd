@@ -5,7 +5,7 @@
 \alias{icdSample}
 \title{Sample diagnostic code dataset}
 \format{
-A data table with 9 rows and the 3 following columns:
+A data table with 134 rows and the 3 following columns:
 \itemize{
 \item \code{person_id}: Character vector of the identifier for each
 person
