@@ -61,12 +61,12 @@
     <loc>https://phers.hugheylab.org/reference/mapDiseaseToPhecode.html</loc>
   </url>
   <url>
+    <loc>https://phers.hugheylab.org/reference/phers.html</loc>
+  </url>
+  <url>
     <loc>https://phers.hugheylab.org/reference/preCalcWeights.html</loc>
   </url>
   <url>
     <loc>https://phers.hugheylab.org/reference/runLinear.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/runPhers.html</loc>
   </url>
 </urlset>
