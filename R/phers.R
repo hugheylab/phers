@@ -177,8 +177,6 @@ getResidualScores = function(demos, scores, glmFormula) {
 #'   a column `person_id`.
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
 #'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
-#' @param diseaseIds A numeric vector of OMIM disease IDs to calculate
-#'   phenotype risk scores for.
 #' @param diseasePhecodeMap A data.table containing the mapping between
 #'   diseases and phecodes. Must have columns `disease_id` and `phecode`.
 #' @param icdPhecodeMap A data.table containing the mapping between ICD codes
@@ -188,6 +186,13 @@ getResidualScores = function(demos, scores, glmFormula) {
 #'   Must have columns `icd` and `flag`. By default uses a table provided in
 #'   this package with mapping between diseases and ICD codes used to indicate
 #'   their diagnosis. If `NULL` no ICD codes will be removed.
+#' @param preCalcWeights A data.table of pre-calculated weights.
+#'   May use weights provided in this package: `phers::preCalcWeights`,
+#'   which are calculated using data from Vanderbilt University Medical Center.
+#'   Recommended when data provided by the user has low sample size.
+#' @param residScoreFormula  A formula object representing the linear model of
+#'   covariates to be used in the calculation of residual phenotype risk score.
+#'   If `NULL` residual scores won't be calculated.
 #'
 #' @return A data.table containing the phenotype risk score for each person for
 #'   each disease.
@@ -195,16 +200,29 @@ getResidualScores = function(demos, scores, glmFormula) {
 #' @eval example4()
 #'
 #' @export
-runPhers = function(
-  demos, icdOccurrences, diseaseIds, diseasePhecodeMap,
-  icdPhecodeMap = phers::icdPhecodeMap, dxIcd = phers::diseaseDxIcdMap) {
-  disease_id = NULL
+phers = function(
+  demos, icdOccurrences, diseasePhecodeMap,
+  icdPhecodeMap = phers::icdPhecodeMap, dxIcd = phers::diseaseDxIcdMap,
+  preCalcWeights = NULL, residScoreFormula = NULL) {
+
+  assert(checkDataTable(preCalcWeights), checkNull(preCalcWeights))
+  assert(checkFormula(residScoreFormula), checkNull(residScoreFormula))
 
   phecodeOccurrences = getPhecodeOccurrences(
     icdOccurrences, icdPhecodeMap = icdPhecodeMap, dxIcd = dxIcd)
-  weights = getWeights(demos, phecodeOccurrences)
-  scores = getScores(
-    demos, phecodeOccurrences, weights,
-    diseasePhecodeMap[disease_id %in% diseaseIds])
 
-  return(scores[])}
+  if (!is.null(preCalcWeights)) {
+    weights = preCalcWeights}
+  else {
+    weights = getWeights(demos, phecodeOccurrences)}
+
+  scores = getScores(demos, phecodeOccurrences, weights, diseasePhecodeMap)
+
+  if (!is.null(residScoreFormula)) {
+    scores = getResidualScores(
+      demos, scores, glmFormula = residScoreFormula)}
+
+  output = list(
+    phecodeOccurrences = phecodeOccurrences, weights = weights, scores = scores)
+
+  return(output[])}

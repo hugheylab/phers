@@ -84,7 +84,7 @@ icdSampleAll = lapply(
   icdCounts, sample, x = IcdCodes, replace = TRUE)
 
 icdSampleAll = data.table(
-  person_id = rep(npopMarfan+1:npopAll, icdCounts),
+  person_id = rep(npopMarfan + 1:npopAll, icdCounts),
   icd = unlist(icdSampleAll), flag = flag1)
 
 icdSampleMarfan = data.table(

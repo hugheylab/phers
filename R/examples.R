@@ -84,9 +84,18 @@ diseaseId = 154700
 
 # mape diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
+diseasePhecodeMap = diseasePhecodeMap[disease_id %in% diseaseId]
 
-# calculate PheRS
-scores = runPhers(demoSample, icdSample, diseaseId, diseasePhecodeMap)
+# calculate PheRS and residual PheRS
+scores = phers(
+demoSample, icdSample, diseasePhecodeMap, residScoreFormula = ~ sex)
+
+# calculate PheRS using pre-calculated weights provided in the package
+scores = phers(
+demoSample, icdSample, diseasePhecodeMap,
+preCalcWeights = phers::preCalcWeights, residScoreFormula = ~ sex)
+
+
 
   "
   return(strsplit(ex, split = '\n')[[1L]])}
