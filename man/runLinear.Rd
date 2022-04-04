@@ -7,7 +7,7 @@
 runLinear(
   lmInput,
   glmFormula,
-  modelType = c("additive", "genotypic"),
+  modelType = c("additive", "dominant", "recessive", "genotypic"),
   diseaseId,
   snp,
   level = 0.95

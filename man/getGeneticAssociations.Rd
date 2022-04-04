@@ -10,7 +10,7 @@ getGeneticAssociations(
   demos,
   diseaseVariantMap,
   glmFormula,
-  modelType = c("additive", "genotypic"),
+  modelType = c("additive", "dominant", "recessive", "genotypic"),
   level = 0.95,
   dopar = FALSE
 )

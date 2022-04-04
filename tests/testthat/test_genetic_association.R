@@ -11,6 +11,23 @@ test_that('runLinear output (additive)', {
   expect_equal(resObs, resExp)
 })
 
+test_that('runLinear output (dominant)', {
+
+  resObs = runLinear(lmInputTest, formTest, modelType = 'dominant', 1, 'snp1')
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_dominant_output.qs'))
+
+  expect_equal(resObs, resExp)
+})
+
+
+test_that('runLinear output (recessive)', {
+
+  resObs = runLinear(lmInputTest, formTest, modelType = 'recessive', 1, 'snp1')
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_recessive_output.qs'))
+
+  expect_equal(resObs, resExp)
+})
+
 
 test_that('runLinear output (genotypic)', {
 

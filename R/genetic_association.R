@@ -39,7 +39,8 @@
 #' @export
 getGeneticAssociations = function(
   scores, genotypes, demos, diseaseVariantMap, glmFormula,
-  modelType = c('additive', 'genotypic'), level = 0.95, dopar = FALSE) {
+  modelType = c('additive', 'dominant', 'recessive', 'genotypic'),
+                level = 0.95, dopar = FALSE) {
   diseaseId = disease_id = snp = allele_count = count = N = vid = NULL
 
   checkScores(scores)
@@ -120,7 +121,8 @@ getGeneticAssociations = function(
 #'   * `ci_upper`: The upper bound of the `confint` confidence interval
 #'
 runLinear = function(
-  lmInput, glmFormula, modelType = c('additive', 'genotypic'),
+  lmInput, glmFormula,
+  modelType = c('additive', 'dominant', 'recessive', 'genotypic'),
   diseaseId, snp, level = 0.95) {
   ci_lower = melt = pval = se = ci_upper = allele_count = varName = n_het = n_hom =
     n_total = n_wt = NULL
@@ -129,18 +131,22 @@ runLinear = function(
   checkGlmFormula(glmFormula, lmInput)
   modelType = match.arg(modelType)
 
+  lmInput1 = copy(lmInput)
   glmFormula = update.formula(glmFormula, score ~ allele_count + .)
+  varNames = 'allele_count'
 
-  if (modelType == 'additive') {
-    fit = glm(glmFormula, data = lmInput)
-    varNames = 'allele_count'}
+  if (modelType == 'dominant') {
+    lmInput1[allele_count == 2, allele_count := 1]}
+
+  else if (modelType == 'recessive') {
+    lmInput1[allele_count == 1, allele_count := 0]
+    lmInput1[allele_count == 2, allele_count := 1]}
 
   else if (modelType == 'genotypic') {
-    lmInput1 = copy(lmInput)
     lmInput1[, allele_count := as.factor(allele_count)]
-    fit = glm(glmFormula, data = lmInput1)
     varNames = c('allele_count1', 'allele_count2')}
 
+  fit = glm(glmFormula, data = lmInput1)
   stat = data.table(disease_id = diseaseId, vid = snp)
   stat = cbind(stat, getAlleleCounts(lmInput))
 
