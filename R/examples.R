@@ -95,7 +95,5 @@ scores = phers(
 demoSample, icdSample, diseasePhecodeMap,
 preCalcWeights = phers::preCalcWeights, residScoreFormula = ~ sex)
 
-
-
   "
   return(strsplit(ex, split = '\n')[[1L]])}

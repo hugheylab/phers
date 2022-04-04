@@ -6,6 +6,16 @@ icdPhecodeMapTest = data.table(
   icd = c('001', '002', '003', '004', '005'),
   phecode = c('001', '002', '003', '004', '005'), flag = 9)
 
+weightsExp = data.table(
+  phecode = c('001', '002', '003', '004'),
+  prev = c(0.25, 0.50, 0.25, 0.25),
+  w = c(0.60206, 0.30103, 0.60206, 0.60206))
+
+scoresExp = data.table(
+  person_id = seq_len(4),
+  disease_id = rep(1, 4),
+  score = c(0.60206, 0.90309, 0.30103, 0.00000))
+
 test_that('getPhecodeOccurrences output', {
 
   resObs = getPhecodeOccurrences(
@@ -48,11 +58,7 @@ test_that('getPhecodeOccurrences args error', {
 test_that('getWeights output', {
 
   resObs = getWeights(demosTest, phecodeOccurrencesTest)
-  resExp = data.table(
-    phecode = c('001', '002', '003', '004'),
-    prev = c(0.25, 0.50, 0.25, 0.25),
-    w = c(0.60206, 0.30103, 0.60206, 0.60206))
-
+  resExp = weightsExp
   expect_equal(resObs, resExp)
 })
 
@@ -78,11 +84,7 @@ test_that('getScores output', {
 
   resObs = getScores(demosTest, phecodeOccurrencesTest, weightsTest,
                      diseasePhecodeMapTest)
-  resExp = data.table(
-    person_id = seq_len(4),
-    disease_id = rep(1, 4),
-    score = c(0.60206, 0.90309, 0.30103, 0.00000))
-
+  resExp = scoresExp
   expect_equal(resObs, resExp, ignore_attr = TRUE)
 })
 
@@ -130,20 +132,33 @@ test_that('phers output', {
     icdPhecodeMap = icdPhecodeMapTest, dxIcd = dxIcdTest)
   resObs = lapply(resObs, setkey)
 
-  weightsExp = data.table(
-    phecode = c('001', '002', '003', '004'),
-    prev = c(0.25, 0.50, 0.25, 0.25),
-    w = c(0.60206, 0.30103, 0.60206, 0.60206))
-
-  scoresExp = data.table(
-    person_id = seq_len(4),
-    disease_id = rep(1, 4),
-    score = c(0.60206, 0.90309, 0.30103, 0.00000))
-
   resExp = list(
     phecodeOccurrences = phecodeOccurrencesTest,
     weights = weightsExp,
     scores = scoresExp)
+
+  expect_equal(resObs, resExp, ignore_attr = TRUE)
+})
+
+
+test_that('phers output (calculate residual scores)', {
+
+  resObs = phers(
+    demosTest,  icdTest, diseasePhecodeMapTest,
+    icdPhecodeMap = icdPhecodeMapTest, dxIcd = dxIcdTest,
+    residScoreFormula = formTest)
+  resObs = lapply(resObs, setkey)
+
+  rScoresExp = data.table(
+    person_id = seq_len(4),
+    disease_id = rep(1, 4),
+    score = c(0.60206, 0.90309, 0.30103, 0.00000),
+    resid_score = c(0.4472136, 1.3416408, -0.4472136, -1.3416408))
+
+  resExp = list(
+    phecodeOccurrences = phecodeOccurrencesTest,
+    weights = weightsExp,
+    scores = rScoresExp)
 
   expect_equal(resObs, resExp, ignore_attr = TRUE)
 })

@@ -18,7 +18,8 @@ dataDir = 'data'
 icdTest = data.table(
   person_id = c(1, rep(2L, 2), 3, rep(4L, 2)),
   icd = c('001', '002', '003', '002', '004', '005'), flag = 9)
-demosTest = data.table(person_id = 1:4)
+demosTest = data.table(
+  person_id = 1:4, sex = c('female', 'male', 'female', 'male'))
 phecodeOccurrencesTest = data.table(
   person_id = c(1, rep(2L, 2), 3, 4),
   phecode = c('001', '002', '003', '002', '004'))
