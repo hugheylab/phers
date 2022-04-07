@@ -107,8 +107,10 @@ If <code>NULL</code> residual scores won't be calculated.</p></dd>
 </dl></div>
     <div id="value">
     <h2>Value</h2>
-    <p>A data.table containing the phenotype risk score for each person for
-each disease.</p>
+    <p>A list containing 3 items: 1) data.table of phecode occurrences in
+the cohort. 2) data.table of weights assigned to each phecode.
+3) data.table of raw (and residual if residScoreFormula is not <code>NULL</code>)
+phenotype risk scores for each person and each disease.</p>
     </div>
 
     <div id="ref-examples">
