@@ -43,8 +43,10 @@ covariates to be used in the calculation of residual phenotype risk score.
 If \code{NULL} residual scores won't be calculated.}
 }
 \value{
-A data.table containing the phenotype risk score for each person for
-each disease.
+A list containing 3 items: 1) data.table of phecode occurrences in
+the cohort. 2) data.table of weights assigned to each phecode.
+3) data.table of raw (and residual if residScoreFormula is not \code{NULL})
+phenotype risk scores for each person and each disease.
 }
 \description{
 This function calculates phenotype risk scores given patient ICD codes
