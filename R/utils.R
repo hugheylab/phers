@@ -21,8 +21,12 @@ checkPhecodeOccurrences = function(phecodeOccurrences, demos) {
   assertNames(colnames(phecodeOccurrences),
               must.include = c('person_id', 'phecode'),
               disjunct.from = c('w', 'disease_id'))
+
+  coll = makeAssertCollection()
   assertSubset(phecodeOccurrences$person_id,
-               demos$person_id, empty.ok = FALSE)
+               demos$person_id, empty.ok = FALSE, add = coll)
+  reportSubsetAssertions(phecodeOccurrences$person_id, demos$person_id, coll)
+
   assertCharacter(phecodeOccurrences$phecode)
   invisible()}
 
@@ -69,8 +73,12 @@ checkDiseaseVariantMap = function(diseaseVariantMap, scores) {
   assertNames(
     colnames(diseaseVariantMap), must.include = c('disease_id', 'vid'))
   assert(anyDuplicated(diseaseVariantMap[, c('disease_id', 'vid')]) == 0)
+
+  coll = makeAssertCollection()
   assertSubset(scores$disease_id,
-               diseaseVariantMap$disease_id, empty.ok = FALSE)
+               diseaseVariantMap$disease_id, empty.ok = FALSE, add = coll)
+  reportSubsetAssertions(scores$disease_id, diseaseVariantMap$disease_id, coll)
+
   invisible()}
 
 
@@ -103,3 +111,13 @@ getAlleleCounts = function(lmInput) {
   dCounts[, n_het := sum(lmInput$allele_count == 1)]
   dCounts[, n_hom := sum(lmInput$allele_count == 2)]
 return(dCounts)}
+
+
+reportSubsetAssertions = function(x, choices, coll) {
+  assertClass(coll, "AssertCollection")
+  if (!coll$isEmpty()) {
+    msg1 = paste0(vname(x), ' must be a subset of ', vname(choices))
+    stop(msg1, call. = FALSE)
+  }
+  invisible(TRUE)
+}
