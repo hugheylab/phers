@@ -60,7 +60,12 @@
     </div>
 
     <div id="ref-usage">
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getDxStatus</span><span class="op">(</span><span class="va">demos</span>, <span class="va">icdOccurrences</span>, diseaseDxIcdMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseDxIcdMap.html">diseaseDxIcdMap</a></span><span class="op">)</span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="fu">getDxStatus</span><span class="op">(</span>
+  <span class="va">demos</span>,
+  <span class="va">icdOccurrences</span>,
+  minUniqDates <span class="op">=</span> <span class="fl">2</span>,
+  diseaseDxIcdMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseDxIcdMap.html">diseaseDxIcdMap</a></span>
+<span class="op">)</span></code></pre></div>
     </div>
 
     <div id="arguments">
@@ -70,7 +75,11 @@
 a column <code>person_id</code>.</p></dd>
 <dt>icdOccurrences</dt>
 <dd><p>A data.table of occurrences of ICD codes for each
-person in the cohort. Must have columns <code>person_id</code>, <code>icd</code>, and <code>flag</code>.</p></dd>
+person in the cohort.
+Must have columns <code>person_id</code>, <code>icd</code>, <code>flag</code>, and <code>entry_date</code>.</p></dd>
+<dt>minUniqDates</dt>
+<dd><p>Positive integer indicating the minimum number of unique
+ICD code entry dates required to classify a person as a case.</p></dd>
 <dt>diseaseDxIcdMap</dt>
 <dd><p>A data.table containing mapping between diseases and
 the icd codes that represent being diagnosed with them. Must have columns
