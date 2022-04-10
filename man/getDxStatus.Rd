@@ -4,14 +4,23 @@
 \alias{getDxStatus}
 \title{Identify Mendelian disease cases and controls}
 \usage{
-getDxStatus(demos, icdOccurrences, diseaseDxIcdMap = phers::diseaseDxIcdMap)
+getDxStatus(
+  demos,
+  icdOccurrences,
+  minUniqDates = 2,
+  diseaseDxIcdMap = phers::diseaseDxIcdMap
+)
 }
 \arguments{
 \item{demos}{A data.table having one row per person in the cohort. Must have
 a column \code{person_id}.}
 
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
-person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{flag}.}
+person in the cohort.
+Must have columns \code{person_id}, \code{icd}, \code{flag}, and \code{entry_date}.}
+
+\item{minUniqDates}{Positive integer indicating the minimum number of unique
+ICD code entry dates required to classify a person as a case.}
 
 \item{diseaseDxIcdMap}{A data.table containing mapping between diseases and
 the icd codes that represent being diagnosed with them. Must have columns

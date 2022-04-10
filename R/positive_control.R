@@ -5,7 +5,10 @@
 #' @param demos A data.table having one row per person in the cohort. Must have
 #'   a column `person_id`.
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
-#'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
+#'   person in the cohort.
+#'   Must have columns `person_id`, `icd`, `flag`, and `entry_date`.
+#' @param minUniqDates Positive integer indicating the minimum number of unique
+#'   ICD code entry dates required to classify a person as a case.
 #' @param diseaseDxIcdMap A data.table containing mapping between diseases and
 #'   the icd codes that represent being diagnosed with them. Must have columns
 #'   `disease_id`, `icd` and `flag`.
@@ -18,11 +21,15 @@
 #'
 #' @export
 getDxStatus = function(
-  demos, icdOccurrences, diseaseDxIcdMap = phers::diseaseDxIcdMap) {
-  dx_status = NULL
+  demos, icdOccurrences, minUniqDates = 2,
+  diseaseDxIcdMap = phers::diseaseDxIcdMap) {
+  dx_status = entry_date = uniq_dates = . = NULL
 
   checkDemos(demos)
-  checkIcdOccurrences(icdOccurrences)
+  checkIcdOccurrences(
+    icdOccurrences, cols = c('person_id', 'icd', 'flag', 'entry_date'))
+  checkDate(icdOccurrences$entry_date)
+  assertCount(minUniqDates, positive = TRUE)
 
   assertDataTable(diseaseDxIcdMap)
   assertNames(colnames(diseaseDxIcdMap),
@@ -31,7 +38,8 @@ getDxStatus = function(
   assertCharacter(diseaseDxIcdMap$icd)
 
   cases = merge(icdOccurrences, diseaseDxIcdMap, by = c('icd', 'flag'))
-  cases = unique(cases[, c('person_id', 'disease_id')])
+  cases = cases[, .(uniq_dates = uniqueN(entry_date)), by=c('person_id', 'disease_id')]
+  cases = cases[uniq_dates >= minUniqDates, !'uniq_dates']
   cases[, dx_status := 1]
 
   dxStatus = merge(CJ(person_id = demos$person_id,

@@ -78,6 +78,7 @@ npopMarfan = 4
 marfanId = 154700
 flag1 = 9
 IcdCodes = icdPhecodeMap[flag == flag1 & !(icd %in% diseaseDxIcdMap[disease_id == marfanId]$icd)]$icd
+entryDates = seq(as.Date('2000/01/01'), as.Date('2010/01/01'), by="day")
 
 icdCounts = replicate(npopAll,  sample(1:maxIcdCount, 1))
 icdSampleAll = lapply(
@@ -86,12 +87,13 @@ icdSampleAll = lapply(
 icdSampleAll = data.table(
   person_id = rep(npopMarfan + 1:npopAll, icdCounts),
   icd = unlist(icdSampleAll), flag = flag1)
+icdSampleAll = icdSampleAll[ , entry_date := sample(entryDates, nrow(icdSampleAll))]
 
 icdSampleMarfan = data.table(
-  person_id = c(rep(1L, 4), rep(2L, 4), rep(3L, 2), 4),
-  icd = c('759.82', '365', '366', '734', '759.82',
+  person_id = c(rep(1L, 4), rep(2L, 5), rep(3L, 2), 4),
+  icd = c('759.82', '365', '366', '734', '759.82', '759.82',
           '524.0', '718.4', '441', '366', '734', '441'),
-  flag = flag1)
+  flag = flag1, entry_date = sample(entryDates, nrow(icdSampleMarfan)))
 
 icdSample = rbind(icdSampleMarfan, icdSampleAll)
 

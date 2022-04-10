@@ -5,7 +5,7 @@
 \alias{icdSample}
 \title{Sample diagnostic code dataset}
 \format{
-A data table with 134 rows and the 3 following columns:
+A data table with 141 rows and the 4 following columns:
 \itemize{
 \item \code{person_id}: Character vector of the identifier for each
 person
@@ -13,6 +13,8 @@ person
 for each person
 \item \code{flag}: Numeric vector representing the vocabulary of the
 ICD code (\strong{9}: ICD-9-CM,  \strong{10}: ICD-10-CM)
+\item \code{entry_date}: vector of type \code{Date} indicating the date ICD code was
+recorded.
 }
 }
 \usage{

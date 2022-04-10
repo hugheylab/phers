@@ -56,6 +56,10 @@ getPhecodeOccurrences = function(
   pheOccs = merge(
     icdOccurrences, icdPhecodeMap, by = c('icd', 'flag'), allow.cartesian = TRUE)
   pheOccs = pheOccs[, !c('icd', 'flag')]
+
+  colsFirst = c('person_id', 'phecode')
+  setcolorder(pheOccs, c(colsFirst, setdiff(names(pheOccs), colsFirst)))
+
   return(pheOccs)}
 
 

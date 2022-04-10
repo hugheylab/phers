@@ -3,8 +3,8 @@ weightsTest = data.table(
   prev = c(1 / 4, 2 / 4, 1 / 4, 1 / 4), w = -log10(c(1 / 4, 2 / 4, 1 / 4, 1 / 4)))
 
 icdPhecodeMapTest = data.table(
-  icd = c('001', '002', '003', '004', '005'),
-  phecode = c('001', '002', '003', '004', '005'), flag = 9)
+  icd = c('001', '002', '003', '004', '005', '006'),
+  phecode = c('001', '002', '003', '004', '005', '006'), flag = 9)
 
 weightsExp = data.table(
   phecode = c('001', '002', '003', '004'),
@@ -23,7 +23,7 @@ test_that('getPhecodeOccurrences output', {
   setkey(resObs)
   resExp = phecodeOccurrencesTest
 
-  expect_equal(resObs, resExp)
+  expect_equal(resObs, resExp, ignore_attr = TRUE)
 })
 
 
@@ -33,8 +33,9 @@ test_that('getPhecodeOccurrences output (dxIcd = NULL)', {
     icdTest, icdPhecodeMap = icdPhecodeMapTest, dxIcd = NULL)
   setkey(resObs)
   resExp = data.table(
-    person_id = c(1, rep(2L, 2), 3, rep(4L, 2)),
-    phecode = c('001', '002', '003', '002', '004', '005'))
+    person_id = c(1, rep(2L, 2), 3, rep(4L, 3)),
+    phecode = c('001', '002', '003', '002', '004', '005', '006'),
+    entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/07'), by="day"))
   setkey(resExp)
 
   expect_equal(resObs, resExp)

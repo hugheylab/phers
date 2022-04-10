@@ -8,3 +8,4 @@
 ^codecov\.yml$
 ^\.github$
 ^README\.Rmd$
+^lint_ignore\.csv$

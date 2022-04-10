@@ -3,7 +3,7 @@
 #' This table contains a sample dataset of patient diagnostic codes
 #' (ICD-9-CM and ICD-10-CM).
 #'
-#' @format A data table with 134 rows and the 3 following columns:
+#' @format A data table with 141 rows and the 4 following columns:
 #'
 #' * `person_id`: Character vector of the identifier for each
 #'    person
@@ -11,6 +11,8 @@
 #'    for each person
 #' * `flag`: Numeric vector representing the vocabulary of the
 #'    ICD code (**9**: ICD-9-CM,  **10**: ICD-10-CM)
+#' * `entry_date`: vector of type `Date` indicating the date ICD code was
+#'                 recorded.
 #'
 #' @seealso [getPhecodeOccurrences()], [getWeights()], [getScores()]
 'icdSample'
