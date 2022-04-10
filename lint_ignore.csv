@@ -1,0 +1,25 @@
+filename,line_number,message,line
+R/phers.R,82,Variable and function name style should be camelCase.,phecode = person_id = . = prev = w = NULL
+R/phers.R,115,Variable and function name style should be camelCase.,person_id = phecode = disease_id = w = score = . = NULL
+R/phers.R,156,Variable and function name style should be camelCase.,disease_id = diseaseId = resid_score = . = person_id = score = NULL
+R/positive_control.R,26,Variable and function name style should be camelCase.,dx_status = entry_date = uniq_dates = . = NULL
+R/positive_control.R,41,Put spaces around all infix operators.,"cases = cases[, .(uniq_dates = uniqueN(entry_date)), by=c('person_id', 'disease_id')]"
+R/positive_control.R,43,Variable and function name style should be camelCase.,"cases[, dx_status := 1]"
+R/positive_control.R,48,Variable and function name style should be camelCase.,"dxStatus[is.na(dx_status), dx_status := 0]"
+R/utils.R,108,Variable and function name style should be camelCase.,n_het = n_hom = n_wt = NULL
+R/utils.R,111,Variable and function name style should be camelCase.,"dCounts[, n_wt := sum(lmInput$allele_count == 0)]"
+R/utils.R,112,Variable and function name style should be camelCase.,"dCounts[, n_het := sum(lmInput$allele_count == 1)]"
+R/utils.R,113,Variable and function name style should be camelCase.,"dCounts[, n_hom := sum(lmInput$allele_count == 2)]"
+R/utils.R,118,Only use single-quotes.,"assertClass(coll, ""AssertCollection"")"
+data-raw/phers_create_data.R,81,Put spaces around all infix operators.,"entryDates = seq(as.Date('2000/01/01'), as.Date('2010/01/01'), by=""day"")"
+data-raw/phers_create_data.R,81,Only use single-quotes.,"entryDates = seq(as.Date('2000/01/01'), as.Date('2010/01/01'), by=""day"")"
+data-raw/phers_create_data.R,90,Do not place spaces around code in parentheses or square brackets.,"icdSampleAll = icdSampleAll[ , entry_date := sample(entryDates, nrow(icdSampleAll))]"
+data-raw/phers_create_data.R,90,Commas should never have a space before.,"icdSampleAll = icdSampleAll[ , entry_date := sample(entryDates, nrow(icdSampleAll))]"
+data-raw/phers_create_data.R,90,Variable and function name style should be camelCase.,"icdSampleAll = icdSampleAll[ , entry_date := sample(entryDates, nrow(icdSampleAll))]"
+tests/testthat/setup.R,22,Put spaces around all infix operators.,"entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/07'), by=""day""))"
+tests/testthat/setup.R,22,Only use single-quotes.,"entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/07'), by=""day""))"
+tests/testthat/setup.R,28,Put spaces around all infix operators.,"entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/05'), by=""day""))"
+tests/testthat/setup.R,28,Only use single-quotes.,"entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/05'), by=""day""))"
+tests/testthat/test_phers.R,38,Put spaces around all infix operators.,"entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/07'), by=""day""))"
+tests/testthat/test_phers.R,38,Only use single-quotes.,"entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/07'), by=""day""))"
+ 
