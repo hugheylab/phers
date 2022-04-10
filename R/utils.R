@@ -115,7 +115,7 @@ return(dCounts)}
 
 
 reportSubsetAssertions = function(x, choices, coll) {
-  assertClass(coll, "AssertCollection")
+  assertClass(coll, 'AssertCollection')
   if (!coll$isEmpty()) {
     msg1 = paste0(vname(x), ' must be a subset of ', vname(choices))
     stop(msg1, call. = FALSE)

@@ -38,7 +38,7 @@ getDxStatus = function(
   assertCharacter(diseaseDxIcdMap$icd)
 
   cases = merge(icdOccurrences, diseaseDxIcdMap, by = c('icd', 'flag'))
-  cases = cases[, .(uniq_dates = uniqueN(entry_date)), by=c('person_id', 'disease_id')]
+  cases = cases[, .(uniq_dates = uniqueN(entry_date)), by = c('person_id', 'disease_id')]
   cases = cases[uniq_dates >= minUniqDates, !'uniq_dates']
   cases[, dx_status := 1]
 
