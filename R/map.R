@@ -164,16 +164,16 @@ mapDiseaseToPhecode = function(
 
   assertDataTable(diseaseHpoMap)
   assertNames(
-    colnames(diseaseHpoMap), must.include = c('disease_id', 'term_id'))
-  assertNumeric(diseaseHpoMap$term_id)
+    colnames(diseaseHpoMap), must.include = c('disease_id', 'hpo_term_id'))
+  assertCharacter(diseaseHpoMap$hpo_term_id)
 
   assertDataTable(hpoPhecodeMap)
   assertNames(
-    colnames(hpoPhecodeMap), must.include = c('term_id', 'phecode'))
-  assertNumeric(hpoPhecodeMap$term_id)
+    colnames(hpoPhecodeMap), must.include = c('hpo_term_id', 'phecode'))
+  assertCharacter(hpoPhecodeMap$hpo_term_id)
   assertCharacter(hpoPhecodeMap$phecode, any.missing = FALSE, min.chars = 1)
 
-  diseasePhecodeMap = merge(diseaseHpoMap, hpoPhecodeMap, by = 'term_id')
+  diseasePhecodeMap = merge(diseaseHpoMap, hpoPhecodeMap, by = 'hpo_term_id')
   diseasePhecodeMap = unique(diseasePhecodeMap[, c('disease_id', 'phecode')])
 
   return(diseasePhecodeMap)}

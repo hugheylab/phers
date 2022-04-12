@@ -33,9 +33,10 @@ test_that('getPhecodeOccurrences output (dxIcd = NULL)', {
     icdTest, icdPhecodeMap = icdPhecodeMapTest, dxIcd = NULL)
   setkey(resObs)
   resExp = data.table(
-    person_id = c(1, rep(2L, 2), 3, rep(4L, 3)),
-    phecode = c('001', '002', '003', '002', '004', '005', '006'),
-    entry_date = seq(as.Date('2000/01/01'), as.Date('2000/01/07'), by="day"))
+    person_id = c(1, rep(2L, 3), 3, rep(4L, 3)),
+    phecode = c('001', '002', '003', '005', '002', '004', '005', '006'),
+    entry_date = c(rep(as.Date('2000/01/01'), 6),
+                   c(as.Date('2000/01/01'), as.Date('2000/01/02'))))
   setkey(resExp)
 
   expect_equal(resObs, resExp)

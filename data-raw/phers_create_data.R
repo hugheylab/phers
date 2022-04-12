@@ -3,40 +3,31 @@ library('data.table')
 rawDir = 'data-raw'
 
 ########################
-# map of icd and phecode
+# ICD code to phecode map
 
 icdPhecodeMap = fread(file.path(rawDir, 'icd_phecode_map.csv.gz'),
                       colClasses = list(character = c('icd', 'phecode')))
 usethis::use_data(icdPhecodeMap, overwrite = TRUE)
 
 #######################
-# map of disease ID and HPO terms
+# OMIM disease ID to HPO term map
 
 diseaseHpoMap = fread(file.path(rawDir, 'disease_hpo_map_omim.csv.gz'))
 usethis::use_data(diseaseHpoMap, overwrite = TRUE)
 
 #######################
-# map of HPO terms and phecodes
+# HPO term to phecode map
 
 hpoPhecodeMap = fread(file.path(rawDir, 'hpo_phecode_map.csv.gz'),
                       colClasses = list(character = 'phecode'))
-hpoPhecodeMap = hpoPhecodeMap[phecode != '' & !is.na(phecode)]
 usethis::use_data(hpoPhecodeMap, overwrite = TRUE)
 
 #######################
-# map of disease ID and diagnosis ICD codes
+# OMIM disease ID to diagnosic ICD code map
 
 diseaseDxIcdMap = fread(
   file.path(rawDir, 'disease_dx_icd_map_omim.csv.gz'),
-  select = c('dID', 'disease', 'ICD', 'ICD_string', 'flag'),
-  colClasses = list(character = 'ICD'))
-
-diseaseDxIcdMap = diseaseDxIcdMap[dID != '-']
-diseaseDxIcdMap[, dID := as.numeric(dID)]
-
-setnames(
-  diseaseDxIcdMap, c('dID', 'disease', 'ICD', 'ICD_string'),
-  c('disease_id', 'disease_name', 'icd', 'icd_string'))
+  colClasses = list(character = 'icd'))
 
 usethis::use_data(diseaseDxIcdMap, overwrite = TRUE)
 

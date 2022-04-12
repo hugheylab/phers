@@ -37,13 +37,20 @@ getDxStatus = function(
               disjunct.from = 'person_id')
   assertCharacter(diseaseDxIcdMap$icd)
 
-  cases = merge(icdOccurrences, diseaseDxIcdMap, by = c('icd', 'flag'))
-  cases = cases[, .(uniq_dates = uniqueN(entry_date)), by = c('person_id', 'disease_id')]
-  cases = cases[uniq_dates >= minUniqDates, !'uniq_dates']
+  dxIcd = merge(
+    icdOccurrences,
+    diseaseDxIcdMap[, c('disease_id', 'icd', 'flag')],
+    by = c('icd', 'flag'))
+  dxIcd = dxIcd[, .(uniq_dates = uniqueN(entry_date)), by = c('person_id', 'disease_id')]
+  cases = dxIcd[uniq_dates >= minUniqDates, !'uniq_dates']
   cases[, dx_status := 1]
 
-  dxStatus = merge(CJ(person_id = demos$person_id,
-           disease_id = unique(diseaseDxIcdMap$disease_id)),
-        cases, by = c('person_id', 'disease_id'), all.x = TRUE)
+  exclude = dxIcd[uniq_dates < minUniqDates & uniq_dates > 0, !'uniq_dates']
+  cohort = fsetdiff(
+    CJ(person_id = demos$person_id,
+       disease_id = unique(diseaseDxIcdMap$disease_id)),
+    exclude)
+
+  dxStatus = merge(cohort, cases, by = c('person_id', 'disease_id'), all.x = TRUE)
   dxStatus[is.na(dx_status), dx_status := 0]
   return(dxStatus[])}

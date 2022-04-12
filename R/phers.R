@@ -35,7 +35,7 @@ getPhecodeOccurrences = function(
 
   assertDataTable(icdPhecodeMap)
   assertNames(colnames(icdPhecodeMap),
-              permutation.of = c('phecode', 'icd', 'flag'))
+              must.include = c('phecode', 'icd', 'flag'))
   assertCharacter(icdPhecodeMap$icd)
   assertCharacter(icdPhecodeMap$phecode)
   assert(anyDuplicated(icdPhecodeMap) == 0)
@@ -54,7 +54,8 @@ getPhecodeOccurrences = function(
     icdOccurrences = icdOccurrences[!dxIcd, on = c('icd', 'flag')]}
 
   pheOccs = merge(
-    icdOccurrences, icdPhecodeMap, by = c('icd', 'flag'), allow.cartesian = TRUE)
+    icdOccurrences, icdPhecodeMap[, c('icd', 'flag', 'phecode')],
+    by = c('icd', 'flag'), allow.cartesian = TRUE)
   pheOccs = pheOccs[, !c('icd', 'flag')]
 
   colsFirst = c('person_id', 'phecode')
