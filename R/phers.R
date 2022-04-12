@@ -124,8 +124,6 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
                diseasePhecodeMap, by = 'phecode', allow.cartesian = TRUE)
 
   rBig = merge(rBig, weights, by = 'phecode')
-
-
   rSum = rBig[, .(score = sum(w)), by = .(person_id, disease_id)]
   r = merge(CJ(person_id = demos$person_id,
                disease_id = unique(diseasePhecodeMap$disease_id)),
