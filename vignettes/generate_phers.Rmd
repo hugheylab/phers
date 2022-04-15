@@ -21,6 +21,7 @@ library('phers')
 library('data.table')
 library('iterators')
 library('ggplot2')
+library('BEDMatrix')
 
 # doParallel::registerDoParallel() # register a parallel backend to minimize runtime
 ```
@@ -52,18 +53,18 @@ scores = getScores(
   demoSample, phecodeOccurrences, pWeights, diseasePhecodeMap[disease_id == diseaseIds])
 ```
 
+
 perform genotype association 
 ```{r}
 # create a map of diseases and variants
 diseaseId = 154700
 diseaseGeneMap = data.table(disease_id = diseaseId, gene = 'FBN1')
-geneVarMap = data.table(gene = 'FBN1', vid = paste0('snp', 1:20))
+geneVarMap = data.table(gene = 'FBN1', vid = paste0('snp', 1:10))
 diseaseVariantMap = merge(diseaseGeneMap, geneVarMap, by = 'gene')
 
 # run genetic association tests
 genoStats = getGeneticAssociations(
-  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = as.formula(~ sex),
-  modelType = 'additive')
+  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = as.formula(~ sex), modelType = 'additive')
 
 genoStats = merge(geneVarMap[, .(gene, vid)], genoStats, by = 'vid')
 

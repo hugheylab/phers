@@ -53,12 +53,6 @@ getGeneticAssociations = function(
 
   lmInput = merge(scores, demos, by = 'person_id')
 
-  # remove snps with only one genotype in the population
-  genoCount = melt(
-    genotypes[, lapply(.SD, uniqueN), .SDcols = colnames(genotypes)],
-    id.vars = 'person_id', variable.name = 'snp', value.name = 'count')
-  okSnps = unique(genoCount[count != 1]$snp)
-
 
   reg = foreach::getDoParRegistered()
   doOp = if (dopar && reg) `%dopar%` else `%do%`
@@ -67,23 +61,35 @@ getGeneticAssociations = function(
   statsAll = doOp(foe, {
 
     lmInputSub = lmInput[disease_id == diseaseId, !'disease_id']
-    # making sure the snps we're looping through are in genotypes
-    # and are not all 0
-    diseaseVariantMapSub = unique(
-      diseaseVariantMap[disease_id == diseaseId & vid %in% okSnps])
+
+    # making sure the variants we're looping through are in genotypes
+    snpSub = unique(diseaseVariantMap[disease_id == diseaseId]$vid)
+    snpSub = intersect(colnames(genotypes),snpSub)
+
+    genotypesSub = data.table(
+      'person_id' = as.numeric(rownames(genotypes)),
+      genotypes[, snpSub, drop=FALSE])
+
+    # exclude variants with only one genotype in the population
+    genoCount = melt(
+      genotypesSub[, lapply(.SD, uniqueN), .SDcols = snpSub],
+      measure.vars = snpSub , variable.name = 'snp', value.name = 'count',
+      variable.factor = FALSE)
+    snpSub = unique(genoCount[count != 1]$snp)
+
 
     statsSnps = foreach(
-      snp = diseaseVariantMapSub$vid, .combine = rbind) %do% {
+      snp = snpSub, .combine = rbind) %do% {
 
 
-        genotypesSub = genotypes[, c('person_id', snp), with = FALSE]
-        lmInputSub1 = merge(
-          lmInputSub, genotypesSub, by = 'person_id')[, !'person_id']
-        setnames(lmInputSub1, snp, 'allele_count')
-        lmInputSub1 = lmInputSub1[!is.na(allele_count)]
+        genotypesSub2 = genotypesSub[, c('person_id', snp), with = FALSE]
+        lmInputSub2 = merge(
+          lmInputSub, genotypesSub2, by = 'person_id')[, !'person_id']
+        setnames(lmInputSub2, snp, 'allele_count')
+        lmInputSub2 = lmInputSub2[!is.na(allele_count)]
 
         glmStat = runLinear(
-          lmInputSub1, glmFormula, modelType = modelType, diseaseId, snp, level)}
+          lmInputSub2, glmFormula, modelType = modelType, diseaseId, snp, level)}
   })
   return(statsAll[])}
 
@@ -158,9 +164,9 @@ runLinear = function(
       glmStat[, beta := fitSnpCoefs['Estimate']]
       glmStat[, se := fitSnpCoefs['Std. Error']]
       glmStat[, pval := fitSnpCoefs['Pr(>|t|)']]
-      ci =  suppressMessages(confint(fit, level = level))
-      glmStat[, ci_lower := ci[varName, 1]]
-      glmStat[, ci_upper := ci[varName, 2]]}
+      ci =  suppressMessages(confint(fit, parm = varName, level = level))
+      glmStat[, ci_lower := ci[1]]
+      glmStat[, ci_upper := ci[2]]}
 
     c0 = c('beta', 'se', 'pval', 'ci_lower', 'ci_upper')
     c1 = if (varName == 'allele_count1') '_het' else if (

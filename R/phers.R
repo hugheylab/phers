@@ -3,6 +3,7 @@
 #' @importFrom foreach foreach %do% %dopar%
 #' @importFrom stats confint glm as.formula update.formula rstandard
 #' @importFrom iterators iter
+#' @importFrom BEDMatrix BEDMatrix
 NULL
 
 

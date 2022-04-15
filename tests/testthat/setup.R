@@ -1,6 +1,7 @@
 library('data.table')
 library('foreach')
 library('qs')
+library('BEDMatrix')
 registerDoSEQ()
 
 

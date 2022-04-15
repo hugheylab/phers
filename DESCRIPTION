@@ -20,7 +20,8 @@ Imports:
   stats (>= 4.0.2),
   qs (>= 0.25.2),
   MASS (>= 7.3-55),
-  iterators (>= 1.0.14)
+  iterators (>= 1.0.14),
+  BEDMatrix (>= 2.0.3)
 Suggests:
   doParallel (>= 1.0.17),
   knitr,

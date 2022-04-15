@@ -62,10 +62,13 @@ checkScores = function(scores) {
 
 
 checkGenotypes = function(genotypes) {
-  assertDataTable(genotypes)
-  assertNames(colnames(genotypes), must.include = 'person_id',
-              disjunct.from = c('score'))
-  assert(anyDuplicated(genotypes$person_id) == 0)
+
+  if (!inherits(genotypes, 'BEDMatrix')) {
+    stop("genotype must be of type 'BEDMatrix'.")}
+
+  assertNames(colnames(genotypes), disjunct.from = c('score'))
+  assertCharacter(rownames(genotypes))
+  assert(anyDuplicated(rownames(genotypes)) == 0)
   invisible()}
 
 

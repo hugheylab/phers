@@ -1,4 +1,6 @@
 library('data.table')
+library('glue')
+library('BEDMatrix')
 
 rawDir = 'data-raw'
 
@@ -55,12 +57,14 @@ usethis::use_data(preCalcWeights, overwrite = TRUE)
 npop = 50
 set.seed(1)
 
+
 # demographic data
 demoSample = data.table(
   person_id = 1:npop,
   sex = sample(c('male', 'female'),
                size = npop, replace = TRUE, prob = c(0.5, 0.5)))
 usethis::use_data(demoSample, overwrite = TRUE)
+
 
 # ICD codes
 maxIcdCount = 5
@@ -90,11 +94,20 @@ icdSample = rbind(icdSampleMarfan, icdSampleAll)
 
 usethis::use_data(icdSample, overwrite = TRUE)
 
+
 # genotype data
 nvar = 10
-genos = replicate(
-  nvar, sample(c(0, 1, 2), replace = TRUE, size = npop, prob = c(80, 15, 5)))
-colnames(genos) = paste0('snp', 1:nvar)
-genoSample = data.table(person_id = 1:npop, genos)
+alleleFreq = 0.1
+plinkSimPath = file.path(rawDir, 'wgas.sim')
+plinkOut = file.path(rawDir, 'geno_sample')
+
+plinkSim = glue('{nvar} snp {alleleFreq} {alleleFreq} 1 1')
+writeLines(plinkSim, plinkSimPath)
+plinkCmnd = glue('--simulate {plinkSimPath} --make-bed --out {plinkOut} --simulate-ncases {npop/2} --simulate-ncontrols {npop/2} --seed 1')
+system(glue('~/plink_mac_20220402/plink {plinkCmnd}'))
+
+genoSample = BEDMatrix(file.path(rawDir, 'geno_sample'))
+colnames(genoSample) = paste0('snp', 1:nvar)
+rownames(genoSample) = 1:npop
 
 usethis::use_data(genoSample, overwrite = TRUE)

@@ -40,9 +40,9 @@ test_that('runLinear output (genotypic)', {
 
 test_that('getGeneticAssociations output (additive)', {
 
-  genotypesTest = data.table(
-    person_id = 1:6, snp1 = c(2, 1, 1, 0, 0, 0),
-    snp2 = c(0, 1, 0, 0, 0, 1))
+  genotypesTest = BEDMatrix(file.path(dataDir, 'geno_test'))
+  rownames(genotypesTest) = 1:6
+  colnames(genotypesTest) = c('snp1', 'snp2')
   diseaseGeneVarMapTest = data.table(
     disease_id = c(1, 2), gene = c('a', 'b'), vid = c('snp1', 'snp2'))
   resObs = getGeneticAssociations(scoresTest, genotypesTest, demosTest2,
