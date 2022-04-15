@@ -78,9 +78,9 @@
 <dd><p>A data.table of phenotype risk scores. Must have columns
 <code>person_id</code>, <code>disease_id</code>, <code>score</code>.</p></dd>
 <dt>genotypes</dt>
-<dd><p>A data.table of genotypes. Must have columns <code>person_id</code>,
-and variant IDs to be tested. each variant ID column should contain the
-number of copies of the minor allele each person has (additive model).</p></dd>
+<dd><p>A 'BEDMatrix' object linked to the PLINK bed file containing
+genetic data. The row names correspond to the <code>person_id</code>'s in
+<code>demos</code> and <code>scores</code> tables. The column names correspond to variant IDs.</p></dd>
 <dt>demos</dt>
 <dd><p>A data.table of covariates to be used in the association
 analysis. Must have column <code>person_id</code>.</p></dd>
@@ -119,6 +119,7 @@ NAs will be reported.</p><ul><li><p><code>disease_id</code>: disease identifier<
     <div id="ref-examples">
     <h2>Examples</h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-datatable.com" class="external-link">'data.table'</a></span><span class="op">)</span></span>
+<span class="r-in"><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/QuantGen/BEDMatrix" class="external-link">'BEDMatrix'</a></span><span class="op">)</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># map ICD codes to phecodes</span></span>
 <span class="r-in"><span class="va">phecodeOccurrences</span> <span class="op">=</span> <span class="fu"><a href="getPhecodeOccurrences.html">getPhecodeOccurrences</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span></span>
@@ -138,6 +139,15 @@ NAs will be reported.</p><ul><li><p><code>disease_id</code>: disease identifier<
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># create a map of diseases and variants</span></span>
 <span class="r-in"><span class="va">diseaseVariantMap</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>disease_id <span class="op">=</span> <span class="va">diseaseId</span>, vid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'snp'</span>, <span class="fl">1</span><span class="op">:</span><span class="fl">20</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-in"></span>
+<span class="r-in"><span class="co"># load genetic data</span></span>
+<span class="r-in"><span class="va">npop</span> <span class="op">=</span> <span class="fl">50</span></span>
+<span class="r-in"><span class="va">nvar</span> <span class="op">=</span> <span class="fl">10</span></span>
+<span class="r-in"><span class="va">genoSample</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/BEDMatrix/man/BEDMatrix.html" class="external-link">BEDMatrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/system.file.html" class="external-link">system.file</a></span><span class="op">(</span><span class="st">'extdata'</span>, <span class="st">'geno_sample.bed'</span>, package <span class="op">=</span> <span class="st">'phers'</span><span class="op">)</span><span class="op">)</span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Extracting number of samples and rownames from geno_sample.fam...</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Extracting number of variants and colnames from geno_sample.bim...</span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">colnames</a></span><span class="op">(</span><span class="va">genoSample</span><span class="op">)</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'snp'</span>, <span class="fl">1</span><span class="op">:</span><span class="va">nvar</span><span class="op">)</span></span>
+<span class="r-in"><span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">genoSample</span><span class="op">)</span> <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">npop</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># run genetic association tests</span></span>
 <span class="r-in"><span class="va">genoStats</span> <span class="op">=</span> <span class="fu">getGeneticAssociations</span><span class="op">(</span></span>
