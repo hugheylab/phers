@@ -1,6 +1,4 @@
 library('data.table')
-library('glue')
-library('BEDMatrix')
 
 rawDir = 'data-raw'
 
@@ -94,20 +92,3 @@ icdSample = rbind(icdSampleMarfan, icdSampleAll)
 
 usethis::use_data(icdSample, overwrite = TRUE)
 
-
-# genotype data
-nvar = 10
-alleleFreq = 0.1
-plinkSimPath = file.path(rawDir, 'wgas.sim')
-plinkOut = file.path(rawDir, 'geno_sample')
-
-plinkSim = glue('{nvar} snp {alleleFreq} {alleleFreq} 1 1')
-writeLines(plinkSim, plinkSimPath)
-plinkCmnd = glue('--simulate {plinkSimPath} --make-bed --out {plinkOut} --simulate-ncases {npop/2} --simulate-ncontrols {npop/2} --seed 1')
-system(glue('~/plink_mac_20220402/plink {plinkCmnd}'))
-
-genoSample = BEDMatrix(file.path(rawDir, 'geno_sample'))
-colnames(genoSample) = paste0('snp', 1:nvar)
-rownames(genoSample) = 1:npop
-
-usethis::use_data(genoSample, overwrite = TRUE)

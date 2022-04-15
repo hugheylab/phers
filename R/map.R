@@ -32,16 +32,6 @@
 'demoSample'
 
 
-#' Sample genotype dataset
-#'
-#' This table contains a sample dataset of genotypes.
-#'
-#' @format A data table with 50 rows and the 11 columns. The first column is
-#'   `person_id` and the rest are variant IDs.
-#'
-'genoSample'
-
-
 #' pre-calculated weights
 #'
 #' This table provides weights for 1868 phecodes calculated using data from

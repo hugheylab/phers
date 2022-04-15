@@ -62,6 +62,13 @@ diseaseGeneMap = data.table(disease_id = diseaseId, gene = 'FBN1')
 geneVarMap = data.table(gene = 'FBN1', vid = paste0('snp', 1:10))
 diseaseVariantMap = merge(diseaseGeneMap, geneVarMap, by = 'gene')
 
+npop = 50
+nvar = 10
+genoSample = BEDMatrix(system.file('extdata', 'geno_sample.bed', package = 'phers'))
+colnames(genoSample) = paste0('snp', 1:nvar)
+rownames(genoSample) = 1:npop
+
+
 # run genetic association tests
 genoStats = getGeneticAssociations(
   scores, genoSample, demoSample, diseaseVariantMap, glmFormula = as.formula(~ sex), modelType = 'additive')

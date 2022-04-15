@@ -4,9 +4,9 @@
 #'
 #' @param scores A data.table of phenotype risk scores. Must have columns
 #'   `person_id`, `disease_id`, `score`.
-#' @param genotypes A data.table of genotypes. Must have columns `person_id`,
-#'   and variant IDs to be tested. each variant ID column should contain the
-#'   number of copies of the minor allele each person has (additive model).
+#' @param genotypes  A 'BEDMatrix' object linked to the PLINK bed file containing
+#'   genetic data. The row names correspond to the `person_id`'s in
+#'   `demos` and `scores` tables. The column names correspond to variant IDs.
 #' @param demos A data.table of covariates to be used in the association
 #'   analysis. Must have column `person_id`.
 #' @param diseaseVariantMap A data.table that maps diseases to variants.

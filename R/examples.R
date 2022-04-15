@@ -44,6 +44,7 @@ example3 = function() {
 
 @examples
 library('data.table')
+library('BEDMatrix')
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
@@ -63,6 +64,13 @@ scores = getScores(
 
 # create a map of diseases and variants
 diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:20))
+
+# load genetic data
+npop = 50
+nvar = 10
+genoSample = BEDMatrix(system.file('extdata', 'geno_sample.bed', package = 'phers'))
+colnames(genoSample) = paste0('snp', 1:nvar)
+rownames(genoSample) = 1:npop
 
 # run genetic association tests
 genoStats = getGeneticAssociations(

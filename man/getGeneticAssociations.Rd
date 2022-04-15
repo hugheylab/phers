@@ -19,9 +19,9 @@ getGeneticAssociations(
 \item{scores}{A data.table of phenotype risk scores. Must have columns
 \code{person_id}, \code{disease_id}, \code{score}.}
 
-\item{genotypes}{A data.table of genotypes. Must have columns \code{person_id},
-and variant IDs to be tested. each variant ID column should contain the
-number of copies of the minor allele each person has (additive model).}
+\item{genotypes}{A 'BEDMatrix' object linked to the PLINK bed file containing
+genetic data. The row names correspond to the \code{person_id}'s in
+\code{demos} and \code{scores} tables. The column names correspond to variant IDs.}
 
 \item{demos}{A data.table of covariates to be used in the association
 analysis. Must have column \code{person_id}.}
@@ -63,6 +63,7 @@ Perform association tests between the phenotype risk scores and genotypes
 }
 \examples{
 library('data.table')
+library('BEDMatrix')
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
@@ -82,6 +83,13 @@ scores = getScores(
 
 # create a map of diseases and variants
 diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:20))
+
+# load genetic data
+npop = 50
+nvar = 10
+genoSample = BEDMatrix(system.file('extdata', 'geno_sample.bed', package = 'phers'))
+colnames(genoSample) = paste0('snp', 1:nvar)
+rownames(genoSample) = 1:npop
 
 # run genetic association tests
 genoStats = getGeneticAssociations(
