@@ -72,7 +72,7 @@ getGeneticAssociations = function(
 
     # exclude variants with only one genotype in the population
     genoCount = melt(
-      genotypesSub[, lapply(.SD, uniqueN), .SDcols = snpSub],
+      genotypesSub[, lapply(.SD, uniqueN, na.rm = TRUE), .SDcols = snpSub],
       measure.vars = snpSub, variable.name = 'snp', value.name = 'count',
       variable.factor = FALSE)
     snpSub = unique(genoCount[count != 1]$snp)
