@@ -142,28 +142,28 @@
 <span class="va">genoStats</span> <span class="op">=</span> <span class="fu"><a href="https://Rdatatable.gitlab.io/data.table/reference/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">geneVarMap</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">gene</span>, <span class="va">vid</span><span class="op">)</span><span class="op">]</span>, <span class="va">genoStats</span>, by <span class="op">=</span> <span class="st">'vid'</span><span class="op">)</span>
 
 <span class="va">genoStats</span>
-<span class="co">#&gt;       vid gene disease_id n_total n_wt n_het n_hom       beta        se</span>
-<span class="co">#&gt;  1:  snp1 FBN1     154700      50   45     5     0 -0.6152715 0.7086354</span>
-<span class="co">#&gt;  2: snp10 FBN1     154700      50   38    11     1  0.6410347 0.4492608</span>
-<span class="co">#&gt;  3:  snp2 FBN1     154700      50   39     8     3 -0.3593787 0.3742077</span>
-<span class="co">#&gt;  4:  snp3 FBN1     154700      50   42     8     0 -0.5187028 0.5794899</span>
-<span class="co">#&gt;  5:  snp4 FBN1     154700      50   40    10     0  0.4156610 0.5322799</span>
-<span class="co">#&gt;  6:  snp5 FBN1     154700      50   44     6     0 -0.7562224 0.6575724</span>
-<span class="co">#&gt;  7:  snp6 FBN1     154700      50   45     5     0 -0.6152715 0.7086354</span>
-<span class="co">#&gt;  8:  snp7 FBN1     154700      50   40    10     0  0.9821190 0.5230594</span>
-<span class="co">#&gt;  9:  snp8 FBN1     154700      50   40    10     0 -0.1689209 0.5417624</span>
-<span class="co">#&gt; 10:  snp9 FBN1     154700      50   39     9     2 -0.1066754 0.4111227</span>
-<span class="co">#&gt;           pval    ci_lower  ci_upper</span>
-<span class="co">#&gt;  1: 0.38967037 -2.00417139 0.7736285</span>
-<span class="co">#&gt;  2: 0.16022860 -0.23950038 1.5215697</span>
-<span class="co">#&gt;  3: 0.34178267 -1.09281232 0.3740549</span>
-<span class="co">#&gt;  4: 0.37529373 -1.65448218 0.6170766</span>
-<span class="co">#&gt;  5: 0.43877302 -0.62758848 1.4589105</span>
-<span class="co">#&gt;  6: 0.25595316 -2.04504065 0.5325959</span>
-<span class="co">#&gt;  7: 0.38967037 -2.00417139 0.7736285</span>
-<span class="co">#&gt;  8: 0.06664314 -0.04305858 2.0072966</span>
-<span class="co">#&gt;  9: 0.75657246 -1.23075568 0.8929140</span>
-<span class="co">#&gt; 10: 0.79640313 -0.91246106 0.6991102</span></code></pre></div>
+<span class="co">#&gt;       vid gene disease_id n_total n_wt n_het n_hom        beta        se</span>
+<span class="co">#&gt;  1:  snp1 FBN1     154700      50   45     5     0 -0.75399316 0.7194273</span>
+<span class="co">#&gt;  2: snp10 FBN1     154700      50   38    11     1  0.49184875 0.4620172</span>
+<span class="co">#&gt;  3:  snp2 FBN1     154700      50   39     8     3 -0.24116536 0.3833869</span>
+<span class="co">#&gt;  4:  snp3 FBN1     154700      50   42     8     0  0.01939549 0.5954381</span>
+<span class="co">#&gt;  5:  snp4 FBN1     154700      50   40    10     0  0.30284447 0.5440486</span>
+<span class="co">#&gt;  6:  snp5 FBN1     154700      50   44     6     0 -0.44602905 0.6762293</span>
+<span class="co">#&gt;  7:  snp6 FBN1     154700      50   45     5     0 -0.75399316 0.7194273</span>
+<span class="co">#&gt;  8:  snp7 FBN1     154700      50   40    10     0  0.57128563 0.5462446</span>
+<span class="co">#&gt;  9:  snp8 FBN1     154700      50   40    10     0 -0.36354783 0.5500137</span>
+<span class="co">#&gt; 10:  snp9 FBN1     154700      50   39     9     2  0.08779101 0.4189910</span>
+<span class="co">#&gt;          pval   ci_lower  ci_upper</span>
+<span class="co">#&gt;  1: 0.2999770 -2.1640447 0.6560584</span>
+<span class="co">#&gt;  2: 0.2925102 -0.4136883 1.3973858</span>
+<span class="co">#&gt;  3: 0.5323691 -0.9925900 0.5102592</span>
+<span class="co">#&gt;  4: 0.9741527 -1.1476418 1.1864328</span>
+<span class="co">#&gt;  5: 0.5804078 -0.7634711 1.3691601</span>
+<span class="co">#&gt;  6: 0.5127409 -1.7714141 0.8793560</span>
+<span class="co">#&gt;  7: 0.2999770 -2.1640447 0.6560584</span>
+<span class="co">#&gt;  8: 0.3009830 -0.4993341 1.6419054</span>
+<span class="co">#&gt;  9: 0.5118526 -1.4415549 0.7144593</span>
+<span class="co">#&gt; 10: 0.8349404 -0.7334162 0.9089982</span></code></pre></div>
 <p>run positive control analysis</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">dxStatus</span> <span class="op">=</span> <span class="fu"><a href="../reference/getDxStatus.html">getDxStatus</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">icdSample</span><span class="op">)</span>
