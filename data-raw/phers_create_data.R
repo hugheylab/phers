@@ -86,7 +86,9 @@ icdSampleMarfan = data.table(
   person_id = c(rep(1L, 4), rep(2L, 5), rep(3L, 2), 4),
   icd = c('759.82', '365', '366', '734', '759.82', '759.82',
           '524.0', '718.4', '441', '366', '734', '441'),
-  flag = flag1, entry_date = sample(entryDates, nrow(icdSampleMarfan)))
+  flag = flag1)
+icdSampleMarfan = icdSampleMarfan[, entry_date := sample(entryDates, nrow(icdSampleMarfan))]
+
 
 icdSample = rbind(icdSampleMarfan, icdSampleAll)
 

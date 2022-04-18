@@ -52,7 +52,7 @@ getGeneticAssociations = function(
   assertFlag(dopar)
 
   lmInput = merge(scores, demos, by = 'person_id')
-
+  lmInput[, person_id := as.character(person_id)]
 
   reg = foreach::getDoParRegistered()
   doOp = if (dopar && reg) `%dopar%` else `%do%`
@@ -64,16 +64,16 @@ getGeneticAssociations = function(
 
     # making sure the variants we're looping through are in genotypes
     snpSub = unique(diseaseVariantMap[disease_id == diseaseId]$vid)
-    snpSub = intersect(colnames(genotypes),snpSub)
+    snpSub = intersect(colnames(genotypes), snpSub)
 
     genotypesSub = data.table(
-      'person_id' = as.numeric(rownames(genotypes)),
-      genotypes[, snpSub, drop=FALSE])
+      'person_id' = rownames(genotypes),
+      genotypes[, snpSub, drop = FALSE])
 
     # exclude variants with only one genotype in the population
     genoCount = melt(
       genotypesSub[, lapply(.SD, uniqueN), .SDcols = snpSub],
-      measure.vars = snpSub , variable.name = 'snp', value.name = 'count',
+      measure.vars = snpSub, variable.name = 'snp', value.name = 'count',
       variable.factor = FALSE)
     snpSub = unique(genoCount[count != 1]$snp)
 
