@@ -16,7 +16,7 @@ A data table with 63 rows and the 3 following columns:
 }
 }
 \source{
-<>
+\url{https://phewascatalog.org/phecodes}
 }
 \usage{
 diseaseDxIcdMap

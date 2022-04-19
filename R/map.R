@@ -34,16 +34,16 @@
 
 #' pre-calculated weights
 #'
-#' This table provides weights for 1868 phecodes calculated using data from
-#' Vanderbilt University Medical Center Synthetic Derivative (SD)
+#' This table provides weights for 1865 phecodes calculated using data from
+#' Vanderbilt University Medical Center Synthetic Derivative (SD) and ICD-phecode
+#' map Version 1.2
 #'
-#' @format A data table with 1868 rows and the 3 following columns:
+#' @format A data table with 1865 rows and the 3 following columns:
 #'
 #' * `phecode`: Character vector of phecodes
 #' * `prev`: Prevelance of each phecode within SD
 #' * `w`: Weight calculated for each phecode using the PheRS model
 #'
-#' @source <>
 #'
 #' @seealso [getWeights()]
 'preCalcWeights'
@@ -51,39 +51,37 @@
 
 #' Mapping of diseases and diagnostic ICD codes
 #'
-#' This table provides mapping between diseases and ICD9 and ICD10 codes that
-#' represent being diagnosed with them.
+#' This table provides mapping between 27 Mendelian diseases and ICD9 and ICD10
+#' codes that indicate diagnosis with each disease.
 #'
-#' @format A data table with 63 rows and the 3 following columns:
+#' @format A data table with 81 rows and the 3 following columns:
 #'
 #' * `disease_id`: Numeric vector of OMIM disease identifiers
 #' * `disease_name`: Character vector of disease names
 #' * `icd`: Character vector representing the diagnostic ICD code
-#' * `icd_string`: Character vector containing the description of each icd code
 #' * `flag`: Integer vector representing the vocabulary of the ICD code
 #'    (**9**: ICD-9-CM,  **10**: ICD-10-CM)
+#' * `icd_name`: Character vector containing the description of each ICD code
 #'
-#' @source <>
 #'
-#' @seealso []
+#' @seealso [getPhecodeOccurrences(), getDxStatus()]
 'diseaseDxIcdMap'
 
 
-#' Mapping of disease entities and their clinical features
+#' Mapping of Mendelian diseases and their clinical features
 #'
-#' This table provides mapping between disease entities and the clinical
-#' features they are linked to using annotations from the OMIM database.
+#' This table provides mapping between Mendelian diseases and the clinical
+#' features they are linked to using annotations from
+#' Online Mendelian Inheritance in Man (OMIM).
 #'
-#' @format A data table with 166,143 rows and the 6 following columns:
+#' @format A data table with 75,084 rows and the 6 following columns:
 #'
 #' * `disease_id`: Numeric vector of OMIM disease identifiers corresponding to
 #'    the disease being annotated
 #' * `disease_name`: Character vector of disease name
-#' * `hpo_id`: Character vector of the HPO identifier for the
-#'    phenotype linked to `disease_id`
-#' * `term_id`: Numeric vector containing the numeric portion of `hpo_id`
-#' * `hpo_term_name`: Character vector containing the description
-#'    corresponding to `hpo_id`
+#' * `hpo_term_id`: Character vector of the HPO identifier corresponding to the
+#'    phenotype mapped to `disease_id`
+#' * `hpo_term_name`: Character vector containing the description of `hpo_term_id`
 #'
 #' @source <https://hpo.jax.org/app/download/annotation>
 #'
@@ -96,35 +94,33 @@
 #' This table provides mapping between Human Phenotype Ontology (HPO)
 #' annotations and phecodes (groupings of ICD-9-CM and ICD-10-CM)
 #'
-#' @format A data table with 14,160 rows and the 4 following columns:
+#' @format A data table with 4189 rows and the 4 following columns:
 #'
-#' * `term_id`: Numeric vector representing the HPO term ID to be mapped
-#' * `hpo_term_name`: Character vector containing the description of each
-#'     HPO term ID
+#' * `hpo_term_id`: Character vector representing the HPO term ID to be mapped
+#' * `hpo_term_name`: Character vector containing the description of `hpo_term_id`
 #' * `phecode`: Character vector representing the phecode mapping
-#' * `phecode_string`: Character vector containing the description of each
-#'     phecode
-#'
-#' @source <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6857501/#sup1>
+#' * `phecode_name`: Character vector containing the description of each phecode
 #'
 #' @seealso [mapDiseaseToPhecode()]
 'hpoPhecodeMap'
 
 
-#' Mapping of ICD and phecodes
+#' Mapping of ICD codes and phecodes
 #'
 #' This table provides mapping between International Classification of
 #' Diseases 9th and 10th revisions (ICD-9-CM and ICD-10-CM) and phecodes
-#' (groupings of ICD codes).
+#' (Version 1.2).
 #'
 #' @format A data table with 156,641 rows and the 3 following columns:
 #'
-#' * `icd`: Character vector representing the ICD code to be mapped
-#' * `phecode`: Character vector representing the phecode mapping
+#' * `icd`: Character vector of the ICD code to be mapped
 #' * `flag`: Integer vector representing the vocabulary of the ICD code
 #'   (**9**: ICD-9-CM,  **10**: ICD-10-CM)
+#' * `icd_name`: Character vector containing the description of each ICD code
+#' * `phecode`: Character vector of the phecode mapping
+#' * `phecode_name`: Character vector containing the description of each phecode
 #'
-#' @source <https://phewascatalog.org/phecodes_v1_1>
+#' @source <https://phewascatalog.org/phecodes>
 #'
 #' @seealso [getPhecodeOccurrences()]
 'icdPhecodeMap'

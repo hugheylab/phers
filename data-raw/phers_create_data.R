@@ -35,17 +35,12 @@ usethis::use_data(diseaseDxIcdMap, overwrite = TRUE)
 #######################
 # pre-calculated weights
 
-# add Netezza query to get demo and ICD data from SD.
+# queries for extracting ICD code and demographic data from
+# Vanderbilt University Medical Center Synthetic Derivative
+# are stored in data-raw/all_icds_sd.sql and data-raw/all_demos_sd.sql
 
-# phecodeSD = getPhecodeOccurrences(icdSD)
-
-demoSD = readRDS('~/Dropbox (VUMC)/TimeAwarePheRS/data/demo.rds')
-setnames(demoSD, 'GRID', 'person_id')
-phecodeSD = readRDS('~/Dropbox (VUMC)/TimeAwarePheRS/data/phecodes.rds')
-setnames(phecodeSD, 'GRID', 'person_id')
-phecodeSD = phecodeSD[person_id %in% demoSD$person_id]
-
-preCalcWeights = getWeights(demoSD, phecodeSD)
+preCalcWeights = fread(file.path(rawDir, 'pre_calculated_weights.csv.gz'),
+                              colClasses = list(character = 'phecode'))
 
 usethis::use_data(preCalcWeights, overwrite = TRUE)
 

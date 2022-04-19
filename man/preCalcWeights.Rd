@@ -5,7 +5,7 @@
 \alias{preCalcWeights}
 \title{pre-calculated weights}
 \format{
-A data table with 1868 rows and the 3 following columns:
+A data table with 1865 rows and the 3 following columns:
 \itemize{
 \item \code{phecode}: Character vector of phecodes
 \item \code{prev}: Prevelance of each phecode within SD
@@ -19,8 +19,8 @@ A data table with 1868 rows and the 3 following columns:
 preCalcWeights
 }
 \description{
-This table provides weights for 1868 phecodes calculated using data from
-Vanderbilt University Medical Center Synthetic Derivative (SD)
+This table provides weights for 1865 phecodes calculated using phecode Version
+1.2 and data from Vanderbilt University Medical Center Synthetic Derivative (SD)
 }
 \seealso{
 \code{\link[=getWeights]{getWeights()}}
