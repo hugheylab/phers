@@ -63,7 +63,7 @@ scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # create a map of diseases and variants
-diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:20))
+diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:10))
 
 # load genetic data
 npop = 50

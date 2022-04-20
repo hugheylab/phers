@@ -3,18 +3,20 @@
 \docType{data}
 \name{icdPhecodeMap}
 \alias{icdPhecodeMap}
-\title{Mapping of ICD and phecodes}
+\title{Mapping of ICD codes and phecodes}
 \format{
 A data table with 156,641 rows and the 3 following columns:
 \itemize{
-\item \code{icd}: Character vector representing the ICD code to be mapped
-\item \code{phecode}: Character vector representing the phecode mapping
+\item \code{icd}: Character vector of the ICD code to be mapped
 \item \code{flag}: Integer vector representing the vocabulary of the ICD code
 (\strong{9}: ICD-9-CM,  \strong{10}: ICD-10-CM)
+\item \code{icd_name}: Character vector containing the description of each ICD code
+\item \code{phecode}: Character vector of the phecode mapping
+\item \code{phecode_name}: Character vector containing the description of each phecode
 }
 }
 \source{
-\url{https://phewascatalog.org/phecodes_v1_1}
+\url{https://phewascatalog.org/phecodes}
 }
 \usage{
 icdPhecodeMap
@@ -22,7 +24,7 @@ icdPhecodeMap
 \description{
 This table provides mapping between International Classification of
 Diseases 9th and 10th revisions (ICD-9-CM and ICD-10-CM) and phecodes
-(groupings of ICD codes).
+(Version 1.2).
 }
 \seealso{
 \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}

@@ -5,18 +5,13 @@
 \alias{hpoPhecodeMap}
 \title{Mapping of HPO terms and phecodes}
 \format{
-A data table with 14,160 rows and the 4 following columns:
+A data table with 4189 rows and the 4 following columns:
 \itemize{
-\item \code{term_id}: Numeric vector representing the HPO term ID to be mapped
-\item \code{hpo_term_name}: Character vector containing the description of each
-HPO term ID
+\item \code{hpo_term_id}: Character vector representing the HPO term ID to be mapped
+\item \code{hpo_term_name}: Character vector containing the description of \code{hpo_term_id}
 \item \code{phecode}: Character vector representing the phecode mapping
-\item \code{phecode_string}: Character vector containing the description of each
-phecode
+\item \code{phecode_name}: Character vector containing the description of each phecode
 }
-}
-\source{
-\url{https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6857501/#sup1}
 }
 \usage{
 hpoPhecodeMap

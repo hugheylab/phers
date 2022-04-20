@@ -5,27 +5,24 @@
 \alias{diseaseDxIcdMap}
 \title{Mapping of diseases and diagnostic ICD codes}
 \format{
-A data table with 63 rows and the 3 following columns:
+A data table with 81 rows and the 3 following columns:
 \itemize{
 \item \code{disease_id}: Numeric vector of OMIM disease identifiers
 \item \code{disease_name}: Character vector of disease names
 \item \code{icd}: Character vector representing the diagnostic ICD code
-\item \code{icd_string}: Character vector containing the description of each icd code
 \item \code{flag}: Integer vector representing the vocabulary of the ICD code
 (\strong{9}: ICD-9-CM,  \strong{10}: ICD-10-CM)
+\item \code{icd_name}: Character vector containing the description of each ICD code
 }
-}
-\source{
-\url{https://phewascatalog.org/phecodes}
 }
 \usage{
 diseaseDxIcdMap
 }
 \description{
-This table provides mapping between diseases and ICD9 and ICD10 codes that
-represent being diagnosed with them.
+This table provides mapping between 27 Mendelian diseases and ICD9 and ICD10
+codes that indicate diagnosis with each disease.
 }
 \seealso{
-[]
+\code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getDxStatus]{getDxStatus()}}
 }
 \keyword{datasets}

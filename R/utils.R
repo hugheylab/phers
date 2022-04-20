@@ -72,16 +72,21 @@ checkGenotypes = function(genotypes) {
   invisible()}
 
 
-checkDiseaseVariantMap = function(diseaseVariantMap, scores) {
+checkDiseaseVariantMap = function(diseaseVariantMap, scores, genotypes) {
   assertDataTable(diseaseVariantMap)
   assertNames(
     colnames(diseaseVariantMap), must.include = c('disease_id', 'vid'))
   assert(anyDuplicated(diseaseVariantMap[, c('disease_id', 'vid')]) == 0)
 
   coll = makeAssertCollection()
-  assertSubset(scores$disease_id,
-               diseaseVariantMap$disease_id, empty.ok = FALSE, add = coll)
-  reportSubsetAssertions(scores$disease_id, diseaseVariantMap$disease_id, coll)
+  assertSubset(diseaseVariantMap$disease_id, scores$disease_id,
+               empty.ok = FALSE, add = coll)
+  reportSubsetAssertions(diseaseVariantMap$disease_id, scores$disease_id, coll)
+
+  coll = makeAssertCollection()
+  assertSubset(diseaseVariantMap$vid, colnames(genotypes),
+               empty.ok = FALSE, add = coll)
+  reportSubsetAssertions(diseaseVariantMap$vid, colnames(genotypes), coll)
 
   invisible()}
 
@@ -121,7 +126,5 @@ reportSubsetAssertions = function(x, choices, coll) {
   assertClass(coll, 'AssertCollection')
   if (!coll$isEmpty()) {
     msg1 = paste0(vname(x), ' must be a subset of ', vname(choices))
-    stop(msg1, call. = FALSE)
-  }
-  invisible(TRUE)
-}
+    stop(msg1, call. = FALSE)}
+  invisible(TRUE)}

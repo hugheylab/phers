@@ -41,12 +41,12 @@ getGeneticAssociations = function(
   scores, genotypes, demos, diseaseVariantMap, glmFormula,
   modelType = c('additive', 'dominant', 'recessive', 'genotypic'),
                 level = 0.95, dopar = FALSE) {
-  diseaseId = disease_id = snp = allele_count = count = N = vid = NULL
+  diseaseId = disease_id = snp = allele_count = count = N = vid = person_id = NULL
 
   checkScores(scores)
   checkGenotypes(genotypes)
   checkDemos(demos)
-  checkDiseaseVariantMap(diseaseVariantMap, scores)
+  checkDiseaseVariantMap(diseaseVariantMap, scores, genotypes)
   checkGlmFormula(glmFormula, demos)
   modelType = match.arg(modelType)
   assertFlag(dopar)
@@ -56,15 +56,13 @@ getGeneticAssociations = function(
 
   reg = foreach::getDoParRegistered()
   doOp = if (dopar && reg) `%dopar%` else `%do%`
-  foe = foreach(diseaseId = unique(scores$disease_id), .combine = rbind)
+  foe = foreach(diseaseId = unique(diseaseVariantMap$disease_id), .combine = rbind)
 
   statsAll = doOp(foe, {
 
     lmInputSub = lmInput[disease_id == diseaseId, !'disease_id']
 
-    # making sure the variants we're looping through are in genotypes
     snpSub = unique(diseaseVariantMap[disease_id == diseaseId]$vid)
-    snpSub = intersect(colnames(genotypes), snpSub)
 
     genotypesSub = data.table(
       'person_id' = rownames(genotypes),

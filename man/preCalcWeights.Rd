@@ -12,15 +12,13 @@ A data table with 1865 rows and the 3 following columns:
 \item \code{w}: Weight calculated for each phecode using the PheRS model
 }
 }
-\source{
-<>
-}
 \usage{
 preCalcWeights
 }
 \description{
-This table provides weights for 1865 phecodes calculated using phecode Version
-1.2 and data from Vanderbilt University Medical Center Synthetic Derivative (SD)
+This table provides weights for 1865 phecodes calculated using data from
+Vanderbilt University Medical Center Synthetic Derivative (SD) and ICD-phecode
+map Version 1.2
 }
 \seealso{
 \code{\link[=getWeights]{getWeights()}}

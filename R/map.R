@@ -64,7 +64,7 @@
 #' * `icd_name`: Character vector containing the description of each ICD code
 #'
 #'
-#' @seealso [getPhecodeOccurrences(), getDxStatus()]
+#' @seealso [getPhecodeOccurrences()], [getDxStatus()]
 'diseaseDxIcdMap'
 
 
