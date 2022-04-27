@@ -2,7 +2,7 @@
 % Please edit documentation in R/map.R
 \name{mapDiseaseToPhecode}
 \alias{mapDiseaseToPhecode}
-\title{Map diseases entities to phecodes using HPO terms}
+\title{Map diseases to phecodes via HPO terms}
 \usage{
 mapDiseaseToPhecode(
   diseaseHpoMap = phers::diseaseHpoMap,
@@ -10,21 +10,20 @@ mapDiseaseToPhecode(
 )
 }
 \arguments{
-\item{diseaseHpoMap}{A data.table containing the mapping between disease
-entities in \code{diseaseIds} and HPO terms. Must have columns \code{disease_id} and
-\code{term_id}. By default uses the map included in this package.}
+\item{diseaseHpoMap}{A data.table containing the mapping between diseases and
+HPO terms. Must have columns \code{disease_id} and \code{term_id}. Default is the map
+included in this package.}
 
 \item{hpoPhecodeMap}{A data.table containing the mapping between HPO terms
-and phecodes. Must have columns \code{term_id} and \code{phecode}. By default uses the
-map included in this package.}
+and phecodes. Must have columns \code{term_id} and \code{phecode}. Default is the map
+included in this package.}
 }
 \value{
-A data.table containing the mapping between diseases and phecodes.
-The columns are \code{disease_id} and \code{phecode}.
+A data.table with columns \code{disease_id} and \code{phecode}.
 }
 \description{
-This function takes a list of disease identifiers and returns the
-clinical features mapped to them as phecodes.
+A mapping of diseases to their clinical features, represented as phecodes,
+is required for calculating phenotype risk scores.
 }
 \examples{
 library('data.table')
@@ -35,18 +34,21 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# calculate residual PheRS
+# calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   
+}
+\seealso{
+\code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
 }

@@ -4,27 +4,31 @@
 #' @importFrom stats confint glm as.formula update.formula rstandard
 #' @importFrom iterators iter
 #' @importFrom BEDMatrix BEDMatrix
+#' @importFrom MASS addterm
+# BEDMatrix and MASS importFrom only to avoid note on R CMD check
 NULL
 
 
 #' Map ICD code occurrences to phecode occurrences
 #'
-#' This function takes a data table of patient ICD codes and maps them to
-#' phecodes.
+#' This is typically the first step of an analysis using phenotype risk scores,
+#' the next is [getWeights()].
 #'
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
 #'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
-#' @param icdPhecodeMap A data.table containing the mapping between ICD codes
-#'   and phecodes. Must have columns `icd`, `phecode`, and `flag`. By default uses
-#'   the mapping included in this package.
-#' @param dxIcd A data.table of diagnostic ICD codes to remove for every person.
-#'   Must have columns `icd` and `flag`. By default uses a table provided in
-#'   this package with mapping between diseases and ICD codes used to indicate
-#'   their diagnosis. If `NULL` no ICD codes will be removed.
+#' @param icdPhecodeMap A data.table of the mapping between ICD codes and
+#'   phecodes. Must have columns `icd`, `phecode`, and `flag`. Default is the
+#'   map included in this package.
+#' @param dxIcd A data.table of ICD codes to exclude from mapping to phecodes.
+#'   Must have columns `icd` and `flag`. Default is the table of Mendelian
+#'   diseases and the corresponding ICD codes that indicate a genetic diagnosis.
+#'   If `NULL`, no ICD codes will be excluded.
 #'
 #' @return A data.table of phecode occurrences for each person.
 #'
 #' @eval example1()
+#'
+#' @seealso [getWeights()], [getScores()], [phers()]
 #'
 #' @export
 getPhecodeOccurrences = function(
@@ -33,22 +37,8 @@ getPhecodeOccurrences = function(
   flag = icd = person_id = . = NULL
 
   checkIcdOccurrences(icdOccurrences)
-
-  assertDataTable(icdPhecodeMap)
-  assertNames(colnames(icdPhecodeMap),
-              must.include = c('phecode', 'icd', 'flag'))
-  assertCharacter(icdPhecodeMap$icd)
-  assertCharacter(icdPhecodeMap$phecode)
-  assert(anyDuplicated(icdPhecodeMap) == 0)
-
-
-  assert(checkDataTable(dxIcd), checkNull(dxIcd))
-  if (!is.null(dxIcd)) {
-  assertDataTable(dxIcd)
-  assertNames(colnames(dxIcd),
-              must.include = c('icd', 'flag'),
-              disjunct.from = 'person_id')
-  assertCharacter(dxIcd$icd)}
+  checkIcdPhecodeMap(icdPhecodeMap)
+  checkDxIcd(dxIcd, nullOk = TRUE)
 
   # remove diagnostic codes
   if (!is.null(dxIcd)) {
@@ -57,27 +47,32 @@ getPhecodeOccurrences = function(
   pheOccs = merge(
     icdOccurrences, icdPhecodeMap[, c('icd', 'flag', 'phecode')],
     by = c('icd', 'flag'), allow.cartesian = TRUE)
-  pheOccs = pheOccs[, !c('icd', 'flag')]
+  pheOccs = unique(pheOccs[, !c('icd', 'flag')])
 
-  colsFirst = c('person_id', 'phecode')
-  setcolorder(pheOccs, c(colsFirst, setdiff(names(pheOccs), colsFirst)))
-
+  # colsFirst = c('person_id', 'phecode')
+  # setcolorder(pheOccs, c(colsFirst, setdiff(names(pheOccs), colsFirst)))
+  setcolorder(pheOccs, c('person_id', 'phecode'))
   return(pheOccs)}
 
 
 #' Calculate phecode-specific weights for phenotype risk scores
 #'
-#' The weights correspond to the -log10 prevalences in the cohort.
+#' This is typically the second step of an analysis using phenotype risk scores,
+#' the next is [getScores()].
 #'
 #' @param demos A data.table having one row per person in the cohort. Must have
 #'   a column `person_id`.
-#' @param phecodeOccurrences A data.table of occurrences of phecodes for each
-#'   person in the cohort. Must have columns `person_id` and `phecode`.
+#' @param phecodeOccurrences A data.table of phecode occurrences for each person
+#'   in the cohort. Must have columns `person_id` and `phecode`.
 #'
-#' @return A data.table containing the prevalence (`prev`) and weight (`w`) for
-#'   each phecode.
+#' @return A data.table with columns `phecode`, `prev` (prevalence), and `w`
+#'   (weight). Prevalence corresponds to fraction of the cohort that has at
+#'   least one occurrence of the given phecode. Weight is calculated as `-log10`
+#'   prevalence.
 #'
 #' @eval example1()
+#'
+#' @seealso [getPhecodeOccurrences()], [getScores()], [phers()]
 #'
 #' @export
 getWeights = function(demos, phecodeOccurrences) {
@@ -86,31 +81,35 @@ getWeights = function(demos, phecodeOccurrences) {
   checkDemos(demos)
   checkPhecodeOccurrences(phecodeOccurrences, demos)
 
-  weights = phecodeOccurrences[, .(prev = uniqueN(person_id) / nrow(demos)),
-                               by = phecode]
+  weights = phecodeOccurrences[
+    , .(prev = uniqueN(person_id) / nrow(demos)),
+    by = phecode]
   weights[, w := -log10(prev)]
   return(weights[])}
 
 
 #' Calculate phenotype risk scores
 #'
-#' A person's phenotype risk score for a particular disease corresponds to the
+#' A person's phenotype risk score for a given disease corresponds to the
 #' sum of the weights of the disease-relevant phecodes that the person has
 #' received.
 #'
 #' @param demos A data.table having one row per person in the cohort. Must have
 #'   a column `person_id`.
-#' @param phecodeOccurrences A data.table of occurrences of phecodes for each
-#'   person in the cohort. Must have columns `person_id` and `phecode`.
-#' @param weights A data.table where each row is a phecode and the weight
-#'   corresponding to it. The columns are `phecode` and `w`.
-#' @param diseasePhecodeMap A data.table containing the mapping between
-#'   diseases and phecodes. Must have columns `disease_id` and `phecode`.
+#' @param phecodeOccurrences A data.table of phecode occurrences for each person
+#'   in the cohort. Must have columns `person_id` and `phecode`.
+#' @param weights A data.table of phecodes and their corresponding weights.
+#'   Must have columns `phecode` and `w`.
+#' @param diseasePhecodeMap A data.table of the mapping between diseases and
+#'   phecodes. Must have columns `disease_id` and `phecode`.
 #'
 #' @return A data.table containing the phenotype risk score for each person for
 #'   each disease.
 #'
 #' @eval example1()
+#'
+#' @seealso [mapDiseaseToPhecode()], [getPhecodeOccurrences], [getWeights()],
+#'   [getResidualScores()], [phers()]
 #'
 #' @export
 getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
@@ -135,22 +134,26 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
 
 #' Calculate residual phenotype risk scores
 #'
-#' The residual phenotype risk score corresponds to how much a person's
-#' phenotype risk score deviates from what is expected given
-#' their characteristics (e.g. age, sex, and race)
+#' The residual score indicates to what extent a person's phenotype risk score
+#' for a given disease deviates from the expected score, after adjusting for
+#' the person's characteristics in a linear model.
 #'
-#' @param demos A data.table of covariates to be used in the calculation
-#'   of residual phenotype risk score. Must have column `person_id`.
-#' @param scores A data.table containing the phenotype risk score for each person for
-#'   each disease. Must have columns `person_id`, `disease_id`, and `score`.
-#' @param glmFormula A formula object representing the linear model of covariates
-#'   to be used in the calculation of residual phenotype risk score.
-#'   All covariates must be existing columns in `demos`.
+#' @param demos A data.table of characteristics for each person in the cohort.
+#'   Must have column `person_id`.
+#' @param scores A data.table containing the phenotype risk score for each
+#'   person for each disease. Must have columns `person_id`, `disease_id`, and
+#'   `score`.
+#' @param glmFormula A formula representing the linear model to use for
+#'   calculating residual scores. All terms in the formula must correspond to
+#'   columns in `demos`.
 #'
-#' @return A data.table containing the phenotype risk score and the residual
-#'   phenotype risk score for each person for each disease.
+#' @return A data.table, based on `scores`, with an additional column
+#'   `resid_score`. Residual scores for each disease are standardized to have
+#'   unit variance.
 #'
 #' @eval example1()
+#'
+#' @seealso [stats::rstandard()], [getScores()], [phers()]
 #'
 #' @export
 getResidualScores = function(demos, scores, glmFormula) {
@@ -172,64 +175,72 @@ getResidualScores = function(demos, scores, glmFormula) {
   return(rScores[])}
 
 
-#' Run through the workflow for calculating phenotype risk scores
+#' Perform multiple steps of an analysis using phenotype risk scores
 #'
-#' This function calculates phenotype risk scores given patient ICD codes
-#' and demographic data without requiring intermediate steps for
-#' calculating phecode occurrences and their weights.
+#' This function can map ICD occurrences to phecode occurrences, calculate
+#' weights for each phecode, and calculate raw and residual phenotype risk
+#' scores.
 #'
 #' @param demos A data.table having one row per person in the cohort. Must have
 #'   a column `person_id`.
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
 #'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
-#' @param diseasePhecodeMap A data.table containing the mapping between
-#'   diseases and phecodes. Must have columns `disease_id` and `phecode`.
-#' @param icdPhecodeMap A data.table containing the mapping between ICD codes
-#'   and phecodes. Must have columns `icd`, `phecode`, and `flag`. By default uses
-#'   the mapping included in this package.
-#' @param dxIcd A data.table of diagnostic ICD codes to remove for every person.
-#'   Must have columns `icd` and `flag`. By default uses a table provided in
-#'   this package with mapping between diseases and ICD codes used to indicate
-#'   their diagnosis. If `NULL` no ICD codes will be removed.
-#' @param preCalcWeights A data.table of pre-calculated weights.
-#'   May use weights provided in this package: `phers::preCalcWeights`,
-#'   which are calculated using data from Vanderbilt University Medical Center.
-#'   Recommended when data provided by the user has low sample size.
-#' @param residScoreFormula  A formula object representing the linear model of
-#'   covariates to be used in the calculation of residual phenotype risk score.
-#'   If `NULL` residual scores won't be calculated.
+#' @param diseasePhecodeMap A data.table of the mapping between diseases and
+#'   phecodes. Must have columns `disease_id` and `phecode`.
+#' @param icdPhecodeMap A data.table of the mapping between ICD codes and
+#'   phecodes. Must have columns `icd`, `phecode`, and `flag`. Default is the
+#'   map included in this package.
+#' @param dxIcd A data.table of ICD codes to exclude from mapping to phecodes.
+#'   Must have columns `icd` and `flag`. Default is the table of Mendelian
+#'   diseases and the corresponding ICD codes that indicate a genetic diagnosis.
+#'   If `NULL`, no ICD codes will be excluded.
+#' @param weights A data.table of phecodes and their corresponding weights.
+#'   Must have columns `phecode` and `w`. If `NULL` (the default), weights will
+#'   be calculated based on data for the cohort provided. If the cohort is small
+#'   or its phecode prevalences do not reflect those in the population of
+#'   interest, it is recommended to use [preCalcWeights].
+#' @param residScoreFormula A formula representing the linear model to use for
+#'   calculating residual scores. All terms in the formula must correspond to
+#'   columns in `demos`. If `NULL`, no residual scores will be calculated.
 #'
-#' @return A list containing 3 items: 1) data.table of phecode occurrences in
-#'   the cohort. 2) data.table of weights assigned to each phecode.
-#'   3) data.table of raw (and residual if residScoreFormula is not `NULL`)
-#'   phenotype risk scores for each person and each disease.
+#' @return A list with elements:
+#'
+#' * `phecodeOccurences`: A data.table of phecode occurrences for each person
+#'   in the cohort.
+#' * `weights`: A data.table of phecodes and their corresponding weights.
+#' * `scores`: A data.table of raw and possibly residual phenotype risk scores
+#'   for each person and each disease.
 #'
 #' @eval example4()
+#'
+#' @seealso [getPhecodeOccurrences()], [getWeights()], [getScores()],
+#'   [getResidualScores()], [mapDiseaseToPhecode()], [icdPhecodeMap],
+#'   [diseaseDxIcdMap], [preCalcWeights]
 #'
 #' @export
 phers = function(
   demos, icdOccurrences, diseasePhecodeMap,
   icdPhecodeMap = phers::icdPhecodeMap, dxIcd = phers::diseaseDxIcdMap,
-  preCalcWeights = NULL, residScoreFormula = NULL) {
+  weights = NULL, residScoreFormula = NULL) {
 
-  assert(checkDataTable(preCalcWeights), checkNull(preCalcWeights))
-  assert(checkFormula(residScoreFormula), checkNull(residScoreFormula))
+  checkDemos(demos)
+  checkIcdOccurrences(icdOccurrences)
+  checkDiseasePhecodeMap(diseasePhecodeMap)
+  checkIcdPhecodeMap(icdPhecodeMap)
+  checkDxIcd(dxIcd, nullOk = TRUE)
+  if (!is.null(weights)) checkWeights(weights)
+  if (!is.null(residScoreFormula)) checkGlmFormula(residScoreFormula, demos)
 
   phecodeOccurrences = getPhecodeOccurrences(
     icdOccurrences, icdPhecodeMap = icdPhecodeMap, dxIcd = dxIcd)
 
-  if (!is.null(preCalcWeights)) {
-    weights = preCalcWeights}
-  else {
-    weights = getWeights(demos, phecodeOccurrences)}
+  if (is.null(weights)) weights = getWeights(demos, phecodeOccurrences)
 
   scores = getScores(demos, phecodeOccurrences, weights, diseasePhecodeMap)
 
   if (!is.null(residScoreFormula)) {
-    scores = getResidualScores(
-      demos, scores, glmFormula = residScoreFormula)}
+    scores = getResidualScores(demos, scores, residScoreFormula)}
 
   output = list(
     phecodeOccurrences = phecodeOccurrences, weights = weights, scores = scores)
-
-  return(output[])}
+  return(output)}

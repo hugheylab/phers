@@ -5,20 +5,21 @@
 \alias{hpoPhecodeMap}
 \title{Mapping of HPO terms and phecodes}
 \format{
-A data table with 4189 rows and the 4 following columns:
+A data.table with the following columns:
 \itemize{
-\item \code{hpo_term_id}: Character vector representing the HPO term ID to be mapped
-\item \code{hpo_term_name}: Character vector containing the description of \code{hpo_term_id}
-\item \code{phecode}: Character vector representing the phecode mapping
-\item \code{phecode_name}: Character vector containing the description of each phecode
+\item \code{hpo_term_id}: Character vector of HPO term identifiers
+\item \code{hpo_term_name}: Character vector of HPO term descriptions
+\item \code{phecode}: Character vector of phecodes
+\item \code{phecode_name}: Character vector of phecode descriptions
 }
 }
 \usage{
 hpoPhecodeMap
 }
 \description{
-This table provides mapping between Human Phenotype Ontology (HPO)
-annotations and phecodes (groupings of ICD-9-CM and ICD-10-CM)
+This table provides a mapping between Human Phenotype Ontology (HPO)
+terms and phecodes, and is useful for using phecodes to represent the
+clinical features of Mendelian diseases.
 }
 \seealso{
 \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}

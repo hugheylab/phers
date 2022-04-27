@@ -10,17 +10,17 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# calculate residual PheRS
+# calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   "
@@ -52,22 +52,22 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# create a map of diseases and variants
-diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:10))
-
-# load genetic data
-npop = 50
+# map diseases to genetic variants
 nvar = 10
+diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:nvar))
+
+# load sample genetic data
+npop = 50
 genoSample = BEDMatrix(system.file('extdata', 'geno_sample.bed', package = 'phers'))
 colnames(genoSample) = paste0('snp', 1:nvar)
 rownames(genoSample) = 1:npop
@@ -87,21 +87,21 @@ example4 = function() {
 @examples
 library('data.table')
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
-diseasePhecodeMap = diseasePhecodeMap[disease_id %in% diseaseId]
+diseasePhecodeMap = diseasePhecodeMap[disease_id == diseaseId]
 
-# calculate PheRS and residual PheRS
+# calculate raw and residal scores using weights based on the sample cohort
 scores = phers(
-demoSample, icdSample, diseasePhecodeMap, residScoreFormula = ~ sex)
+  demoSample, icdSample, diseasePhecodeMap, residScoreFormula = ~ sex)
 
-# calculate PheRS using pre-calculated weights provided in the package
+# calculate scores using pre-calculated weights
 scores = phers(
-demoSample, icdSample, diseasePhecodeMap,
-preCalcWeights = phers::preCalcWeights, residScoreFormula = ~ sex)
+  demoSample, icdSample, diseasePhecodeMap,
+  weights = phers::preCalcWeights, residScoreFormula = ~ sex)
 
   "
   return(strsplit(ex, split = '\n')[[1L]])}

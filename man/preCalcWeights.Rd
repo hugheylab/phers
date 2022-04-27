@@ -3,22 +3,22 @@
 \docType{data}
 \name{preCalcWeights}
 \alias{preCalcWeights}
-\title{pre-calculated weights}
+\title{Pre-calculated weights for calculating phenotype risk scores}
 \format{
-A data table with 1865 rows and the 3 following columns:
+A data.table with the following columns:
 \itemize{
 \item \code{phecode}: Character vector of phecodes
-\item \code{prev}: Prevelance of each phecode within SD
-\item \code{w}: Weight calculated for each phecode using the PheRS model
+\item \code{prev}: Numeric vector of prevalences, i.e., fraction of subjects in the SD
+that have at least one occurrence of the given phecode
+\item \code{w}: Numeric vector of weights, calculated as \code{-log10(prev)}
 }
 }
 \usage{
 preCalcWeights
 }
 \description{
-This table provides weights for 1865 phecodes calculated using data from
-Vanderbilt University Medical Center Synthetic Derivative (SD) and ICD-phecode
-map Version 1.2
+The weights are based on EHR data from the Vanderbilt University Medical
+Center Synthetic Derivative (SD) and ICD-phecode map version 1.2.
 }
 \seealso{
 \code{\link[=getWeights]{getWeights()}}

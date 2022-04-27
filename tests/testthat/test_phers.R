@@ -16,6 +16,7 @@ scoresExp = data.table(
   disease_id = rep(1, 4),
   score = c(0.60206, 0.90309, 0.30103, 0.00000))
 
+
 test_that('getPhecodeOccurrences output', {
 
   resObs = getPhecodeOccurrences(
@@ -82,6 +83,7 @@ test_that('getWeights args error', {
   expect_error(getWeights(demosTestErr, phecodeOccurrencesTest))
 })
 
+
 test_that('getScores output', {
 
   resObs = getScores(demosTest, phecodeOccurrencesTest, weightsTest,
@@ -146,7 +148,7 @@ test_that('phers output', {
 test_that('phers output (calculate residual scores)', {
 
   resObs = phers(
-    demosTest,  icdTest, diseasePhecodeMapTest,
+    demosTest, icdTest, diseasePhecodeMapTest,
     icdPhecodeMap = icdPhecodeMapTest, dxIcd = dxIcdTest,
     residScoreFormula = formTest)
   resObs = lapply(resObs, setkey)

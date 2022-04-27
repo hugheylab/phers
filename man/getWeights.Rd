@@ -10,15 +10,18 @@ getWeights(demos, phecodeOccurrences)
 \item{demos}{A data.table having one row per person in the cohort. Must have
 a column \code{person_id}.}
 
-\item{phecodeOccurrences}{A data.table of occurrences of phecodes for each
-person in the cohort. Must have columns \code{person_id} and \code{phecode}.}
+\item{phecodeOccurrences}{A data.table of phecode occurrences for each person
+in the cohort. Must have columns \code{person_id} and \code{phecode}.}
 }
 \value{
-A data.table containing the prevalence (\code{prev}) and weight (\code{w}) for
-each phecode.
+A data.table with columns \code{phecode}, \code{prev} (prevalence), and \code{w}
+(weight). Prevalence corresponds to fraction of the cohort that has at
+least one occurrence of the given phecode. Weight is calculated as \code{-log10}
+prevalence.
 }
 \description{
-The weights correspond to the -log10 prevalences in the cohort.
+This is typically the second step of an analysis using phenotype risk scores,
+the next is \code{\link[=getScores]{getScores()}}.
 }
 \examples{
 library('data.table')
@@ -29,18 +32,21 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# calculate residual PheRS
+# calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   
+}
+\seealso{
+\code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
 }
