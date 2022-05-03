@@ -121,7 +121,7 @@ checkGlmFormula = function(glmFormula, demos) {
     disjunct.from = c('score', 'allele_count', 'person_id', 'disease_id'))
 
   if (all.vars(update.formula(glmFormula, . ~ 1)) != '.') {
-    stop('provide a formula without the dependent variable')}
+    stop('The formula contains a dependent variable, which is not allowed.')}
 
   invisible()}
 

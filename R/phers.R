@@ -49,8 +49,6 @@ getPhecodeOccurrences = function(
     by = c('icd', 'flag'), allow.cartesian = TRUE)
   pheOccs = unique(pheOccs[, !c('icd', 'flag')])
 
-  # colsFirst = c('person_id', 'phecode')
-  # setcolorder(pheOccs, c(colsFirst, setdiff(names(pheOccs), colsFirst)))
   setcolorder(pheOccs, c('person_id', 'phecode'))
   return(pheOccs)}
 
@@ -83,7 +81,7 @@ getWeights = function(demos, phecodeOccurrences) {
 
   weights = phecodeOccurrences[
     , .(prev = uniqueN(person_id) / nrow(demos)),
-    by = phecode]
+    keyby = phecode]
   weights[, w := -log10(prev)]
   return(weights[])}
 
@@ -124,7 +122,7 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
                diseasePhecodeMap, by = 'phecode', allow.cartesian = TRUE)
 
   rBig = merge(rBig, weights, by = 'phecode')
-  rSum = rBig[, .(score = sum(w)), by = .(person_id, disease_id)]
+  rSum = rBig[, .(score = sum(w)), keyby = .(person_id, disease_id)]
   r = merge(CJ(person_id = demos$person_id,
                disease_id = unique(diseasePhecodeMap$disease_id)),
             rSum, by = c('person_id', 'disease_id'), all.x = TRUE)
@@ -169,7 +167,7 @@ getResidualScores = function(demos, scores, glmFormula) {
   rScores = rInput[
     , .(person_id, score,
         resid_score = rstandard(glm(glmFormula, data = .SD))),
-    by = disease_id]
+    keyby = disease_id]
   setcolorder(rScores, c('person_id', 'disease_id', 'score', 'resid_score'))
 
   return(rScores[])}

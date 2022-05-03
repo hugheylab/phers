@@ -8,6 +8,7 @@ rawDir = 'data-raw'
 icdPhecodeMap = fread(
   file.path(rawDir, 'icd_phecode_map.csv.gz'),
   colClasses = list(character = c('icd', 'phecode')))
+setkeyv(icdPhecodeMap, c('icd', 'flag', 'phecode'))
 
 usethis::use_data(icdPhecodeMap, overwrite = TRUE)
 
@@ -15,6 +16,7 @@ usethis::use_data(icdPhecodeMap, overwrite = TRUE)
 # OMIM disease ID to HPO term map
 
 diseaseHpoMap = fread(file.path(rawDir, 'disease_hpo_map_omim.csv.gz'))
+setkeyv(diseaseHpoMap, c('disease_id', 'hpo_term_id'))
 
 usethis::use_data(diseaseHpoMap, overwrite = TRUE)
 
@@ -24,6 +26,7 @@ usethis::use_data(diseaseHpoMap, overwrite = TRUE)
 hpoPhecodeMap = fread(
   file.path(rawDir, 'hpo_phecode_map.csv.gz'),
   colClasses = list(character = 'phecode'))
+setkeyv(hpoPhecodeMap, c('hpo_term_id', 'phecode'))
 
 usethis::use_data(hpoPhecodeMap, overwrite = TRUE)
 
@@ -33,6 +36,7 @@ usethis::use_data(hpoPhecodeMap, overwrite = TRUE)
 diseaseDxIcdMap = fread(
   file.path(rawDir, 'disease_dx_icd_map_omim.csv.gz'),
   colClasses = list(character = 'icd'))
+setkeyv(diseaseDxIcdMap, c('disease_id', 'icd', 'flag'))
 
 usethis::use_data(diseaseDxIcdMap, overwrite = TRUE)
 
@@ -46,6 +50,7 @@ usethis::use_data(diseaseDxIcdMap, overwrite = TRUE)
 preCalcWeights = fread(
   file.path(rawDir, 'pre_calculated_weights.csv.gz'),
   colClasses = list(character = 'phecode'))
+setkeyv(preCalcWeights, 'phecode')
 
 usethis::use_data(preCalcWeights, overwrite = TRUE)
 
@@ -59,6 +64,7 @@ demoSample = data.table(
   person_id = 1:npop,
   sex = sample(
     c('male', 'female'), size = npop, replace = TRUE, prob = c(0.5, 0.5)))
+setkeyv(demoSample, 'person_id')
 
 usethis::use_data(demoSample, overwrite = TRUE)
 
@@ -89,5 +95,6 @@ icdSampleMarfan = data.table(
 icdSampleMarfan[, entry_date := sample(entryDates, nrow(icdSampleMarfan))]
 
 icdSample = rbind(icdSampleMarfan, icdSampleAll)
+setkey(icdSample)
 
 usethis::use_data(icdSample, overwrite = TRUE)

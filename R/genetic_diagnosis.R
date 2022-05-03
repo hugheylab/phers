@@ -40,7 +40,7 @@ getDxStatus = function(
   dxIcd = merge(
     icdOccurrences, diseaseDxIcdMap[, c('disease_id', 'icd', 'flag')],
     by = c('icd', 'flag'))
-  dxIcd = dxIcd[, .(uniq_dates = uniqueN(entry_date)), by = byCols]
+  dxIcd = dxIcd[, .(uniq_dates = uniqueN(entry_date)), keyby = byCols]
   dxIcd[, dx_status := -1L]
   dxIcd[uniq_dates >= minUniqueDates, dx_status := 1L]
 

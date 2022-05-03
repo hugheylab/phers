@@ -10,11 +10,13 @@ weightsExp = data.table(
   phecode = c('001', '002', '003', '004'),
   prev = c(0.25, 0.50, 0.25, 0.25),
   w = c(0.60206, 0.30103, 0.60206, 0.60206))
+setkeyv(weightsExp, 'phecode')
 
 scoresExp = data.table(
   person_id = seq_len(4),
   disease_id = rep(1, 4),
   score = c(0.60206, 0.90309, 0.30103, 0.00000))
+setkeyv(scoresExp, c('person_id', 'disease_id'))
 
 
 test_that('getPhecodeOccurrences output', {
