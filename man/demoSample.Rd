@@ -3,12 +3,12 @@
 \docType{data}
 \name{demoSample}
 \alias{demoSample}
-\title{Sample demographics dataset}
+\title{Sample table of demographic information}
 \format{
-A data table with 50 rows and the 2 following columns:
+A data table with the following columns:
 \itemize{
-\item \code{person_id}: Character vector of the identifier for each
-person in the cohort
+\item \code{person_id}: Character vector of the identifier for each person in the
+cohort
 \item \code{sex}: Character vector indicating biological sex
 }
 }
@@ -16,7 +16,7 @@ person in the cohort
 demoSample
 }
 \description{
-This table contains a sample dataset of patient demographics information.
+The data are artificial and do not correspond to real patients.
 }
 \seealso{
 \code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}}

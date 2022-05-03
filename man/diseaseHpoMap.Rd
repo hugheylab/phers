@@ -5,14 +5,13 @@
 \alias{diseaseHpoMap}
 \title{Mapping of Mendelian diseases and their clinical features}
 \format{
-A data table with 75,084 rows and the 6 following columns:
+A data.table with the following columns:
 \itemize{
-\item \code{disease_id}: Numeric vector of OMIM disease identifiers corresponding to
-the disease being annotated
-\item \code{disease_name}: Character vector of disease name
-\item \code{hpo_term_id}: Character vector of the HPO identifier corresponding to the
-phenotype mapped to \code{disease_id}
-\item \code{hpo_term_name}: Character vector containing the description of \code{hpo_term_id}
+\item \code{disease_id}: Numeric vector of OMIM disease identifiers
+\item \code{disease_name}: Character vector of disease names
+\item \code{hpo_term_id}: Character vector of HPO identifiers corresponding to each
+disease's clinical features
+\item \code{hpo_term_name}: Character vector of HPO term descriptions
 }
 }
 \source{
@@ -22,9 +21,9 @@ phenotype mapped to \code{disease_id}
 diseaseHpoMap
 }
 \description{
-This table provides mapping between Mendelian diseases and the clinical
-features they are linked to using annotations from
-Online Mendelian Inheritance in Man (OMIM).
+This table provides a mapping between Mendelian diseases and their clinical
+features, represented as Human Phenotype Ontology (HPO) terms. The mapping is
+based on annotations from Online Mendelian Inheritance in Man (OMIM).
 }
 \seealso{
 \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}

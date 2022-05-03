@@ -2,7 +2,7 @@
 % Please edit documentation in R/genetic_association.R
 \name{getGeneticAssociations}
 \alias{getGeneticAssociations}
-\title{Perform genotype association tests}
+\title{Perform association tests between phenotype risk scores and genotypes}
 \usage{
 getGeneticAssociations(
   scores,
@@ -10,7 +10,7 @@ getGeneticAssociations(
   demos,
   diseaseVariantMap,
   glmFormula,
-  modelType = c("additive", "dominant", "recessive", "genotypic"),
+  modelType = c("genotypic", "additive", "dominant", "recessive"),
   level = 0.95,
   dopar = FALSE
 )
@@ -19,24 +19,24 @@ getGeneticAssociations(
 \item{scores}{A data.table of phenotype risk scores. Must have columns
 \code{person_id}, \code{disease_id}, \code{score}.}
 
-\item{genotypes}{A 'BEDMatrix' object linked to the PLINK bed file containing
-genetic data. The row names correspond to the \code{person_id}'s in
-\code{demos} and \code{scores} tables. The column names correspond to variant IDs.}
+\item{genotypes}{A matrix or 'BEDMatrix' object containing genetic data, with
+rownames corresponding to \code{person_id}s in \code{demos} and \code{scores}, and
+colnames corresponding to \code{vid}s in \code{diseaseVariantMap}.}
 
-\item{demos}{A data.table of covariates to be used in the association
-analysis. Must have column \code{person_id}.}
+\item{demos}{A data.table of characteristics for each person in the cohort.
+Must have column \code{person_id}.}
 
-\item{diseaseVariantMap}{A data.table that maps diseases to variants.
-Must have columns \code{disease_id} and \code{vid}.
-\code{disease_id} must include all disease IDs in \code{scores}.}
+\item{diseaseVariantMap}{A data.table indicating which genetic variants to
+test for association with phenotype risk scores for which diseases. Must
+have columns \code{disease_id} and \code{vid}.}
 
-\item{glmFormula}{A formula object representing the linear model of covariates
-to be used in the genetic association tests. All covariates must be
-existing columns in \code{demos}.}
+\item{glmFormula}{A formula representing the linear model (excluding the term
+for genotype) to use for the association tests. All terms in the formula
+must correspond to columns in \code{demos}.}
 
-\item{modelType}{Coding of the genotypes. Either 'additive' or 'genotypic'.}
+\item{modelType}{A string indicating how to encode genotype in the model.}
 
-\item{level}{Confidence level used for calculating confidence intervals.
+\item{level}{A number indicating the level of the confidence interval.
 Default is 0.95.}
 
 \item{dopar}{Logical indicating whether to run calculations in parallel if
@@ -44,22 +44,30 @@ a parallel backend is already set up, e.g., using
 \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
 }
 \value{
-A data.table containing to results of the genotype association tests
-with the following columns. If the model fails to converge,
-NAs will be reported.
+A data.table of statistics for the association tests (if a model
+fails to converge, NAs will be reported):
 \itemize{
-\item \code{disease_id}: disease identifier
-\item \code{gene}: name of the gene
-\item \code{vid}: variant identifier
-\item \code{beta}: The beta coefficient for the association
-\item \code{se}: The standard error for the beta coefficient
-\item \code{pval}: The p-value for the association
-\item \code{ci_lower}: The lower bound of the \code{confint} confidence interval
-\item \code{ci_upper}: The upper bound of the \code{confint} confidence interval
+\item \code{disease_id}: Disease identifier
+\item \code{vid}: Variant identifier
+\item \code{n_total}: Number of persons with non-missing genotype data for the
+given variant.
+\item \code{n_wt}: Number of persons homozygous for the wild-type allele.
+\item \code{n_het}: Number of persons having one copy of the alternate allele.
+\item \code{n_hom}: Number of persons homozygous for the alternate allele.
+\item \code{beta}: Coefficient for the association of genotype with score
+\item \code{se}: Standard error for \code{beta}
+\item \code{pval}: P-value for \code{beta} being non-zero
+\item \code{ci_lower}: Lower bound of the confidence interval for \code{beta}
+\item \code{ci_upper}: Upper bound of the confidence interval for \code{beta}
 }
+
+If \code{modelType} is "genotypic", the data.table will include separate
+statistics for heterozygous ("het") and homozygous ("hom") genotypes.
 }
 \description{
-Perform association tests between the phenotype risk scores and genotypes
+The association test for each disease-variant pair is based on a
+generalized linear model, with the phenotype risk score as the dependent
+variable.
 }
 \examples{
 library('data.table')
@@ -71,22 +79,22 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# create a map of diseases and variants
-diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:10))
-
-# load genetic data
-npop = 50
+# map diseases to genetic variants
 nvar = 10
+diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:nvar))
+
+# load sample genetic data
+npop = 50
 genoSample = BEDMatrix(system.file('extdata', 'geno_sample.bed', package = 'phers'))
 colnames(genoSample) = paste0('snp', 1:nvar)
 rownames(genoSample) = 1:npop
@@ -97,4 +105,7 @@ genoStats = getGeneticAssociations(
   modelType = 'additive')
 
   
+}
+\seealso{
+\code{\link[stats:glm]{stats::glm()}}, \code{\link[stats:confint]{stats::confint()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
 }

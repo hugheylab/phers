@@ -10,21 +10,21 @@ getScores(demos, phecodeOccurrences, weights, diseasePhecodeMap)
 \item{demos}{A data.table having one row per person in the cohort. Must have
 a column \code{person_id}.}
 
-\item{phecodeOccurrences}{A data.table of occurrences of phecodes for each
-person in the cohort. Must have columns \code{person_id} and \code{phecode}.}
+\item{phecodeOccurrences}{A data.table of phecode occurrences for each person
+in the cohort. Must have columns \code{person_id} and \code{phecode}.}
 
-\item{weights}{A data.table where each row is a phecode and the weight
-corresponding to it. The columns are \code{phecode} and \code{w}.}
+\item{weights}{A data.table of phecodes and their corresponding weights.
+Must have columns \code{phecode} and \code{w}.}
 
-\item{diseasePhecodeMap}{A data.table containing the mapping between
-diseases and phecodes. Must have columns \code{disease_id} and \code{phecode}.}
+\item{diseasePhecodeMap}{A data.table of the mapping between diseases and
+phecodes. Must have columns \code{disease_id} and \code{phecode}.}
 }
 \value{
 A data.table containing the phenotype risk score for each person for
 each disease.
 }
 \description{
-A person's phenotype risk score for a particular disease corresponds to the
+A person's phenotype risk score for a given disease corresponds to the
 sum of the weights of the disease-relevant phecodes that the person has
 received.
 }
@@ -37,18 +37,22 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# calculate residual PheRS
+# calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   
+}
+\seealso{
+\code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \link{getPhecodeOccurrences}, \code{\link[=getWeights]{getWeights()}},
+\code{\link[=getResidualScores]{getResidualScores()}}, \code{\link[=phers]{phers()}}
 }

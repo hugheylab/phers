@@ -7,24 +7,26 @@
 getResidualScores(demos, scores, glmFormula)
 }
 \arguments{
-\item{demos}{A data.table of covariates to be used in the calculation
-of residual phenotype risk score. Must have column \code{person_id}.}
+\item{demos}{A data.table of characteristics for each person in the cohort.
+Must have column \code{person_id}.}
 
-\item{scores}{A data.table containing the phenotype risk score for each person for
-each disease. Must have columns \code{person_id}, \code{disease_id}, and \code{score}.}
+\item{scores}{A data.table containing the phenotype risk score for each
+person for each disease. Must have columns \code{person_id}, \code{disease_id}, and
+\code{score}.}
 
-\item{glmFormula}{A formula object representing the linear model of covariates
-to be used in the calculation of residual phenotype risk score.
-All covariates must be existing columns in \code{demos}.}
+\item{glmFormula}{A formula representing the linear model to use for
+calculating residual scores. All terms in the formula must correspond to
+columns in \code{demos}.}
 }
 \value{
-A data.table containing the phenotype risk score and the residual
-phenotype risk score for each person for each disease.
+A data.table, based on \code{scores}, with an additional column
+\code{resid_score}. Residual scores for each disease are standardized to have
+unit variance.
 }
 \description{
-The residual phenotype risk score corresponds to how much a person's
-phenotype risk score deviates from what is expected given
-their characteristics (e.g. age, sex, and race)
+The residual score indicates to what extent a person's phenotype risk score
+for a given disease deviates from the expected score, after adjusting for
+the person's characteristics in a linear model.
 }
 \examples{
 library('data.table')
@@ -35,18 +37,21 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# calculate residual PheRS
+# calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   
+}
+\seealso{
+\code{\link[stats:influence.measures]{stats::rstandard()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
 }

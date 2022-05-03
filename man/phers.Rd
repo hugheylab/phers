@@ -2,7 +2,7 @@
 % Please edit documentation in R/phers.R
 \name{phers}
 \alias{phers}
-\title{Run through the workflow for calculating phenotype risk scores}
+\title{Perform multiple steps of an analysis using phenotype risk scores}
 \usage{
 phers(
   demos,
@@ -10,7 +10,7 @@ phers(
   diseasePhecodeMap,
   icdPhecodeMap = phers::icdPhecodeMap,
   dxIcd = phers::diseaseDxIcdMap,
-  preCalcWeights = NULL,
+  weights = NULL,
   residScoreFormula = NULL
 )
 }
@@ -21,56 +21,66 @@ a column \code{person_id}.}
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
 person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{flag}.}
 
-\item{diseasePhecodeMap}{A data.table containing the mapping between
-diseases and phecodes. Must have columns \code{disease_id} and \code{phecode}.}
+\item{diseasePhecodeMap}{A data.table of the mapping between diseases and
+phecodes. Must have columns \code{disease_id} and \code{phecode}.}
 
-\item{icdPhecodeMap}{A data.table containing the mapping between ICD codes
-and phecodes. Must have columns \code{icd}, \code{phecode}, and \code{flag}. By default uses
-the mapping included in this package.}
+\item{icdPhecodeMap}{A data.table of the mapping between ICD codes and
+phecodes. Must have columns \code{icd}, \code{phecode}, and \code{flag}. Default is the
+map included in this package.}
 
-\item{dxIcd}{A data.table of diagnostic ICD codes to remove for every person.
-Must have columns \code{icd} and \code{flag}. By default uses a table provided in
-this package with mapping between diseases and ICD codes used to indicate
-their diagnosis. If \code{NULL} no ICD codes will be removed.}
+\item{dxIcd}{A data.table of ICD codes to exclude from mapping to phecodes.
+Must have columns \code{icd} and \code{flag}. Default is the table of Mendelian
+diseases and the corresponding ICD codes that indicate a genetic diagnosis.
+If \code{NULL}, no ICD codes will be excluded.}
 
-\item{preCalcWeights}{A data.table of pre-calculated weights.
-May use weights provided in this package: \code{phers::preCalcWeights},
-which are calculated using data from Vanderbilt University Medical Center.
-Recommended when data provided by the user has low sample size.}
+\item{weights}{A data.table of phecodes and their corresponding weights.
+Must have columns \code{phecode} and \code{w}. If \code{NULL} (the default), weights will
+be calculated based on data for the cohort provided. If the cohort is small
+or its phecode prevalences do not reflect those in the population of
+interest, it is recommended to use \link{preCalcWeights}.}
 
-\item{residScoreFormula}{A formula object representing the linear model of
-covariates to be used in the calculation of residual phenotype risk score.
-If \code{NULL} residual scores won't be calculated.}
+\item{residScoreFormula}{A formula representing the linear model to use for
+calculating residual scores. All terms in the formula must correspond to
+columns in \code{demos}. If \code{NULL}, no residual scores will be calculated.}
 }
 \value{
-A list containing 3 items: 1) data.table of phecode occurrences in
-the cohort. 2) data.table of weights assigned to each phecode.
-3) data.table of raw (and residual if residScoreFormula is not \code{NULL})
-phenotype risk scores for each person and each disease.
+A list with elements:
+\itemize{
+\item \code{phecodeOccurences}: A data.table of phecode occurrences for each person
+in the cohort.
+\item \code{weights}: A data.table of phecodes and their corresponding weights.
+\item \code{scores}: A data.table of raw and possibly residual phenotype risk scores
+for each person and each disease.
+}
 }
 \description{
-This function calculates phenotype risk scores given patient ICD codes
-and demographic data without requiring intermediate steps for
-calculating phecode occurrences and their weights.
+This function can map ICD occurrences to phecode occurrences, calculate
+weights for each phecode, and calculate raw and residual phenotype risk
+scores.
 }
 \examples{
 library('data.table')
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
-diseasePhecodeMap = diseasePhecodeMap[disease_id \%in\% diseaseId]
+diseasePhecodeMap = diseasePhecodeMap[disease_id == diseaseId]
 
-# calculate PheRS and residual PheRS
+# calculate raw and residal scores using weights based on the sample cohort
 scores = phers(
-demoSample, icdSample, diseasePhecodeMap, residScoreFormula = ~ sex)
+  demoSample, icdSample, diseasePhecodeMap, residScoreFormula = ~ sex)
 
-# calculate PheRS using pre-calculated weights provided in the package
+# calculate scores using pre-calculated weights
 scores = phers(
-demoSample, icdSample, diseasePhecodeMap,
-preCalcWeights = phers::preCalcWeights, residScoreFormula = ~ sex)
+  demoSample, icdSample, diseasePhecodeMap,
+  weights = phers::preCalcWeights, residScoreFormula = ~ sex)
 
   
+}
+\seealso{
+\code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}},
+\code{\link[=getResidualScores]{getResidualScores()}}, \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \link{icdPhecodeMap},
+\link{diseaseDxIcdMap}, \link{preCalcWeights}
 }

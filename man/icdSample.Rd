@@ -3,17 +3,15 @@
 \docType{data}
 \name{icdSample}
 \alias{icdSample}
-\title{Sample diagnostic code dataset}
+\title{Sample table of ICD occurrences}
 \format{
-A data table with 141 rows and the 4 following columns:
+A data.table with the following columns:
 \itemize{
-\item \code{person_id}: Character vector of the identifier for each
-person
-\item \code{icd}: Character vector containing the ICD codes recorded
-for each person
-\item \code{flag}: Numeric vector representing the vocabulary of the
-ICD code (\strong{9}: ICD-9-CM,  \strong{10}: ICD-10-CM)
-\item \code{entry_date}: vector of type \code{Date} indicating the date ICD code was
+\item \code{person_id}: Character vector of the identifier for each person
+\item \code{icd}: Character vector of the ICD codes recorded for each person
+\item \code{flag}: Integer vector of the vocabulary of the ICD code
+(\strong{9}: ICD-9-CM, \strong{10}: ICD-10-CM)
+\item \code{entry_date}: Vector of type \code{Date} indicating the date each ICD code was
 recorded.
 }
 }
@@ -21,8 +19,7 @@ recorded.
 icdSample
 }
 \description{
-This table contains a sample dataset of patient diagnostic codes
-(ICD-9-CM and ICD-10-CM).
+The data are artificial and do not correspond to real patients.
 }
 \seealso{
 \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}}

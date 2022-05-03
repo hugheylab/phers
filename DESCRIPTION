@@ -1,11 +1,13 @@
 Package: phers
 Type: Package
 Title: Calculate phenotype risk scores 
-Version: 0.0.0.9000
-Authors@R: as.person(c(
-  "Jake Hughey <jakejhughey@gmail.com> [aut, cre]",
-  "Layla Aref <larefnezhad@gmail.com> [aut]"))
-Description: More about what it does.
+Version: 0.0.1
+Authors@R: c(
+  person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
+  person('Layla', 'Aref', , 'larefnezhad@gmail.com', 'aut'))
+Description: Use phenotype risk scores based on linked clinical and genetic data
+  to study Mendelian disease and rare genetic variants. See Bastarache et al.
+  2018 <doi:10.1126/science.aal4043>.
 URL: https://phers.hugheylab.org, https://github.com/hugheylab/phers
 License: GPL-2
 Encoding: UTF-8
@@ -18,7 +20,6 @@ Imports:
   data.table (>= 1.5.0),
   foreach (>= 1.5.2),
   stats (>= 4.0.2),
-  qs (>= 0.25.2),
   MASS (>= 7.3-55),
   iterators (>= 1.0.14),
   BEDMatrix (>= 2.0.3)
@@ -27,6 +28,7 @@ Suggests:
   knitr,
   rmarkdown,
   testthat (>= 3.1.0),
-  ggplot2 (>= 3.3.5)
+  ggplot2 (>= 3.3.5),
+  qs (>= 0.25.2)
 Config/testthat/edition: 3
 VignetteBuilder: knitr

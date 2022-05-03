@@ -14,21 +14,21 @@ getPhecodeOccurrences(
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
 person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{flag}.}
 
-\item{icdPhecodeMap}{A data.table containing the mapping between ICD codes
-and phecodes. Must have columns \code{icd}, \code{phecode}, and \code{flag}. By default uses
-the mapping included in this package.}
+\item{icdPhecodeMap}{A data.table of the mapping between ICD codes and
+phecodes. Must have columns \code{icd}, \code{phecode}, and \code{flag}. Default is the
+map included in this package.}
 
-\item{dxIcd}{A data.table of diagnostic ICD codes to remove for every person.
-Must have columns \code{icd} and \code{flag}. By default uses a table provided in
-this package with mapping between diseases and ICD codes used to indicate
-their diagnosis. If \code{NULL} no ICD codes will be removed.}
+\item{dxIcd}{A data.table of ICD codes to exclude from mapping to phecodes.
+Must have columns \code{icd} and \code{flag}. Default is the table of Mendelian
+diseases and the corresponding ICD codes that indicate a genetic diagnosis.
+If \code{NULL}, no ICD codes will be excluded.}
 }
 \value{
 A data.table of phecode occurrences for each person.
 }
 \description{
-This function takes a data table of patient ICD codes and maps them to
-phecodes.
+This is typically the first step of an analysis using phenotype risk scores,
+the next is \code{\link[=getWeights]{getWeights()}}.
 }
 \examples{
 library('data.table')
@@ -39,18 +39,21 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights
 weights = getWeights(demoSample, phecodeOccurrences)
 
-# vector of OMIM disease IDs to calculate PheRS for
+# OMIM disease IDs for which to calculate phenotype risk scores
 diseaseId = 154700
 
-# mape diseases to phecodes
+# map diseases to phecodes
 diseasePhecodeMap = mapDiseaseToPhecode()
 
-# calculate PheRS
+# calculate scores
 scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
-# calculate residual PheRS
+# calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
 
   
+}
+\seealso{
+\code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
 }
