@@ -5,7 +5,9 @@ Version: 0.0.1
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Layla', 'Aref', , 'larefnezhad@gmail.com', 'aut'))
-Description: Use phenotype risk scores based on linked clinical and genetic data to study Mendelian disease and rare genetic variants.
+Description: Use phenotype risk scores based on linked clinical and genetic data
+  to study Mendelian disease and rare genetic variants. See Bastarache et al.
+  2018 <doi:10.1126/science.aal4043>.
 URL: https://phers.hugheylab.org, https://github.com/hugheylab/phers
 License: GPL-2
 Encoding: UTF-8
