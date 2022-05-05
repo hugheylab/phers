@@ -106,7 +106,7 @@ getWeights = function(demos, phecodeOccurrences) {
 #'
 #' @eval example1()
 #'
-#' @seealso [mapDiseaseToPhecode()], [getPhecodeOccurrences], [getWeights()],
+#' @seealso [mapDiseaseToPhecode()], [getPhecodeOccurrences()], [getWeights()],
 #'   [getResidualScores()], [phers()]
 #'
 #' @export
@@ -213,7 +213,7 @@ getResidualScores = function(demos, scores, glmFormula) {
 #'
 #' @seealso [getPhecodeOccurrences()], [getWeights()], [getScores()],
 #'   [getResidualScores()], [mapDiseaseToPhecode()], [icdPhecodeMap],
-#'   [diseaseDxIcdMap], [preCalcWeights]
+#'   [diseaseDxIcdMap], [preCalcWeights], [getDxStatus()]
 #'
 #' @export
 phers = function(

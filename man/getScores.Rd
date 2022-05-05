@@ -49,10 +49,8 @@ scores = getScores(
 
 # calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
-
-  
 }
 \seealso{
-\code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \link{getPhecodeOccurrences}, \code{\link[=getWeights]{getWeights()}},
+\code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}},
 \code{\link[=getResidualScores]{getResidualScores()}}, \code{\link[=phers]{phers()}}
 }

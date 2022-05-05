@@ -141,8 +141,7 @@
 #'
 #' @export
 mapDiseaseToPhecode = function(
-  diseaseHpoMap = phers::diseaseHpoMap,
-  hpoPhecodeMap = phers::hpoPhecodeMap) {
+  diseaseHpoMap = phers::diseaseHpoMap, hpoPhecodeMap = phers::hpoPhecodeMap) {
 
   assertDataTable(diseaseHpoMap)
   assertNames(

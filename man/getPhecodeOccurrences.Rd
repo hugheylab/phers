@@ -51,8 +51,6 @@ scores = getScores(
 
 # calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
-
-  
 }
 \seealso{
 \code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}

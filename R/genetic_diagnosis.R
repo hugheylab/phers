@@ -22,6 +22,8 @@
 #'
 #' @eval example2()
 #'
+#' @seealso [phers()]
+#'
 #' @export
 getDxStatus = function(
   demos, icdOccurrences, minUniqueDates = 2L,

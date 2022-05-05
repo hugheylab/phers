@@ -1,6 +1,5 @@
 example1 = function() {
   ex = "
-
 @examples
 library('data.table')
 
@@ -22,26 +21,22 @@ scores = getScores(
 
 # calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
-
-  "
+"
   return(strsplit(ex, split = '\n')[[1L]])}
 
 
 example2 = function() {
   ex = "
-
 @examples
 library('data.table')
 
 dxStatus = getDxStatus(demoSample, icdSample)
-
-  "
+"
   return(strsplit(ex, split = '\n')[[1L]])}
 
 
 example3 = function() {
   ex = "
-
 @examples
 library('data.table')
 library('BEDMatrix')
@@ -76,14 +71,12 @@ rownames(genoSample) = 1:npop
 genoStats = getGeneticAssociations(
   scores, genoSample, demoSample, diseaseVariantMap, glmFormula = ~ sex,
   modelType = 'additive')
-
-  "
+"
   return(strsplit(ex, split = '\n')[[1L]])}
 
 
 example4 = function() {
   ex = "
-
 @examples
 library('data.table')
 
@@ -102,6 +95,5 @@ scores = phers(
 scores = phers(
   demoSample, icdSample, diseasePhecodeMap,
   weights = phers::preCalcWeights, residScoreFormula = ~ sex)
-
-  "
+"
   return(strsplit(ex, split = '\n')[[1L]])}

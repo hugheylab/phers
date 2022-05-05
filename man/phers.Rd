@@ -76,11 +76,9 @@ scores = phers(
 scores = phers(
   demoSample, icdSample, diseasePhecodeMap,
   weights = phers::preCalcWeights, residScoreFormula = ~ sex)
-
-  
 }
 \seealso{
 \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}},
 \code{\link[=getResidualScores]{getResidualScores()}}, \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \link{icdPhecodeMap},
-\link{diseaseDxIcdMap}, \link{preCalcWeights}
+\link{diseaseDxIcdMap}, \link{preCalcWeights}, \code{\link[=getDxStatus]{getDxStatus()}}
 }

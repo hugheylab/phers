@@ -41,6 +41,7 @@ undiagnosed individuals (controls).
 library('data.table')
 
 dxStatus = getDxStatus(demoSample, icdSample)
-
-  
+}
+\seealso{
+\code{\link[=phers]{phers()}}
 }

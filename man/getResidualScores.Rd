@@ -49,8 +49,6 @@ scores = getScores(
 
 # calculate residual scores
 rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
-
-  
 }
 \seealso{
 \code{\link[stats:influence.measures]{stats::rstandard()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}

@@ -103,8 +103,6 @@ rownames(genoSample) = 1:npop
 genoStats = getGeneticAssociations(
   scores, genoSample, demoSample, diseaseVariantMap, glmFormula = ~ sex,
   modelType = 'additive')
-
-  
 }
 \seealso{
 \code{\link[stats:glm]{stats::glm()}}, \code{\link[stats:confint]{stats::confint()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
