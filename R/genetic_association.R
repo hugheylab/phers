@@ -94,6 +94,7 @@ getGeneticAssociations = function(
       glmStat = runLinear(
         lmInputSub2, glmFormula, modelType, diseaseId, snp, level)}})
 
+  setkeyv(statsAll, c('disease_id', 'vid'))
   return(statsAll)}
 
 

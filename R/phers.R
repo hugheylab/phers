@@ -50,6 +50,7 @@ getPhecodeOccurrences = function(
   pheOccs = unique(pheOccs[, !c('icd', 'flag')])
 
   setcolorder(pheOccs, c('person_id', 'phecode'))
+  setkeyv(pheOccs, c('person_id', 'phecode'))
   return(pheOccs)}
 
 

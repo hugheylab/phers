@@ -158,5 +158,6 @@ mapDiseaseToPhecode = function(
 
   diseasePhecodeMap = merge(diseaseHpoMap, hpoPhecodeMap, by = 'hpo_term_id')
   diseasePhecodeMap = unique(diseasePhecodeMap[, c('disease_id', 'phecode')])
+  setkeyv(diseasePhecodeMap, c('disease_id', 'phecode'))
 
   return(diseasePhecodeMap)}
