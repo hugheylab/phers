@@ -1,6 +1,6 @@
 Package: phers
 Type: Package
-Title: Calculate phenotype risk scores 
+Title: Calculate Phenotype Risk Scores 
 Version: 0.0.2
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
@@ -31,4 +31,3 @@ Suggests:
   ggplot2 (>= 3.3.5),
   qs (>= 0.25.2)
 Config/testthat/edition: 3
-VignetteBuilder: knitr
