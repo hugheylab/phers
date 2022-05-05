@@ -9,10 +9,10 @@ R/genetic_association.R,115,Variable and function name style should be camelCase
 R/genetic_association.R,118,Variable and function name style should be camelCase.,"lmInput1[, allele_count := as.factor(allele_count)]"
 R/genetic_association.R,135,Variable and function name style should be camelCase.,"glmStat[, ci_lower := ci[1L]]"
 R/genetic_association.R,136,Variable and function name style should be camelCase.,"glmStat[, ci_upper := ci[2L]]}"
-R/genetic_diagnosis.R,29,Variable and function name style should be camelCase.,dx_status = entry_date = uniq_dates = . = NULL
-R/genetic_diagnosis.R,44,Variable and function name style should be camelCase.,"dxIcd[, dx_status := -1L]"
-R/genetic_diagnosis.R,45,Variable and function name style should be camelCase.,"dxIcd[uniq_dates >= minUniqueDates, dx_status := 1L]"
-R/genetic_diagnosis.R,51,Variable and function name style should be camelCase.,"dxStatus[is.na(dx_status), dx_status := 0L]"
+R/genetic_diagnosis.R,31,Variable and function name style should be camelCase.,dx_status = entry_date = uniq_dates = . = NULL
+R/genetic_diagnosis.R,46,Variable and function name style should be camelCase.,"dxIcd[, dx_status := -1L]"
+R/genetic_diagnosis.R,47,Variable and function name style should be camelCase.,"dxIcd[uniq_dates >= minUniqueDates, dx_status := 1L]"
+R/genetic_diagnosis.R,53,Variable and function name style should be camelCase.,"dxStatus[is.na(dx_status), dx_status := 0L]"
 R/phers.R,37,Variable and function name style should be camelCase.,flag = icd = person_id = . = NULL
 R/phers.R,77,Variable and function name style should be camelCase.,phecode = person_id = . = prev = w = NULL
 R/phers.R,114,Variable and function name style should be camelCase.,person_id = phecode = disease_id = w = score = . = NULL
