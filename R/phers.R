@@ -169,6 +169,7 @@ getResidualScores = function(demos, scores, glmFormula) {
     , .(person_id, score,
         resid_score = rstandard(glm(glmFormula, data = .SD))),
     keyby = disease_id]
+  setkeyv(rScores, c('person_id', 'disease_id'))
   setcolorder(rScores, c('person_id', 'disease_id', 'score', 'resid_score'))
 
   return(rScores[])}
