@@ -9,7 +9,7 @@ getGeneticAssociations(
   genotypes,
   demos,
   diseaseVariantMap,
-  glmFormula,
+  lmFormula,
   modelType = c("genotypic", "additive", "dominant", "recessive"),
   level = 0.95,
   dopar = FALSE
@@ -21,16 +21,16 @@ getGeneticAssociations(
 
 \item{genotypes}{A matrix or 'BEDMatrix' object containing genetic data, with
 rownames corresponding to \code{person_id}s in \code{demos} and \code{scores}, and
-colnames corresponding to \code{vid}s in \code{diseaseVariantMap}.}
+colnames corresponding to \code{variant_id}s in \code{diseaseVariantMap}.}
 
 \item{demos}{A data.table of characteristics for each person in the cohort.
 Must have column \code{person_id}.}
 
 \item{diseaseVariantMap}{A data.table indicating which genetic variants to
 test for association with phenotype risk scores for which diseases. Must
-have columns \code{disease_id} and \code{vid}.}
+have columns \code{disease_id} and \code{variant_id}.}
 
-\item{glmFormula}{A formula representing the linear model (excluding the term
+\item{lmFormula}{A formula representing the linear model (excluding the term
 for genotype) to use for the association tests. All terms in the formula
 must correspond to columns in \code{demos}.}
 
@@ -48,7 +48,7 @@ A data.table of statistics for the association tests (if a model
 fails to converge, NAs will be reported):
 \itemize{
 \item \code{disease_id}: Disease identifier
-\item \code{vid}: Variant identifier
+\item \code{variant_id}: Variant identifier
 \item \code{n_total}: Number of persons with non-missing genotype data for the
 given variant.
 \item \code{n_wt}: Number of persons homozygous for the wild-type allele.
@@ -62,12 +62,11 @@ given variant.
 }
 
 If \code{modelType} is "genotypic", the data.table will include separate
-statistics for heterozygous ("het") and homozygous ("hom") genotypes.
+statistics for heterozygous and homozygous genotypes.
 }
 \description{
-The association test for each disease-variant pair is based on a
-generalized linear model, with the phenotype risk score as the dependent
-variable.
+The association test for each disease-variant pair is based on a linear
+model, with the phenotype risk score as the dependent variable.
 }
 \examples{
 library('data.table')
@@ -91,7 +90,7 @@ scores = getScores(
 
 # map diseases to genetic variants
 nvar = 10
-diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:nvar))
+diseaseVariantMap = data.table(disease_id = diseaseId, variant_id = paste0('snp', 1:nvar))
 
 # load sample genetic data
 npop = 50
@@ -101,9 +100,9 @@ rownames(genoSample) = 1:npop
 
 # run genetic association tests
 genoStats = getGeneticAssociations(
-  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = ~ sex,
+  scores, genoSample, demoSample, diseaseVariantMap, lmFormula = ~ sex,
   modelType = 'additive')
 }
 \seealso{
-\code{\link[stats:glm]{stats::glm()}}, \code{\link[stats:confint]{stats::confint()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
+\code{\link[stats:lm]{stats::lm()}}, \code{\link[stats:confint]{stats::confint()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
 }

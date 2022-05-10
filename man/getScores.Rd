@@ -48,7 +48,7 @@ scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual scores
-rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
+rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
 }
 \seealso{
 \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}},
