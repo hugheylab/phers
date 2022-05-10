@@ -1,11 +1,10 @@
 #' @import checkmate
 #' @import data.table
 #' @importFrom foreach foreach %do% %dopar%
-#' @importFrom stats confint glm as.formula update.formula rstandard
+#' @importFrom stats lm confint update.formula rstandard
 #' @importFrom iterators iter
 #' @importFrom BEDMatrix BEDMatrix
-#' @importFrom MASS addterm
-# BEDMatrix and MASS importFrom only to avoid note on R CMD check
+# BEDMatrix importFrom only to avoid note on R CMD check
 NULL
 
 
@@ -142,7 +141,7 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
 #' @param scores A data.table containing the phenotype risk score for each
 #'   person for each disease. Must have columns `person_id`, `disease_id`, and
 #'   `score`.
-#' @param glmFormula A formula representing the linear model to use for
+#' @param lmFormula A formula representing the linear model to use for
 #'   calculating residual scores. All terms in the formula must correspond to
 #'   columns in `demos`.
 #'
@@ -155,19 +154,19 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
 #' @seealso [stats::rstandard()], [getScores()], [phers()]
 #'
 #' @export
-getResidualScores = function(demos, scores, glmFormula) {
+getResidualScores = function(demos, scores, lmFormula) {
   disease_id = diseaseId = resid_score = . = person_id = score = NULL
 
   checkDemos(demos)
   checkScores(scores)
-  checkGlmFormula(glmFormula, demos)
+  checkLmFormula(lmFormula, demos)
 
   rInput = merge(scores, demos, by = 'person_id')
-  glmFormula = update.formula(glmFormula, score ~ .)
+  lmFormula = update.formula(lmFormula, score ~ .)
 
   rScores = rInput[
     , .(person_id, score,
-        resid_score = rstandard(glm(glmFormula, data = .SD))),
+        resid_score = rstandard(lm(lmFormula, data = .SD))),
     keyby = disease_id]
   setkeyv(rScores, c('person_id', 'disease_id'))
   setcolorder(rScores, c('person_id', 'disease_id', 'score', 'resid_score'))
@@ -229,7 +228,7 @@ phers = function(
   checkIcdPhecodeMap(icdPhecodeMap)
   checkDxIcd(dxIcd, nullOk = TRUE)
   if (!is.null(weights)) checkWeights(weights)
-  if (!is.null(residScoreFormula)) checkGlmFormula(residScoreFormula, demos)
+  if (!is.null(residScoreFormula)) checkLmFormula(residScoreFormula, demos)
 
   phecodeOccurrences = getPhecodeOccurrences(
     icdOccurrences, icdPhecodeMap = icdPhecodeMap, dxIcd = dxIcd)

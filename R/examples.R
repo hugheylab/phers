@@ -20,7 +20,7 @@ scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual scores
-rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
+rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
 "
   return(strsplit(ex, split = '\n')[[1L]])}
 
@@ -59,7 +59,7 @@ scores = getScores(
 
 # map diseases to genetic variants
 nvar = 10
-diseaseVariantMap = data.table(disease_id = diseaseId, vid = paste0('snp', 1:nvar))
+diseaseVariantMap = data.table(disease_id = diseaseId, variant_id = paste0('snp', 1:nvar))
 
 # load sample genetic data
 npop = 50
@@ -69,7 +69,7 @@ rownames(genoSample) = 1:npop
 
 # run genetic association tests
 genoStats = getGeneticAssociations(
-  scores, genoSample, demoSample, diseaseVariantMap, glmFormula = ~ sex,
+  scores, genoSample, demoSample, diseaseVariantMap, lmFormula = ~ sex,
   modelType = 'additive')
 "
   return(strsplit(ex, split = '\n')[[1L]])}

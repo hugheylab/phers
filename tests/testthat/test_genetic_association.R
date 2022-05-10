@@ -46,7 +46,7 @@ test_that('getGeneticAssociations output (additive)', {
   rownames(genotypesTest) = 1:6
   colnames(genotypesTest) = c('snp1', 'snp2')
   diseaseGeneVarMapTest = data.table(
-    disease_id = c(1, 2), gene = c('a', 'b'), vid = c('snp1', 'snp2'))
+    disease_id = c(1, 2), gene = c('a', 'b'), variant_id = c('snp1', 'snp2'))
   resObs = getGeneticAssociations(
     scoresTest, genotypesTest, demosTest2, diseaseGeneVarMapTest, formTest,
     modelType = 'additive')

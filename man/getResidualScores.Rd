@@ -4,7 +4,7 @@
 \alias{getResidualScores}
 \title{Calculate residual phenotype risk scores}
 \usage{
-getResidualScores(demos, scores, glmFormula)
+getResidualScores(demos, scores, lmFormula)
 }
 \arguments{
 \item{demos}{A data.table of characteristics for each person in the cohort.
@@ -14,7 +14,7 @@ Must have column \code{person_id}.}
 person for each disease. Must have columns \code{person_id}, \code{disease_id}, and
 \code{score}.}
 
-\item{glmFormula}{A formula representing the linear model to use for
+\item{lmFormula}{A formula representing the linear model to use for
 calculating residual scores. All terms in the formula must correspond to
 columns in \code{demos}.}
 }
@@ -48,7 +48,7 @@ scores = getScores(
   demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual scores
-rscores = getResidualScores(demoSample, scores, glmFormula = ~ sex)
+rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
 }
 \seealso{
 \code{\link[stats:influence.measures]{stats::rstandard()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}

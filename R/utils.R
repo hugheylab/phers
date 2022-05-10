@@ -98,8 +98,8 @@ checkDiseaseVariantMap = function(diseaseVariantMap, scores, genotypes) {
   assertDataTable(diseaseVariantMap)
   assertNames(
     colnames(diseaseVariantMap), type = 'unique',
-    must.include = c('disease_id', 'vid'))
-  assert(anyDuplicated(diseaseVariantMap[, c('disease_id', 'vid')]) == 0)
+    must.include = c('disease_id', 'variant_id'))
+  assert(anyDuplicated(diseaseVariantMap[, c('disease_id', 'variant_id')]) == 0)
 
   coll = makeAssertCollection()
   assertSubset(
@@ -108,19 +108,19 @@ checkDiseaseVariantMap = function(diseaseVariantMap, scores, genotypes) {
 
   coll = makeAssertCollection()
   assertSubset(
-    diseaseVariantMap$vid, colnames(genotypes), empty.ok = FALSE, add = coll)
-  reportSubsetAssertions(diseaseVariantMap$vid, colnames(genotypes), coll)
+    diseaseVariantMap$variant_id, colnames(genotypes), empty.ok = FALSE, add = coll)
+  reportSubsetAssertions(diseaseVariantMap$variant_id, colnames(genotypes), coll)
 
   invisible()}
 
 
-checkGlmFormula = function(glmFormula, demos) {
-  assertFormula(glmFormula)
+checkLmFormula = function(lmFormula, demos) {
+  assertFormula(lmFormula)
   assertNames(
-    all.vars(glmFormula), subset.of = colnames(demos),
+    all.vars(lmFormula), subset.of = colnames(demos),
     disjunct.from = c('score', 'allele_count', 'person_id', 'disease_id'))
 
-  if (all.vars(update.formula(glmFormula, . ~ 1)) != '.') {
+  if (all.vars(update.formula(lmFormula, . ~ 1)) != '.') {
     stop('The formula contains a dependent variable, which is not allowed.')}
 
   invisible()}
