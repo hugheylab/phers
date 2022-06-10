@@ -5,7 +5,7 @@
 [![Netlify Status](https://api.netlify.com/api/v1/badges/353450f6-2feb-49ac-8aa1-35ebbf40e378/deploy-status)](https://app.netlify.com/sites/strong-centaur-770dd1/deploys)
 [![CRAN Status](https://www.r-pkg.org/badges/version/phers)](https://cran.r-project.org/package=phers)
 
-`phers` is an R package for calculating phenotype risk scores that quantify a person's likelihood of having a Mendelian disease given data from electronic health records. For details about the phenotype risk score model see [Bastarache et. al. (2018)](https://pubmed.ncbi.nlm.nih.gov/29590070/).
+`phers` is an R package for calculating phenotype risk scores that quantify the extent to which a person's clinical diagnoses resemble a given Mendelian disease. For details on the R package, see [Aref et al. (bioRxiv)](https://doi.org/10.1101/2022.06.07.495133). For details on the original application of phenotype risk scores, see [Bastarache et. al. (2018)](https://pubmed.ncbi.nlm.nih.gov/29590070/).
 
 ## Installation
 
