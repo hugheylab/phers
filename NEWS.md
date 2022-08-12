@@ -1,5 +1,5 @@
 # phers 0.0.4
-* updated documentation with the version of hpo to phecode map.
+* Updated documentation with the version of `hpoPhecodeMap`.
 
 # phers 0.0.3
 * Set better key for residual scores table.
