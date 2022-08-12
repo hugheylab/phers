@@ -19,7 +19,7 @@ hpoPhecodeMap
 \description{
 This table provides a mapping between Human Phenotype Ontology (HPO)
 terms and phecodes, and is useful for using phecodes to represent the
-clinical features of Mendelian diseases.
+clinical features of Mendelian diseases (version 1.2).
 }
 \seealso{
 \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}
