@@ -1,3 +1,6 @@
+# phers 0.0.4
+* updated documentation with the version of hpo to phecode map.
+
 # phers 0.0.3
 * Set better key for residual scores table.
 * Switched to `lm()` instead of `glm()` for speed.
