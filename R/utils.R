@@ -55,14 +55,27 @@ checkPhecodeOccurrences = function(phecodeOccurrences, demos) {
   invisible()}
 
 
-checkWeights = function(weights) {
+checkWeights = function(weights, type = c('prev', 'prob')) {
+  . = person_id = phecode = NULL
+
+  type = match.arg(type)
   assertDataTable(weights)
-  assertNames(
-    colnames(weights), type = 'unique', must.include = c('phecode', 'w'),
-    disjunct.from = c('person_id', 'disease_id'))
+
+  if(type == 'prev') {
+    assertNames(
+      colnames(weights), type = 'unique', must.include = c('phecode', 'w'),
+      disjunct.from = c('person_id', 'disease_id'))
+    assert(anyDuplicated(weights$phecode) == 0)}
+  else if(type == 'prob') {
+    assertNames(
+      colnames(weights), type = 'unique',
+      must.include = c('person_id', 'phecode', 'w'),
+      disjunct.from = c('disease_id'))
+    assert(anyDuplicated(weights[, .(person_id, phecode)]) == 0)}
+
   assertCharacter(weights$phecode)
   assertNumeric(weights$w, finite = TRUE)
-  assert(anyDuplicated(weights$phecode) == 0)
+
   invisible()}
 
 
@@ -149,3 +162,16 @@ reportSubsetAssertions = function(x, choices, coll) {
     msg1 = paste0(vname(x), ' must be a subset of ', vname(choices))
     stop(msg1, call. = FALSE)}
   invisible(TRUE)}
+
+
+checkMethodFormula = function(methodFormula, demos) {
+  assertFormula(methodFormula)
+  assertNames(
+    all.vars(methodFormula), subset.of = colnames(demos),
+    disjunct.from = c('dx_status', 'person_id', 'phecode'))
+
+  if (all.vars(update.formula(methodFormula, . ~ 1)) != '.') {
+    stop('The formula contains a dependent variable, which is not allowed.')}
+
+  invisible()}
+
