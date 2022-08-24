@@ -11,6 +11,9 @@ phers(
   icdPhecodeMap = phers::icdPhecodeMap,
   dxIcd = phers::diseaseDxIcdMap,
   weights = NULL,
+  method = c("prevalence", "logistic", "cox", "loglinear"),
+  methodFormula = NULL,
+  dopar = FALSE,
   residScoreFormula = NULL
 )
 }
@@ -38,6 +41,17 @@ Must have columns \code{phecode} and \code{w}. If \code{NULL} (the default), wei
 be calculated based on data for the cohort provided. If the cohort is small
 or its phecode prevalences do not reflect those in the population of
 interest, it is recommended to use \link{preCalcWeights}.}
+
+\item{method}{A string indicating the statistical model for calculating weights.}
+
+\item{methodFormula}{A formula representing the right hand side of the model
+corresponding to \code{method}. All terms in the formula must correspond to
+columns in \code{demos}. A method formula is not required for the \code{prevalence}
+method.}
+
+\item{dopar}{Logical indicating whether to run the calculation of weights
+in parallel if a parallel backend is already set up, e.g., using
+\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
 
 \item{residScoreFormula}{A formula representing the linear model to use for
 calculating residual scores. All terms in the formula must correspond to

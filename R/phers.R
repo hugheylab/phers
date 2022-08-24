@@ -121,9 +121,9 @@ getWeights = function(
       fit = glm(methodFormula, data = glmInput, family = 'binomial')
       glmInput[, prob := predict(
         fit, newdata=.SD , type = 'response', se.fit = FALSE)]
-      glmInput = glmInput[, .(person_id, phecode, prob)]})
+      glmInput = glmInput[, .(person_id, phecode, prob, dx_status)]})
 
-    weights[, w := -log10(prob)]}
+    weights[, w := -log10(prob) * dx_status]}
 
   return(weights[])}
 
@@ -247,6 +247,14 @@ getResidualScores = function(demos, scores, lmFormula) {
 #'   be calculated based on data for the cohort provided. If the cohort is small
 #'   or its phecode prevalences do not reflect those in the population of
 #'   interest, it is recommended to use [preCalcWeights].
+#' @param method A string indicating the statistical model for calculating weights.
+#' @param methodFormula A formula representing the right hand side of the model
+#'  corresponding to `method`. All terms in the formula must correspond to
+#'  columns in `demos`. A method formula is not required for the `prevalence`
+#'  method.
+#' @param dopar Logical indicating whether to run the calculation of weights
+#'   in parallel if a parallel backend is already set up, e.g., using
+#'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
 #' @param residScoreFormula A formula representing the linear model to use for
 #'   calculating residual scores. All terms in the formula must correspond to
 #'   columns in `demos`. If `NULL`, no residual scores will be calculated.
@@ -269,7 +277,8 @@ getResidualScores = function(demos, scores, lmFormula) {
 phers = function(
   demos, icdOccurrences, diseasePhecodeMap,
   icdPhecodeMap = phers::icdPhecodeMap, dxIcd = phers::diseaseDxIcdMap,
-  weights = NULL, residScoreFormula = NULL) {
+  weights = NULL, method = c('prevalence', 'logistic', 'cox', 'loglinear'),
+  methodFormula = NULL, dopar = FALSE, residScoreFormula = NULL) {
 
   checkDemos(demos)
   checkIcdOccurrences(icdOccurrences)
@@ -277,12 +286,17 @@ phers = function(
   checkIcdPhecodeMap(icdPhecodeMap)
   checkDxIcd(dxIcd, nullOk = TRUE)
   if (!is.null(weights)) checkWeights(weights)
+  method = match.arg(method)
+  if(method == 'logistic') {
+    checkMethodFormula(methodFormula, demos)
+    assertFlag(dopar)}
   if (!is.null(residScoreFormula)) checkLmFormula(residScoreFormula, demos)
 
   phecodeOccurrences = getPhecodeOccurrences(
     icdOccurrences, icdPhecodeMap = icdPhecodeMap, dxIcd = dxIcd)
 
-  if (is.null(weights)) weights = getWeights(demos, phecodeOccurrences)
+  if (is.null(weights)) weights = getWeights(
+    demos, phecodeOccurrences, method, methodFormula, dopar)
 
   scores = getScores(demos, phecodeOccurrences, weights, diseasePhecodeMap)
 

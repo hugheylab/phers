@@ -8,7 +8,7 @@ getWeights(
   demos,
   phecodeOccurrences,
   method = c("prevalence", "logistic", "cox", "loglinear"),
-  methodFormula,
+  methodFormula = NULL,
   dopar = FALSE
 )
 }
