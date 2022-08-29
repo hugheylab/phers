@@ -94,14 +94,14 @@ getWeights = function(
   checkPhecodeOccurrences(phecodeOccurrences, demos)
   method = match.arg(method)
 
-  if(method == 'prevalence') {
+  if (method == 'prevalence') {
     weights = phecodeOccurrences[
       , .(prev = uniqueN(person_id) / nrow(demos)),
       keyby = phecode]
     weights[, w := -log10(prev)]}
 
   # add first/last age or date of visit to sample data?
-  else if(method == 'logistic') {
+  else if (method == 'logistic') {
     checkMethodFormula(methodFormula, demos)
     assertFlag(dopar)
 
@@ -120,10 +120,11 @@ getWeights = function(
       methodFormula = update.formula(methodFormula, dx_status ~ .)
       fit = glm(methodFormula, data = glmInput, family = 'binomial')
       glmInput[, prob := predict(
-        fit, newdata=.SD , type = 'response', se.fit = FALSE)]
+        fit, newdata = .SD , type = 'response', se.fit = FALSE)]
       glmInput = glmInput[, .(person_id, phecode, prob, dx_status)]})
 
-    weights[, w := -log10(prob) * dx_status]}
+    weights[, w := -log10(prob) * dx_status]
+    weights = weights[, .(person_id, phecode, prob, w)]}
 
   return(weights[])}
 
@@ -164,7 +165,7 @@ getScores = function(demos, phecodeOccurrences, weights, diseasePhecodeMap) {
   rBig = merge(unique(phecodeOccurrences[, .(person_id, phecode)]),
                diseasePhecodeMap, by = 'phecode', allow.cartesian = TRUE)
 
-  if('person_id' %in% colnames(weights)) {
+  if ('person_id' %in% colnames(weights)) {
     checkWeights(weights, type = 'prob')
     rBig = merge(rBig, weights, by = c('person_id', 'phecode'))}
   else {
@@ -287,7 +288,7 @@ phers = function(
   checkDxIcd(dxIcd, nullOk = TRUE)
   if (!is.null(weights)) checkWeights(weights)
   method = match.arg(method)
-  if(method == 'logistic') {
+  if (method == 'logistic') {
     checkMethodFormula(methodFormula, demos)
     assertFlag(dopar)}
   if (!is.null(residScoreFormula)) checkLmFormula(residScoreFormula, demos)

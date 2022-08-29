@@ -1,6 +1,10 @@
-weightsTest = data.table(
+weightsPrevTest = data.table(
   phecode = c('001', '002', '003', '004'),
   prev = c(1 / 4, 2 / 4, 1 / 4, 1 / 4), w = -log10(c(1 / 4, 2 / 4, 1 / 4, 1 / 4)))
+
+weightsProbTest = data.table(
+  person_id = c(1, rep(2L, 2), 3, 4),
+  phecode = c('001', '002', '003', '002', '004'), prob = 0.5, w = -log10(0.5))
 
 icdPhecodeMapTest = data.table(
   icd = c('001', '002', '003', '004', '005', '006'),
@@ -12,12 +16,17 @@ weightsExp = data.table(
   w = c(0.60206, 0.30103, 0.60206, 0.60206))
 setkeyv(weightsExp, 'phecode')
 
-scoresExp = data.table(
+scoresPrevExp = data.table(
   person_id = seq_len(4),
   disease_id = rep(1, 4),
   score = c(0.60206, 0.90309, 0.30103, 0.00000))
-setkeyv(scoresExp, c('person_id', 'disease_id'))
+setkeyv(scoresPrevExp, c('person_id', 'disease_id'))
 
+scoresLgExp = data.table(
+  person_id = seq_len(4),
+  disease_id = rep(1, 4),
+  score = c(0.30103, 0.60206, 0.30103, 0.00000))
+setkeyv(scoresLgExp, c('person_id', 'disease_id'))
 
 test_that('getPhecodeOccurrences output', {
 
@@ -60,10 +69,19 @@ test_that('getPhecodeOccurrences args error', {
 })
 
 
-test_that('getWeights output', {
+test_that('getWeights output (prevalence model)', {
 
   resObs = getWeights(demosTest, phecodeOccurrencesTest)
   resExp = weightsExp
+  expect_equal(resObs, resExp)
+})
+
+
+test_that('getWeights output (logistic model)', {
+  resObs = getWeights(
+    demosTest, phecodeOccurrencesTest, method = 'logistic',
+    methodFormula = ~ sex)
+  resExp = snapshot(resObs, file.path(dataDir, 'get_weights_logistic_output.qs'))
   expect_equal(resObs, resExp)
 })
 
@@ -86,11 +104,20 @@ test_that('getWeights args error', {
 })
 
 
-test_that('getScores output', {
+test_that('getScores output (population weights)', {
 
-  resObs = getScores(demosTest, phecodeOccurrencesTest, weightsTest,
+  resObs = getScores(demosTest, phecodeOccurrencesTest, weightsPrevTest,
                      diseasePhecodeMapTest)
-  resExp = scoresExp
+  resExp = scoresPrevExp
+  expect_equal(resObs, resExp, ignore_attr = TRUE)
+})
+
+
+test_that('getScores output (individualized weights)', {
+
+  resObs = getScores(demosTest, phecodeOccurrencesTest, weightsProbTest,
+                     diseasePhecodeMapTest)
+  resExp = scoresLgExp
   expect_equal(resObs, resExp, ignore_attr = TRUE)
 })
 
@@ -100,23 +127,23 @@ test_that('getScores args error', {
   # no column named person_id demos
   demosTestErr = copy(demosTest)
   setnames(demosTestErr, 'person_id', 'person_id_Err')
-  expect_error(getScores(demosTestErr, phecodeOccurrencesTest, weightsTest,
+  expect_error(getScores(demosTestErr, phecodeOccurrencesTest, weightsPrevTest,
                          diseasePhecodeMapTest))
 
   # no column named person_id in phecodes
   phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
   setnames(phecodeOccurrencesTestErr, 'person_id', 'person_id_Err')
-  expect_error(getScores(demosTestErr, phecodeOccurrencesTestErr, weightsTest,
+  expect_error(getScores(demosTestErr, phecodeOccurrencesTestErr, weightsPrevTest,
                          diseasePhecodeMapTest))
 
   # phecodes are numeric
   phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
   phecodeOccurrencesTestErr[, phecode := as.numeric(phecode)]
-  expect_error(getScores(demosTestErr, phecodeOccurrencesTestErr, weightsTest,
+  expect_error(getScores(demosTestErr, phecodeOccurrencesTestErr, weightsPrevTest,
                          diseasePhecodeMapTest))
 
   # phecodes are numeric in weights
-  weightsTestErr = copy(weightsTest)
+  weightsTestErr = copy(weightsPrevTest)
   weightsTestErr[, phecode := as.numeric(phecode)]
   expect_error(getScores(demosTestErr, phecodeOccurrencesTest, weightsTestErr,
                          diseasePhecodeMapTest))
@@ -131,7 +158,7 @@ test_that('getResidualScores output', {
 })
 
 
-test_that('phers output', {
+test_that('phers output (prevalence)', {
 
   resObs = phers(
     demosTest,  icdTest, diseasePhecodeMapTest,
@@ -141,11 +168,30 @@ test_that('phers output', {
   resExp = list(
     phecodeOccurrences = phecodeOccurrencesTest,
     weights = weightsExp,
-    scores = scoresExp)
+    scores = scoresPrevExp)
 
   expect_equal(resObs, resExp, ignore_attr = TRUE)
 })
 
+test_that('phers output (logistic)', {
+
+  resObs = phers(
+    demosTest,  icdTest, diseasePhecodeMapTest,
+    method ='logistic', methodFormula = formTest,
+    icdPhecodeMap = icdPhecodeMapTest, dxIcd = dxIcdTest)
+  resObs = lapply(resObs, setkey)
+
+  weightsExp = snapshot(
+    resObs$weights, file.path(dataDir, 'get_weights_logistic_output.qs'))
+  setkey(weightsExp)
+
+  resExp = list(
+    phecodeOccurrences = phecodeOccurrencesTest,
+    weights = weightsExp,
+    scores = scoresLgExp)
+
+  expect_equal(resObs, resExp, ignore_attr = TRUE)
+})
 
 test_that('phers output (calculate residual scores)', {
 
