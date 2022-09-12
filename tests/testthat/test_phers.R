@@ -10,12 +10,6 @@ icdPhecodeMapTest = data.table(
   icd = c('001', '002', '003', '004', '005', '006'),
   phecode = c('001', '002', '003', '004', '005', '006'), flag = 9)
 
-weightsExp = data.table(
-  phecode = c('001', '002', '003', '004'),
-  prev = c(0.25, 0.50, 0.25, 0.25),
-  w = c(0.60206, 0.30103, 0.60206, 0.60206))
-setkeyv(weightsExp, 'phecode')
-
 scoresPrevExp = data.table(
   person_id = seq_len(4),
   disease_id = rep(1, 4),
@@ -65,58 +59,22 @@ test_that('getPhecodeOccurrences args error', {
   # no ICD flags
   icdTestErr = icdTest[, .(person_id, icd)]
   expect_error(getPhecodeOccurrences(icdTestErr))
-
-})
-
-
-test_that('getWeights output (prevalence model)', {
-
-  resObs = getWeights(demosTest, phecodeOccurrencesTest)
-  resExp = weightsExp
-  expect_equal(resObs, resExp)
-})
-
-
-test_that('getWeights output (logistic model)', {
-  resObs = getWeights(
-    demosTest, phecodeOccurrencesTest, method = 'logistic',
-    methodFormula = ~ sex)
-  resExp = snapshot(resObs, file.path(dataDir, 'get_weights_logistic_output.qs'))
-  expect_equal(resObs, resExp)
-})
-
-
-test_that('getWeights args error', {
-
-  # no column named person_id
-  demosTestErr = copy(demosTest)
-  setnames(demosTestErr, 'person_id', 'person_id_Err')
-  expect_error(getWeights(demosTestErr, phecodeOccurrencesTest))
-
-  # no column named person_id in phecodes
-  phecodeOccurrencesTestErr = copy(phecodeOccurrencesTest)
-  setnames(phecodeOccurrencesTestErr, 'person_id', 'person_id_Err')
-  expect_error(getWeights(demosTest, phecodeOccurrencesTestErr))
-
-  # demo has less person_ids than phecodes
-  demosTestErr = demosTest[1]
-  expect_error(getWeights(demosTestErr, phecodeOccurrencesTest))
 })
 
 
 test_that('getScores output (population weights)', {
 
-  resObs = getScores(demosTest, phecodeOccurrencesTest, weightsPrevTest,
-                     diseasePhecodeMapTest)
+  resObs = getScores(
+    demosTest, phecodeOccurrencesTest, weightsPrevTest, diseasePhecodeMapTest)
   resExp = scoresPrevExp
   expect_equal(resObs, resExp, ignore_attr = TRUE)
 })
 
 
-test_that('getScores output (individualized weights)', {
+test_that('getScores output (personalized weights)', {
 
-  resObs = getScores(demosTest, phecodeOccurrencesTest, weightsProbTest,
-                     diseasePhecodeMapTest)
+  resObs = getScores(
+    demosTest, phecodeOccurrencesTest, weightsProbTest, diseasePhecodeMapTest)
   resExp = scoresLgExp
   expect_equal(resObs, resExp, ignore_attr = TRUE)
 })

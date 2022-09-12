@@ -2,11 +2,52 @@ example1 = function() {
   ex = "
 @examples
 library('data.table')
+library('survival')
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
 
-# calculate weights
+# calculate weights using the prevalence method
+weightsPrev = getWeights(demoSample, phecodeOccurrences)
+
+# calculate weights using the logistic method
+weightsLogistic = getWeights(
+  demoSample, phecodeOccurrences, method = 'logistic', methodFormula = ~ sex)
+
+# calculate weights using the loglinear method
+phecodeOccurrences2 = phecodeOccurrences[, .(
+  num_occurrences = uniqueN(entry_date)), by = .(person_id, phecode)]
+weightsLoglinear = getWeights(
+  demoSample, phecodeOccurrences2, method = 'loglinear', methodFormula = ~ sex)
+
+# calculate weights using the cox method
+phecodeOccurrences3 = phecodeOccurrences[, .(
+  first_occurrence_date = min(entry_date)) , by = .(person_id, phecode)]
+phecodeOccurrences3 = merge(
+  phecodeOccurrences3, demoSample[, .(person_id, dob)], by = 'person_id')
+phecodeOccurrences3[,
+  occurrence_age := as.numeric((first_occurrence_date - dob)/365.25)]
+phecodeOccurrences3[, `:=`(first_occurrence_date = NULL, dob = NULL)]
+demoSample3 = demoSample[, .(
+  person_id, sex,
+  first_age = as.numeric((first_visit_date - dob)/365.25),
+  last_age = as.numeric((last_visit_date - dob)/365.25))]
+
+weightsCox = getWeights(
+  demoSample3, phecodeOccurrences3, method = 'cox', methodFormula = ~ sex)
+"
+  return(strsplit(ex, split = '\n')[[1L]])}
+
+
+example2 = function() {
+  ex = "
+@examples
+library('data.table')
+
+# map ICD codes to phecodes
+phecodeOccurrences = getPhecodeOccurrences(icdSample)
+
+# calculate weights (using the prevalence method)
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # OMIM disease IDs for which to calculate phenotype risk scores
@@ -35,7 +76,7 @@ dxStatus = getDxStatus(demoSample, icdSample)
   return(strsplit(ex, split = '\n')[[1L]])}
 
 
-example3 = function() {
+example4 = function() {
   ex = "
 @examples
 library('data.table')
@@ -75,7 +116,7 @@ genoStats = getGeneticAssociations(
   return(strsplit(ex, split = '\n')[[1L]])}
 
 
-example4 = function() {
+example5 = function() {
   ex = "
 @examples
 library('data.table')

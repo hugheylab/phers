@@ -33,24 +33,7 @@ the next is \code{\link[=getWeights]{getWeights()}}.
 \examples{
 library('data.table')
 
-# map ICD codes to phecodes
-phecodeOccurrences = getPhecodeOccurrences(icdSample)
-
-# calculate weights
-weights = getWeights(demoSample, phecodeOccurrences)
-
-# OMIM disease IDs for which to calculate phenotype risk scores
-diseaseId = 154700
-
-# map diseases to phecodes
-diseasePhecodeMap = mapDiseaseToPhecode()
-
-# calculate scores
-scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
-
-# calculate residual scores
-rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
+dxStatus = getDxStatus(demoSample, icdSample)
 }
 \seealso{
 \code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}

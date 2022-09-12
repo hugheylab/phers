@@ -37,11 +37,6 @@ This function is useful for verifying that raw or residual phenotype risk
 scores of diagnosed individuals (cases) tend to be higher than scores of
 undiagnosed individuals (controls).
 }
-\examples{
-library('data.table')
-
-dxStatus = getDxStatus(demoSample, icdSample)
-}
 \seealso{
 \code{\link[=phers]{phers()}}
 }

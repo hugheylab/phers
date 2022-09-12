@@ -14,9 +14,10 @@ a column \code{person_id}.}
 in the cohort. Must have columns \code{person_id} and \code{phecode}.}
 
 \item{weights}{A data.table of phecodes and their corresponding weights.
-Must have columns \code{phecode} and \code{w} when weights are calculated using
-the \code{prevalence} method and \code{person_id}, \code{phecode}, and \code{w} when weights
-are calculated using \code{logistic}, \code{cox}, or \code{loglinear} methods.}
+Must have columns \code{phecode} and \code{w} when weights are unique to the
+population (e.g. calculated using the \code{prevalence} method)
+and \code{person_id}, \code{phecode}, and \code{w} when weights are unique to each
+person (e.g. calculated using \code{logistic}, \code{cox}, or \code{loglinear} methods).}
 
 \item{diseasePhecodeMap}{A data.table of the mapping between diseases and
 phecodes. Must have columns \code{disease_id} and \code{phecode}.}
@@ -33,24 +34,7 @@ received.
 \examples{
 library('data.table')
 
-# map ICD codes to phecodes
-phecodeOccurrences = getPhecodeOccurrences(icdSample)
-
-# calculate weights
-weights = getWeights(demoSample, phecodeOccurrences)
-
-# OMIM disease IDs for which to calculate phenotype risk scores
-diseaseId = 154700
-
-# map diseases to phecodes
-diseasePhecodeMap = mapDiseaseToPhecode()
-
-# calculate scores
-scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
-
-# calculate residual scores
-rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
+dxStatus = getDxStatus(demoSample, icdSample)
 }
 \seealso{
 \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}},

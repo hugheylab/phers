@@ -1,3 +1,6 @@
+# phers 1.0.0
+* added age-aware functions. 
+
 # phers 0.0.4
 * Updated documentation with the version of `hpoPhecodeMap`.
 

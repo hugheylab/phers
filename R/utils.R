@@ -1,9 +1,25 @@
-checkDemos = function(demos) {
+checkDemos = function(
+    demos, method = c('prevalence', 'logistic', 'cox', 'loglinear')) {
+
+  method = match.arg(method)
   assertDataTable(demos)
+
+  cols = if (
+    method == 'cox') c('person_id', 'first_age', 'last_age') else c('person_id')
+  colsExc = c('phecode', 'w', 'disease_id', 'score')
+  colsExc = if (
+    method == 'cox') c(colsExc, 'occurrence_age') else if (
+      method == 'loglinear') c(colsExc, 'num_occurrences') else colsExc
+
   assertNames(
-    colnames(demos), type = 'unique', must.include = 'person_id',
-    disjunct.from = c('phecode', 'w', 'disease_id', 'score'))
+    colnames(demos), type = 'unique', must.include = cols,
+    disjunct.from = colsExc)
+
   assert(anyDuplicated(demos$person_id) == 0)
+  if (method == 'cox') {
+    assertNumeric(demos$first_age, lower = 0)
+    assertNumeric(demos$last_age, lower = 0)}
+
   invisible()}
 
 
@@ -39,12 +55,26 @@ checkIcdOccurrences = function(
   invisible()}
 
 
-checkPhecodeOccurrences = function(phecodeOccurrences, demos) {
+checkPhecodeOccurrences = function(
+    phecodeOccurrences, demos,
+    method = c('prevalence', 'logistic', 'cox', 'loglinear')) {
+
+  method = match.arg(method)
   assertDataTable(phecodeOccurrences)
+  cols = c('person_id', 'phecode')
+  cols = if (
+    method == 'cox') c(cols, 'occurrence_age') else if (
+      method == 'loglinear') c(cols, 'num_occurrences') else cols
+
   assertNames(
     colnames(phecodeOccurrences), type = 'unique',
-    must.include = c('person_id', 'phecode'),
+    must.include = cols,
     disjunct.from = c('w', 'disease_id'))
+
+  if (method == 'cox') {
+    assertNumeric(phecodeOccurrences$occurrence_age, lower = 0)
+  } else if (method == 'loglinear') {
+    assertNumeric(phecodeOccurrences$num_occurrences, lower = 0)}
 
   coll = makeAssertCollection()
   assertSubset(
@@ -55,18 +85,18 @@ checkPhecodeOccurrences = function(phecodeOccurrences, demos) {
   invisible()}
 
 
-checkWeights = function(weights, type = c('prev', 'prob')) {
+checkWeights = function(weights, type = c('population', 'personalized')) {
   . = person_id = phecode = NULL
 
   type = match.arg(type)
   assertDataTable(weights)
 
-  if(type == 'prev') {
+  if(type == 'population') {
     assertNames(
       colnames(weights), type = 'unique', must.include = c('phecode', 'w'),
       disjunct.from = c('person_id', 'disease_id'))
     assert(anyDuplicated(weights$phecode) == 0)}
-  else if(type == 'prob') {
+  else if(type == 'personalized') {
     assertNames(
       colnames(weights), type = 'unique',
       must.include = c('person_id', 'phecode', 'w'),
@@ -174,4 +204,3 @@ checkMethodFormula = function(methodFormula, demos) {
     stop('The formula contains a dependent variable, which is not allowed.')}
 
   invisible()}
-
