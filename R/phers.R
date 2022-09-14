@@ -158,9 +158,13 @@ getResidualScores = function(demos, scores, lmFormula) {
 #' scores.
 #'
 #' @param demos A data.table having one row per person in the cohort. Must have
-#'   a column `person_id`.
+#'   a column `person_id`. The `cox` method also requires `first_age` and
+#'   `last_age` columns corresponding to the first and last age of visit
+#'   (in years).
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
 #'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
+#'   The `cox` method requires an additional `occurrence_age` column
+#'   corresponding to the age (in years) a person acquired an ICD code.
 #' @param diseasePhecodeMap A data.table of the mapping between diseases and
 #'   phecodes. Must have columns `disease_id` and `phecode`.
 #' @param icdPhecodeMap A data.table of the mapping between ICD codes and
@@ -208,13 +212,22 @@ phers = function(
   weights = NULL, method = c('prevalence', 'logistic', 'cox', 'loglinear'),
   methodFormula = NULL, dopar = FALSE, residScoreFormula = NULL) {
 
-  checkDemos(demos)
-  checkIcdOccurrences(icdOccurrences)
+  occurrence_age = person_id = phecode = . = NULL
+
+  method = match.arg(method)
+  checkDemos(demos, method = method)
+
+  if(method == 'cox') {
+    checkIcdOccurrences(
+      icdOccurrences, cols = c('person_id', 'icd', 'flag', 'occurrence_age'))}
+  else {
+    checkIcdOccurrences(icdOccurrences)}
+
   checkDiseasePhecodeMap(diseasePhecodeMap)
   checkIcdPhecodeMap(icdPhecodeMap)
   checkDxIcd(dxIcd, nullOk = TRUE)
-  if (!is.null(weights)) checkWeights(weights)
-  method = match.arg(method)
+  if (!is.null(weights)) checkWeights(weights, type = 'population')
+
   if (method != 'prevalence') {
     checkMethodFormula(methodFormula, demos)
     assertFlag(dopar)}
@@ -222,6 +235,13 @@ phers = function(
 
   phecodeOccurrences = getPhecodeOccurrences(
     icdOccurrences, icdPhecodeMap = icdPhecodeMap, dxIcd = dxIcd)
+
+  if (method == 'cox') {
+    phecodeOccurrences = phecodeOccurrences[, .(
+      occurrence_age = min(occurrence_age)) , by = .(person_id, phecode)]}
+  else if (method == 'loglinear') {
+    phecodeOccurrences = phecodeOccurrences[, .(
+      num_occurrences = uniqueN(occurrence_age)), by = .(person_id, phecode)]}
 
   if (is.null(weights)) weights = getWeights(
     demos, phecodeOccurrences, method, methodFormula, dopar)

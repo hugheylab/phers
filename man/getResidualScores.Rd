@@ -31,7 +31,24 @@ the person's characteristics in a linear model.
 \examples{
 library('data.table')
 
-dxStatus = getDxStatus(demoSample, icdSample)
+# map ICD codes to phecodes
+phecodeOccurrences = getPhecodeOccurrences(icdSample)
+
+# calculate weights (using the prevalence method)
+weights = getWeights(demoSample, phecodeOccurrences)
+
+# OMIM disease IDs for which to calculate phenotype risk scores
+diseaseId = 154700
+
+# map diseases to phecodes
+diseasePhecodeMap = mapDiseaseToPhecode()
+
+# calculate scores
+scores = getScores(
+  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
+
+# calculate residual scores
+rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
 }
 \seealso{
 \code{\link[stats:influence.measures]{stats::rstandard()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}

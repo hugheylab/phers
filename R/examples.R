@@ -66,7 +66,7 @@ rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
   return(strsplit(ex, split = '\n')[[1L]])}
 
 
-example2 = function() {
+example3 = function() {
   ex = "
 @examples
 library('data.table')

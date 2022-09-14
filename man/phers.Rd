@@ -19,10 +19,14 @@ phers(
 }
 \arguments{
 \item{demos}{A data.table having one row per person in the cohort. Must have
-a column \code{person_id}.}
+a column \code{person_id}. The \code{cox} method also requires \code{first_age} and
+\code{last_age} columns corresponding to the first and last age of visit
+(in years).}
 
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
-person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{flag}.}
+person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{flag}.
+The \code{cox} method requires an additional \code{occurrence_age} column
+corresponding to the age (in years) a person acquired an ICD code.}
 
 \item{diseasePhecodeMap}{A data.table of the mapping between diseases and
 phecodes. Must have columns \code{disease_id} and \code{phecode}.}

@@ -4,12 +4,14 @@ checkDemos = function(
   method = match.arg(method)
   assertDataTable(demos)
 
-  cols = if (
-    method == 'cox') c('person_id', 'first_age', 'last_age') else c('person_id')
+  cols = c('person_id')
   colsExc = c('phecode', 'w', 'disease_id', 'score')
-  colsExc = if (
-    method == 'cox') c(colsExc, 'occurrence_age') else if (
-      method == 'loglinear') c(colsExc, 'num_occurrences') else colsExc
+
+  if (method == 'cox') {
+    cols = c('person_id', 'first_age', 'last_age')
+    colsExc = c(colsExc, 'occurrence_age')}
+  else if ( method == 'loglinear') {
+    colsExc = c(colsExc, 'num_occurrences')}
 
   assertNames(
     colnames(demos), type = 'unique', must.include = cols,
