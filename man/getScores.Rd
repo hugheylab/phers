@@ -15,9 +15,9 @@ in the cohort. Must have columns \code{person_id} and \code{phecode}.}
 
 \item{weights}{A data.table of phecodes and their corresponding weights.
 Must have columns \code{phecode} and \code{w} when weights are unique to the
-population (e.g. calculated using the \code{prevalence} method)
+population (e.g., calculated using the prevalence method)
 and \code{person_id}, \code{phecode}, and \code{w} when weights are unique to each
-person (e.g. calculated using \code{logistic}, \code{cox}, or \code{loglinear} methods).}
+person (e.g., calculated using logistic, cox, or loglinear methods).}
 
 \item{diseasePhecodeMap}{A data.table of the mapping between diseases and
 phecodes. Must have columns \code{disease_id} and \code{phecode}.}

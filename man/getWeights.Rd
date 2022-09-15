@@ -20,33 +20,37 @@ last age of visit (in years).}
 
 \item{phecodeOccurrences}{A data.table of phecode occurrences for each person
 in the cohort. Must have columns \code{person_id} and \code{phecode} under the
-\code{prevalence} or \code{logistic} methods, columns \code{person_id}, \code{phecode}, and
-\code{num_occurrences} under the \code{loglinear} mehtod, and columns \code{person_id},
-\code{phecode}, and \code{occurrence_age} under the \code{cox} mehtod. \code{num_occurrences}
+"prevalence" or "logistic" methods, columns \code{person_id}, \code{phecode}, and
+\code{num_occurrences} under the "loglinear" method, and columns \code{person_id},
+\code{phecode}, and \code{occurrence_age} under the "cox" method. \code{num_occurrences}
 refers to the number of unique dates a phecode was recorded for a person.
 \code{occurrence_age} refers to the first age (in years) a person acquired a
 phecode.}
 
-\item{method}{A string indicating the statistical model for calculating weights.}
+\item{method}{A string indicating the statistical model for calculating
+weights.}
 
-\item{methodFormula}{A formula representing the right hand side of the model
+\item{methodFormula}{A formula representing the right-hand side of the model
 corresponding to \code{method}. All terms in the formula must correspond to
-columns in \code{demos}. We recommend no use of age-related covariates under
-the \code{cox} method.}
+columns in \code{demos}. Do not use age-related covariates with the "cox"
+method.}
 
 \item{dopar}{Logical indicating whether to run calculations in parallel if
 a parallel backend is already set up, e.g., using
 \code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
 }
 \value{
-A data.table with columns \code{phecode}, \code{prev} (prevalence), and \code{w}
-(weight) under the \code{prevalence} method and columns \code{person_id}, \code{phecode},
-\code{prob} (probability), and \code{w} under \code{logistic}, \code{cox}, and \code{loglinear}
-methods. Prevalence corresponds to fraction of the cohort that has at
-least one occurrence of the given phecode. Probability corresponds to
-parametric probability of having a phecode for each individual calculated
-based on the selected \code{method} and \code{methodFormula}. Weight is calculated
-as \code{-log10} prevalence or probability.
+A data.table with various columns. If \code{method} is "prevalence":
+\code{phecode}, \code{prev} (prevalence), and \code{w} (weight). If \code{method} is
+"logistic" or "cox": \code{person_id}, \code{phecode}, \code{prob} (probability), and \code{w}.
+If \code{method} is "loglinear": \code{person_id}, \code{phecode}, and \code{w}. Prevalence
+corresponds to fraction of the cohort that has at least one occurrence of
+the given phecode. Probability corresponds to predicted probability of
+given individual having a given phecode based on \code{method} and
+\code{methodFormula}. For the "prevalence" \code{method}, weight is calculated as
+\code{-log10(prev)}, for "logistic" and "cox" as \code{-log10(prob)}, and for
+"loglinear" as the difference between observed and predicted
+\code{log2(num_occurrences + 1)}.
 }
 \description{
 This is typically the second step of an analysis using phenotype risk scores,

@@ -1,14 +1,3 @@
-#' @import checkmate
-#' @import data.table
-#' @importFrom foreach foreach %do% %dopar%
-#' @importFrom stats lm confint update.formula rstandard glm predict
-#' @importFrom iterators iter
-#' @importFrom BEDMatrix BEDMatrix
-#' @importFrom survival coxph
-# BEDMatrix importFrom only to avoid note on R CMD check
-NULL
-
-
 #' Map ICD code occurrences to phecode occurrences
 #'
 #' This is typically the first step of an analysis using phenotype risk scores,
@@ -66,9 +55,9 @@ getPhecodeOccurrences = function(
 #'   in the cohort. Must have columns `person_id` and `phecode`.
 #' @param weights A data.table of phecodes and their corresponding weights.
 #'   Must have columns `phecode` and `w` when weights are unique to the
-#'   population (e.g. calculated using the `prevalence` method)
+#'   population (e.g., calculated using the prevalence method)
 #'   and `person_id`, `phecode`, and `w` when weights are unique to each
-#'   person (e.g. calculated using `logistic`, `cox`, or `loglinear` methods).
+#'   person (e.g., calculated using logistic, cox, or loglinear methods).
 #' @param diseasePhecodeMap A data.table of the mapping between diseases and
 #'   phecodes. Must have columns `disease_id` and `phecode`.
 #'
@@ -87,17 +76,12 @@ getScores = function(
 
   checkDemos(demos)
   checkPhecodeOccurrences(phecodeOccurrences, demos)
+  byCols = checkWeights(weights)
   checkDiseasePhecodeMap(diseasePhecodeMap)
 
   rBig = merge(unique(phecodeOccurrences[, .(person_id, phecode)]),
                diseasePhecodeMap, by = 'phecode', allow.cartesian = TRUE)
-
-  if ('person_id' %in% colnames(weights)) {
-    checkWeights(weights, type = 'personalized')
-    rBig = merge(rBig, weights, by = c('person_id', 'phecode'))}
-  else {
-    checkWeights(weights, type = 'population')
-    rBig = merge(rBig, weights, by = 'phecode')}
+  rBig = merge(rBig, weights, by = byCols)
 
   rSum = rBig[, .(score = sum(w)), keyby = .(person_id, disease_id)]
   r = merge(CJ(person_id = demos$person_id,
@@ -163,8 +147,8 @@ getResidualScores = function(demos, scores, lmFormula) {
 #'   (in years).
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
 #'   person in the cohort. Must have columns `person_id`, `icd`, and `flag`.
-#'   The `cox` method requires an additional `occurrence_age` column
-#'   corresponding to the age (in years) a person acquired an ICD code.
+#'   The cox and "loglinear methods require an additional `occurrence_age`
+#'   column corresponding to the age (in years) a person acquired an ICD code.
 #' @param diseasePhecodeMap A data.table of the mapping between diseases and
 #'   phecodes. Must have columns `disease_id` and `phecode`.
 #' @param icdPhecodeMap A data.table of the mapping between ICD codes and
@@ -179,13 +163,14 @@ getResidualScores = function(demos, scores, lmFormula) {
 #'   be calculated based on data for the cohort provided. If the cohort is small
 #'   or its phecode prevalences do not reflect those in the population of
 #'   interest, it is recommended to use [preCalcWeights].
-#' @param method A string indicating the statistical model for calculating weights.
+#' @param method A string indicating the statistical model for calculating
+#'   weights.
 #' @param methodFormula A formula representing the right hand side of the model
-#'  corresponding to `method`. All terms in the formula must correspond to
-#'  columns in `demos`. A method formula is not required for the `prevalence`
-#'  method.
-#' @param dopar Logical indicating whether to run the calculation of weights
-#'   in parallel if a parallel backend is already set up, e.g., using
+#'   corresponding to `method`. All terms in the formula must correspond to
+#'   columns in `demos`. A method formula is not required for the `prevalence`
+#'   method.
+#' @param dopar Logical indicating whether to calculate the weights in parallel
+#'   if a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
 #' @param residScoreFormula A formula representing the linear model to use for
 #'   calculating residual scores. All terms in the formula must correspond to
@@ -217,7 +202,7 @@ phers = function(
   method = match.arg(method)
   checkDemos(demos, method = method)
 
-  if(method == 'cox') {
+  if (method %in% c('cox', 'loglinear')) {
     checkIcdOccurrences(
       icdOccurrences, cols = c('person_id', 'icd', 'flag', 'occurrence_age'))}
   else {
@@ -226,7 +211,7 @@ phers = function(
   checkDiseasePhecodeMap(diseasePhecodeMap)
   checkIcdPhecodeMap(icdPhecodeMap)
   checkDxIcd(dxIcd, nullOk = TRUE)
-  if (!is.null(weights)) checkWeights(weights, type = 'population')
+  if (!is.null(weights)) checkWeights(weights)
 
   if (method != 'prevalence') {
     checkMethodFormula(methodFormula, demos)
@@ -238,10 +223,12 @@ phers = function(
 
   if (method == 'cox') {
     phecodeOccurrences = phecodeOccurrences[, .(
-      occurrence_age = min(occurrence_age)) , by = .(person_id, phecode)]}
+      occurrence_age = min(occurrence_age)),
+      by = .(person_id, phecode)]}
   else if (method == 'loglinear') {
     phecodeOccurrences = phecodeOccurrences[, .(
-      num_occurrences = uniqueN(occurrence_age)), by = .(person_id, phecode)]}
+      num_occurrences = uniqueN(occurrence_age)),
+      by = .(person_id, phecode)]}
 
   if (is.null(weights)) weights = getWeights(
     demos, phecodeOccurrences, method, methodFormula, dopar)

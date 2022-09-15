@@ -1,16 +1,27 @@
+#' @import checkmate
+#' @import data.table
+#' @importFrom foreach foreach %do% %dopar%
+#' @importFrom stats lm confint update.formula rstandard glm predict
+#' @importFrom iterators iter
+#' @importFrom BEDMatrix BEDMatrix
+#' @importFrom survival coxph
+# BEDMatrix importFrom only to avoid note on R CMD check
+NULL
+
+
 checkDemos = function(
     demos, method = c('prevalence', 'logistic', 'cox', 'loglinear')) {
 
   method = match.arg(method)
   assertDataTable(demos)
 
-  cols = c('person_id')
+  cols = 'person_id'
   colsExc = c('phecode', 'w', 'disease_id', 'score')
 
   if (method == 'cox') {
-    cols = c('person_id', 'first_age', 'last_age')
+    cols = c(cols, 'first_age', 'last_age')
     colsExc = c(colsExc, 'occurrence_age')}
-  else if ( method == 'loglinear') {
+  else if (method == 'loglinear') {
     colsExc = c(colsExc, 'num_occurrences')}
 
   assertNames(
@@ -70,8 +81,7 @@ checkPhecodeOccurrences = function(
 
   assertNames(
     colnames(phecodeOccurrences), type = 'unique',
-    must.include = cols,
-    disjunct.from = c('w', 'disease_id'))
+    must.include = cols, disjunct.from = c('w', 'disease_id'))
 
   if (method == 'cox') {
     assertNumeric(phecodeOccurrences$occurrence_age, lower = 0)
@@ -87,28 +97,24 @@ checkPhecodeOccurrences = function(
   invisible()}
 
 
-checkWeights = function(weights, type = c('population', 'personalized')) {
-  . = person_id = phecode = NULL
-
-  type = match.arg(type)
+checkWeights = function(weights) {
   assertDataTable(weights)
 
-  if(type == 'population') {
-    assertNames(
-      colnames(weights), type = 'unique', must.include = c('phecode', 'w'),
-      disjunct.from = c('person_id', 'disease_id'))
-    assert(anyDuplicated(weights$phecode) == 0)}
-  else if(type == 'personalized') {
-    assertNames(
-      colnames(weights), type = 'unique',
-      must.include = c('person_id', 'phecode', 'w'),
-      disjunct.from = c('disease_id'))
-    assert(anyDuplicated(weights[, .(person_id, phecode)]) == 0)}
+  if ('person_id' %in% colnames(weights)) {
+    mustCols = c('person_id', 'phecode', 'w')
+    byCols = c('person_id', 'phecode')
+  } else {
+    mustCols = c('phecode', 'w')
+    byCols = 'phecode'}
+
+  assertNames(
+    colnames(weights), type = 'unique', must.include = mustCols,
+    disjunct.from = 'disease_id')
+  assert(anyDuplicated(weights, by = byCols) == 0)
 
   assertCharacter(weights$phecode)
   assertNumeric(weights$w, finite = TRUE)
-
-  invisible()}
+  return(byCols)}
 
 
 checkDiseasePhecodeMap = function(diseasePhecodeMap) {

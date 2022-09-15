@@ -1,5 +1,5 @@
 # phers 1.0.0
-* added age-aware functions. 
+* Added methods to calculate weights based on logistic, log-linear, and Cox proportional hazards regression.
 
 # phers 0.0.4
 * Updated documentation with the version of `hpoPhecodeMap`.
