@@ -41,16 +41,17 @@ a parallel backend is already set up, e.g., using
 }
 \value{
 A data.table with various columns. If \code{method} is "prevalence":
-\code{phecode}, \code{prev} (prevalence), and \code{w} (weight). If \code{method} is
-"logistic" or "cox": \code{person_id}, \code{phecode}, \code{prob} (probability), and \code{w}.
-If \code{method} is "loglinear": \code{person_id}, \code{phecode}, and \code{w}. Prevalence
-corresponds to fraction of the cohort that has at least one occurrence of
-the given phecode. Probability corresponds to predicted probability of
-given individual having a given phecode based on \code{method} and
-\code{methodFormula}. For the "prevalence" \code{method}, weight is calculated as
-\code{-log10(prev)}, for "logistic" and "cox" as \code{-log10(prob)}, and for
-"loglinear" as the difference between observed and predicted
-\code{log2(num_occurrences + 1)}.
+\code{phecode}, \code{pred}, and \code{w} (weight). If \code{method} is "logistic", "cox", or
+"loglinear": \code{person_id}, \code{phecode}, \code{pred}, and \code{w}. The column \code{pred}
+represents a different quantity depending on \code{method}. under the "prevalence"
+\code{method}, it is fraction of the cohort that has at least one occurrence
+of the given phecode. Under "logistic" or "cox" \code{method}, it is the
+predicted probability of given individual having a given phecode based on
+\code{methodFormula}. Under the "loglinear" \code{method}, it is the predicted
+log2(\code{num_occurrences} + 1) of a given phecode for a given individual
+based on \code{methodFormula}. For the "prevalence", "cox", and "logistic"
+\code{method}, weight is calculated as \code{-log10(pred)}, and for "loglinear" as
+the difference between the observed \code{log2(num_occurrences + 1)} and \code{pred}.
 }
 \description{
 This is typically the second step of an analysis using phenotype risk scores,

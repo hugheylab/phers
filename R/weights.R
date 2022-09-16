@@ -1,15 +1,15 @@
 getWeightsPrevalence = function(demos, phecodeOccurrences) {
-  phecode = person_id = . = prev = w = NULL
+  phecode = person_id = . = pred = w = NULL
   weights = phecodeOccurrences[, .(
-    prev = uniqueN(person_id) / nrow(demos)),
+    pred = uniqueN(person_id) / nrow(demos)),
     keyby = phecode]
-  weights[, w := -log10(prev)]
+  weights[, w := -log10(pred)]
   return(weights)}
 
 
 getWeightsLogistic = function(
     demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
-  phecode = person_id = . = w = phe = dx_status = prob = NULL
+  phecode = person_id = . = w = phe = dx_status = pred = NULL
 
   weights = doOp(foreachCall, {
     pheSub = unique(phecodeOccurrences[phecode == phe, .(person_id, phecode)])
@@ -20,11 +20,11 @@ getWeightsLogistic = function(
 
     methodFormula = update.formula(methodFormula, dx_status ~ .)
     fit = glm(methodFormula, data = glmInput, family = 'binomial')
-    glmInput[, prob := predict(
+    glmInput[, pred := predict(
       fit, newdata = .SD , type = 'response', se.fit = FALSE)]
-    glmInput = glmInput[, .(person_id, phecode, prob, dx_status)]})
+    glmInput = glmInput[, .(person_id, phecode, pred, dx_status)]})
 
-  weights[, w := -log10(prob) * dx_status]
+  weights[, w := -log10(pred) * dx_status]
   weights[, dx_status := NULL]
   return(weights)}
 
@@ -48,13 +48,13 @@ getWeightsLoglinear = function(
 
   weights[, w := log2(num_occurrences + 1) - pred]
   weights[num_occurrences == 0, w := 0]
-  weights[, `:=`(num_occurrences = NULL, pred = NULL)]
+  weights[, num_occurrences := NULL]
   return(weights)}
 
 
 getWeightsCox = function(
     demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
-  phecode = person_id = . = w = phe = dx_status = prob = occurrence_age =
+  phecode = person_id = . = w = phe = dx_status = pred = occurrence_age =
     first_age = last_age = age2 = NULL
 
   weights = doOp(foreachCall, {
@@ -73,12 +73,12 @@ getWeightsCox = function(
     methodFormula = update.formula(
       methodFormula, Surv(first_age, age2, dx_status) ~ .)
     fit = coxph(methodFormula, data = coxInput, model = TRUE)
-    coxInput[, prob := 1 - exp(
+    coxInput[, pred := 1 - exp(
       -predict(fit, newdata = .SD, type = 'expected', se.fit = FALSE))]
-    coxInput = coxInput[, .(person_id, phecode, prob, dx_status)]})
+    coxInput = coxInput[, .(person_id, phecode, pred, dx_status)]})
 
-  weights[, w := -log10(prob) * dx_status]
-  weights[prob == 0 & dx_status == 0, w := 0]
+  weights[, w := -log10(pred) * dx_status]
+  weights[pred == 0 & dx_status == 0, w := 0]
   weights[, dx_status := NULL]
   return(weights)}
 
@@ -111,16 +111,17 @@ getWeightsCox = function(
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
 #'
 #' @return A data.table with various columns. If `method` is "prevalence":
-#'   `phecode`, `prev` (prevalence), and `w` (weight). If `method` is
-#'   "logistic" or "cox": `person_id`, `phecode`, `prob` (probability), and `w`.
-#'   If `method` is "loglinear": `person_id`, `phecode`, and `w`. Prevalence
-#'   corresponds to fraction of the cohort that has at least one occurrence of
-#'   the given phecode. Probability corresponds to predicted probability of
-#'   given individual having a given phecode based on `method` and
-#'   `methodFormula`. For the "prevalence" `method`, weight is calculated as
-#'   `-log10(prev)`, for "logistic" and "cox" as `-log10(prob)`, and for
-#'   "loglinear" as the difference between observed and predicted
-#'   `log2(num_occurrences + 1)`.
+#'   `phecode`, `pred`, and `w` (weight). If `method` is "logistic", "cox", or
+#'   "loglinear": `person_id`, `phecode`, `pred`, and `w`. The column `pred`
+#'   represents a different quantity depending on `method`. under the "prevalence"
+#'   `method`, it is fraction of the cohort that has at least one occurrence
+#'   of the given phecode. Under "logistic" or "cox" `method`, it is the
+#'   predicted probability of given individual having a given phecode based on
+#'   `methodFormula`. Under the "loglinear" `method`, it is the predicted
+#'   log2(`num_occurrences` + 1) of a given phecode for a given individual
+#'   based on `methodFormula`. For the "prevalence", "cox", and "logistic"
+#'   `method`, weight is calculated as `-log10(pred)`, and for "loglinear" as
+#'   the difference between the observed `log2(num_occurrences + 1)` and `pred`.
 #'
 #' @eval example1()
 #'

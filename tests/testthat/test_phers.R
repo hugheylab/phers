@@ -1,10 +1,10 @@
 weightsPrevTest = data.table(
   phecode = c('001', '002', '003', '004'),
-  prev = c(1 / 4, 2 / 4, 1 / 4, 1 / 4), w = -log10(c(1 / 4, 2 / 4, 1 / 4, 1 / 4)))
+  pred = c(1 / 4, 2 / 4, 1 / 4, 1 / 4), w = -log10(c(1 / 4, 2 / 4, 1 / 4, 1 / 4)))
 
 weightsProbTest = data.table(
   person_id = c(1, rep(2L, 2), 3, 4),
-  phecode = c('001', '002', '003', '002', '004'), prob = 0.5, w = -log10(0.5))
+  phecode = c('001', '002', '003', '002', '004'), pred = 0.5, w = -log10(0.5))
 
 icdPhecodeMapTest = data.table(
   icd = c('001', '002', '003', '004', '005', '006'),

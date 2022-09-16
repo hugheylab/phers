@@ -66,6 +66,6 @@ formTest = ~ sex
 
 weightsExp = data.table(
   phecode = c('001', '002', '003', '004'),
-  prev = c(0.25, 0.50, 0.25, 0.25),
+  pred = c(0.25, 0.50, 0.25, 0.25),
   w = c(0.60206, 0.30103, 0.60206, 0.60206))
 setkeyv(weightsExp, 'phecode')
