@@ -14,7 +14,7 @@ scores."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/mat
     
     <a class="navbar-brand me-2" href="../index.html">phers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,6 +67,9 @@ scores.</p>
 <span>  icdPhecodeMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="icdPhecodeMap.html">icdPhecodeMap</a></span>,</span>
 <span>  dxIcd <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseDxIcdMap.html">diseaseDxIcdMap</a></span>,</span>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prevalence"</span>, <span class="st">"logistic"</span>, <span class="st">"cox"</span>, <span class="st">"loglinear"</span><span class="op">)</span>,</span>
+<span>  methodFormula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  dopar <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  residScoreFormula <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -75,12 +78,16 @@ scores.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
     <dl><dt>demos</dt>
 <dd><p>A data.table having one row per person in the cohort. Must have
-a column <code>person_id</code>.</p></dd>
+a column <code>person_id</code>. The <code>cox</code> method also requires <code>first_age</code> and
+<code>last_age</code> columns corresponding to the first and last age of visit
+(in years).</p></dd>
 
 
 <dt>icdOccurrences</dt>
 <dd><p>A data.table of occurrences of ICD codes for each
-person in the cohort. Must have columns <code>person_id</code>, <code>icd</code>, and <code>flag</code>.</p></dd>
+person in the cohort. Must have columns <code>person_id</code>, <code>icd</code>, and <code>flag</code>.
+The cox and "loglinear methods require an additional <code>occurrence_age</code>
+column corresponding to the age (in years) a person acquired an ICD code.</p></dd>
 
 
 <dt>diseasePhecodeMap</dt>
@@ -107,6 +114,24 @@ Must have columns <code>phecode</code> and <code>w</code>. If <code>NULL</code> 
 be calculated based on data for the cohort provided. If the cohort is small
 or its phecode prevalences do not reflect those in the population of
 interest, it is recommended to use <a href="preCalcWeights.html">preCalcWeights</a>.</p></dd>
+
+
+<dt>method</dt>
+<dd><p>A string indicating the statistical model for calculating
+weights.</p></dd>
+
+
+<dt>methodFormula</dt>
+<dd><p>A formula representing the right hand side of the model
+corresponding to <code>method</code>. All terms in the formula must correspond to
+columns in <code>demos</code>. A method formula is not required for the <code>prevalence</code>
+method.</p></dd>
+
+
+<dt>dopar</dt>
+<dd><p>Logical indicating whether to calculate the weights in parallel
+if a parallel backend is already set up, e.g., using
+<code><a href="https://rdrr.io/pkg/doParallel/man/registerDoParallel.html" class="external-link">doParallel::registerDoParallel()</a></code>. Recommended to minimize runtime.</p></dd>
 
 
 <dt>residScoreFormula</dt>

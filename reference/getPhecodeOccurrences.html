@@ -12,7 +12,7 @@ the next is getWeights()."><!-- mathjax --><script src="https://cdnjs.cloudflare
     
     <a class="navbar-brand me-2" href="../index.html">phers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -102,7 +102,7 @@ If <code>NULL</code>, no ICD codes will be excluded.</p></dd>
 <span class="r-in"><span><span class="co"># map ICD codes to phecodes</span></span></span>
 <span class="r-in"><span><span class="va">phecodeOccurrences</span> <span class="op">=</span> <span class="fu">getPhecodeOccurrences</span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># calculate weights</span></span></span>
+<span class="r-in"><span><span class="co"># calculate weights (using the prevalence method)</span></span></span>
 <span class="r-in"><span><span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># OMIM disease IDs for which to calculate phenotype risk scores</span></span></span>

@@ -14,7 +14,7 @@ received."><!-- mathjax --><script src="https://cdnjs.cloudflare.com/ajax/libs/m
     
     <a class="navbar-brand me-2" href="../index.html">phers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.0</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,10 @@ in the cohort. Must have columns <code>person_id</code> and <code>phecode</code>
 
 <dt>weights</dt>
 <dd><p>A data.table of phecodes and their corresponding weights.
-Must have columns <code>phecode</code> and <code>w</code>.</p></dd>
+Must have columns <code>phecode</code> and <code>w</code> when weights are unique to the
+population (e.g., calculated using the prevalence method)
+and <code>person_id</code>, <code>phecode</code>, and <code>w</code> when weights are unique to each
+person (e.g., calculated using logistic, cox, or loglinear methods).</p></dd>
 
 
 <dt>diseasePhecodeMap</dt>
@@ -105,7 +108,7 @@ each disease.</p>
 <span class="r-in"><span><span class="co"># map ICD codes to phecodes</span></span></span>
 <span class="r-in"><span><span class="va">phecodeOccurrences</span> <span class="op">=</span> <span class="fu"><a href="getPhecodeOccurrences.html">getPhecodeOccurrences</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># calculate weights</span></span></span>
+<span class="r-in"><span><span class="co"># calculate weights (using the prevalence method)</span></span></span>
 <span class="r-in"><span><span class="va">weights</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># OMIM disease IDs for which to calculate phenotype risk scores</span></span></span>
