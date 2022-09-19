@@ -113,14 +113,14 @@ getWeightsCox = function(
 #' @return A data.table with various columns. If `method` is "prevalence":
 #'   `phecode`, `pred`, and `w` (weight). If `method` is "logistic", "cox", or
 #'   "loglinear": `person_id`, `phecode`, `pred`, and `w`. The column `pred`
-#'   represents a different quantity depending on `method`. under the "prevalence"
-#'   `method`, it is fraction of the cohort that has at least one occurrence
-#'   of the given phecode. Under "logistic" or "cox" `method`, it is the
-#'   predicted probability of given individual having a given phecode based on
-#'   `methodFormula`. Under the "loglinear" `method`, it is the predicted
+#'   represents a different quantity depending on `method`. Under the
+#'   "prevalence" `method`, it is fraction of the cohort that has at least one
+#'   occurrence of the given phecode. Under "logistic" or "cox" `method`, it is
+#'   the predicted probability of given individual having a given phecode based
+#'   on `methodFormula`. Under the "loglinear" `method`, it is the predicted
 #'   log2(`num_occurrences` + 1) of a given phecode for a given individual
 #'   based on `methodFormula`. For the "prevalence", "cox", and "logistic"
-#'   `method`, weight is calculated as `-log10(pred)`, and for "loglinear" as
+#'   `method`s, weight is calculated as `-log10(pred)`, and for "loglinear" as
 #'   the difference between the observed `log2(num_occurrences + 1)` and `pred`.
 #'
 #' @eval example1()
