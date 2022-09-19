@@ -1,0 +1,11 @@
+ignore:
+  - "R/examples.R"
+
+coverage:
+  status:
+    project:
+      default:
+        informational: true
+    patch:
+      default:
+        informational: true

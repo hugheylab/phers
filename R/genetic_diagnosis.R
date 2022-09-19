@@ -20,7 +20,7 @@
 #' @return A data.table with columns `person_id`, `disease_id`, and `dx_status`
 #'   (1 indicates a case, 0 indicates a control, -1 indicates neither).
 #'
-#' @eval example2()
+#' @eval example3()
 #'
 #' @seealso [phers()]
 #'

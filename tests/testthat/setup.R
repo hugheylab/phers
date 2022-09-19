@@ -2,6 +2,7 @@ library('data.table')
 library('foreach')
 library('qs')
 library('BEDMatrix')
+library('survival')
 registerDoSEQ()
 
 
@@ -25,13 +26,28 @@ icdTest = data.table(
     c(as.Date('2000/01/01'), as.Date('2000/01/02'))))
 
 demosTest = data.table(
-  person_id = 1:4, sex = c('female', 'male', 'female', 'male'))
+  person_id = 1:4,
+  sex = c('female', 'male', 'female', 'male'),
+  first_age = seq(20, 23),
+  last_age = seq(25, 28))
 
 phecodeOccurrencesTest = data.table(
   person_id = c(1, rep(2L, 2), 3, 4),
   phecode = c('001', '002', '003', '002', '004'),
   entry_date = rep(as.Date('2000/01/01'), 5))
 setkey(phecodeOccurrencesTest)
+
+phecodeOccurrencesLLTest = data.table(
+  person_id = c(1, rep(2L, 2), 3, 4),
+  phecode = c('001', '002', '003', '002', '004'),
+  num_occurrences = rep(1, 5))
+setkey(phecodeOccurrencesLLTest)
+
+phecodeOccurrencesCoxTest = data.table(
+  person_id = c(1, rep(2L, 2), 3, 4),
+  phecode = c('001', '002', '003', '002', '004'),
+  occurrence_age = seq(22, 26))
+setkey(phecodeOccurrencesCoxTest)
 
 dxIcdTest = data.table(disease_id = 1, icd = c('005', '006'), flag = 9)
 
@@ -47,3 +63,9 @@ demosTest2 = data.table(
   person_id = 1:6,
   sex = c('female', 'male', 'female', 'male', 'female', 'male'))
 formTest = ~ sex
+
+weightsExp = data.table(
+  phecode = c('001', '002', '003', '004'),
+  pred = c(0.25, 0.50, 0.25, 0.25),
+  w = c(0.60206, 0.30103, 0.60206, 0.60206))
+setkeyv(weightsExp, 'phecode')

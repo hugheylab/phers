@@ -42,7 +42,7 @@
 #'   If `modelType` is "genotypic", the data.table will include separate
 #'   statistics for heterozygous and homozygous genotypes.
 #'
-#' @eval example3()
+#' @eval example4()
 #'
 #' @seealso [stats::lm()], [stats::confint()], [getScores()], [phers()]
 #'

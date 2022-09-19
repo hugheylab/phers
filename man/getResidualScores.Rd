@@ -34,7 +34,7 @@ library('data.table')
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
 
-# calculate weights
+# calculate weights (using the prevalence method)
 weights = getWeights(demoSample, phecodeOccurrences)
 
 # OMIM disease IDs for which to calculate phenotype risk scores

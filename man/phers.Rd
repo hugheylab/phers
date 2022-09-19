@@ -11,15 +11,22 @@ phers(
   icdPhecodeMap = phers::icdPhecodeMap,
   dxIcd = phers::diseaseDxIcdMap,
   weights = NULL,
+  method = c("prevalence", "logistic", "cox", "loglinear"),
+  methodFormula = NULL,
+  dopar = FALSE,
   residScoreFormula = NULL
 )
 }
 \arguments{
 \item{demos}{A data.table having one row per person in the cohort. Must have
-a column \code{person_id}.}
+a column \code{person_id}. The \code{cox} method also requires \code{first_age} and
+\code{last_age} columns corresponding to the first and last age of visit
+(in years).}
 
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
-person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{flag}.}
+person in the cohort. Must have columns \code{person_id}, \code{icd}, and \code{flag}.
+The cox and "loglinear methods require an additional \code{occurrence_age}
+column corresponding to the age (in years) a person acquired an ICD code.}
 
 \item{diseasePhecodeMap}{A data.table of the mapping between diseases and
 phecodes. Must have columns \code{disease_id} and \code{phecode}.}
@@ -38,6 +45,18 @@ Must have columns \code{phecode} and \code{w}. If \code{NULL} (the default), wei
 be calculated based on data for the cohort provided. If the cohort is small
 or its phecode prevalences do not reflect those in the population of
 interest, it is recommended to use \link{preCalcWeights}.}
+
+\item{method}{A string indicating the statistical model for calculating
+weights.}
+
+\item{methodFormula}{A formula representing the right hand side of the model
+corresponding to \code{method}. All terms in the formula must correspond to
+columns in \code{demos}. A method formula is not required for the \code{prevalence}
+method.}
+
+\item{dopar}{Logical indicating whether to calculate the weights in parallel
+if a parallel backend is already set up, e.g., using
+\code{\link[doParallel:registerDoParallel]{doParallel::registerDoParallel()}}. Recommended to minimize runtime.}
 
 \item{residScoreFormula}{A formula representing the linear model to use for
 calculating residual scores. All terms in the formula must correspond to

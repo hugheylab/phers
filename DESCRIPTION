@@ -1,7 +1,7 @@
 Package: phers
 Type: Package
 Title: Calculate Phenotype Risk Scores 
-Version: 0.0.4
+Version: 1.0.0
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Layla', 'Aref', , 'larefnezhad@gmail.com', 'aut'))
@@ -16,11 +16,12 @@ RoxygenNote: 7.2.1
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 3.5)
 Imports:
+  BEDMatrix (>= 2.0.3),
   checkmate (>= 2.0.0),
   data.table (>= 1.5.0),
   foreach (>= 1.5.2),
   iterators (>= 1.0.14),
-  BEDMatrix (>= 2.0.3)
+  survival (>= 3.3.1)
 Suggests:
   doParallel (>= 1.0.17),
   knitr,
