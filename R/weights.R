@@ -1,4 +1,4 @@
-getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights = FALSE) {
+getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights) {
   phecode = person_id = . = pred = w = NULL
   weights = phecodeOccurrences[, .(
     pred = uniqueN(person_id) / nrow(demos)),
@@ -8,8 +8,7 @@ getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights = FAL
 
 
 getWeightsLogistic = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp,
-    negativeWeights = FALSE) {
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foreachCall, doOp) {
   phecode = person_id = . = w = phe = dx_status = pred = NULL
 
   weights = doOp(foreachCall, {
@@ -34,8 +33,7 @@ getWeightsLogistic = function(
 
 
 getWeightsLoglinear = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp,
-    negativeWeights = FALSE) {
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foreachCall, doOp) {
   phecode = person_id = . = w = phe = pred = num_occurrences = NULL
 
   weights = doOp(foreachCall, {
@@ -53,14 +51,13 @@ getWeightsLoglinear = function(
 
   weights[, w := log2(num_occurrences + 1) - pred]
   if (!negativeWeights) {
-  weights[num_occurrences == 0, w := 0]}
+    weights[num_occurrences == 0, w := 0]}
   weights[, num_occurrences := NULL]
   return(weights)}
 
 
 getWeightsCox = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp,
-    negativeWeights = FALSE) {
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foreachCall, doOp) {
   phecode = person_id = . = w = phe = dx_status = pred = occurrence_age =
     first_age = last_age = age2 = NULL
 
@@ -115,8 +112,8 @@ getWeightsCox = function(
 #'   corresponding to `method`. All terms in the formula must correspond to
 #'   columns in `demos`. Do not use age-related covariates with the "cox"
 #'   method.
-#' @param negativeWeights Logical indicating the use of negative weights for
-#'  individuals with no occurrences of a phecode.
+#' @param negativeWeights Logical indicating whether to allow negative weights
+#'   for individuals with no occurrences of a phecode.
 #' @param dopar Logical indicating whether to run calculations in parallel if
 #'   a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
@@ -129,7 +126,7 @@ getWeightsCox = function(
 #'   occurrence of the given phecode. Under "logistic" or "cox" `method`, it is
 #'   the predicted probability of given individual having a given phecode based
 #'   on `methodFormula`. Under the "loglinear" `method`, it is the predicted
-#'   log2(`num_occurrences` + 1) of a given phecode for a given individual
+#'   `log2(num_occurrences + 1)` of a given phecode for a given individual
 #'   based on `methodFormula`. For the "prevalence", "cox", and "logistic"
 #'   `method`s, weight is calculated as `-log10(pred)`, and for "loglinear" as
 #'   the difference between the observed `log2(num_occurrences + 1)` and `pred`.
@@ -147,9 +144,10 @@ getWeights = function(
   method = match.arg(method)
   checkDemos(demos, method)
   checkPhecodeOccurrences(phecodeOccurrences, demos, method)
+  assertFlag(negativeWeights)
 
   if (method == 'prevalence') {
-    weights = getWeightsPrevalence(demos, phecodeOccurrences)
+    weights = getWeightsPrevalence(demos, phecodeOccurrences, negativeWeights)
     return(weights[])}
 
   checkMethodFormula(methodFormula, demos)
@@ -163,5 +161,6 @@ getWeights = function(
     method, logistic = getWeightsLogistic,
     loglinear = getWeightsLoglinear, cox = getWeightsCox)
 
-  weights = getWeightsFunc(demos, phecodeOccurrences, methodFormula, foe, doOp)
+  weights = getWeightsFunc(
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foe, doOp)
   return(weights[])}

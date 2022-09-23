@@ -36,8 +36,8 @@ corresponding to \code{method}. All terms in the formula must correspond to
 columns in \code{demos}. Do not use age-related covariates with the "cox"
 method.}
 
-\item{negativeWeights}{Logical indicating the use of negative weights for
-individuals with no occurrences of a phecode.}
+\item{negativeWeights}{Logical indicating whether to allow negative weights
+for individuals with no occurrences of a phecode.}
 
 \item{dopar}{Logical indicating whether to run calculations in parallel if
 a parallel backend is already set up, e.g., using
@@ -52,7 +52,7 @@ represents a different quantity depending on \code{method}. Under the
 occurrence of the given phecode. Under "logistic" or "cox" \code{method}, it is
 the predicted probability of given individual having a given phecode based
 on \code{methodFormula}. Under the "loglinear" \code{method}, it is the predicted
-log2(\code{num_occurrences} + 1) of a given phecode for a given individual
+\code{log2(num_occurrences + 1)} of a given phecode for a given individual
 based on \code{methodFormula}. For the "prevalence", "cox", and "logistic"
 \code{method}s, weight is calculated as \code{-log10(pred)}, and for "loglinear" as
 the difference between the observed \code{log2(num_occurrences + 1)} and \code{pred}.
