@@ -9,6 +9,7 @@ getWeights(
   phecodeOccurrences,
   method = c("prevalence", "logistic", "cox", "loglinear"),
   methodFormula = NULL,
+  negativeWeights = FALSE,
   dopar = FALSE
 )
 }
@@ -34,6 +35,9 @@ weights.}
 corresponding to \code{method}. All terms in the formula must correspond to
 columns in \code{demos}. Do not use age-related covariates with the "cox"
 method.}
+
+\item{negativeWeights}{Logical indicating the use of negative weights for
+individuals with no occurrences of a phecode.}
 
 \item{dopar}{Logical indicating whether to run calculations in parallel if
 a parallel backend is already set up, e.g., using

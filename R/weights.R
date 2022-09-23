@@ -1,4 +1,4 @@
-getWeightsPrevalence = function(demos, phecodeOccurrences) {
+getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights = FALSE) {
   phecode = person_id = . = pred = w = NULL
   weights = phecodeOccurrences[, .(
     pred = uniqueN(person_id) / nrow(demos)),
@@ -8,7 +8,8 @@ getWeightsPrevalence = function(demos, phecodeOccurrences) {
 
 
 getWeightsLogistic = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
+    demos, phecodeOccurrences, methodFormula, foreachCall, doOp,
+    negativeWeights = FALSE) {
   phecode = person_id = . = w = phe = dx_status = pred = NULL
 
   weights = doOp(foreachCall, {
@@ -24,13 +25,17 @@ getWeightsLogistic = function(
       fit, newdata = .SD , type = 'response', se.fit = FALSE)]
     glmInput = glmInput[, .(person_id, phecode, pred, dx_status)]})
 
-  weights[, w := -log10(pred) * dx_status]
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
   weights[, dx_status := NULL]
   return(weights)}
 
 
 getWeightsLoglinear = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
+    demos, phecodeOccurrences, methodFormula, foreachCall, doOp,
+    negativeWeights = FALSE) {
   phecode = person_id = . = w = phe = pred = num_occurrences = NULL
 
   weights = doOp(foreachCall, {
@@ -47,13 +52,15 @@ getWeightsLoglinear = function(
     lmInput = lmInput[, .(person_id, phecode, num_occurrences, pred)]})
 
   weights[, w := log2(num_occurrences + 1) - pred]
-  weights[num_occurrences == 0, w := 0]
+  if (!negativeWeights) {
+  weights[num_occurrences == 0, w := 0]}
   weights[, num_occurrences := NULL]
   return(weights)}
 
 
 getWeightsCox = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
+    demos, phecodeOccurrences, methodFormula, foreachCall, doOp,
+    negativeWeights = FALSE) {
   phecode = person_id = . = w = phe = dx_status = pred = occurrence_age =
     first_age = last_age = age2 = NULL
 
@@ -77,8 +84,10 @@ getWeightsCox = function(
       -predict(fit, newdata = .SD, type = 'expected', se.fit = FALSE))]
     coxInput = coxInput[, .(person_id, phecode, pred, dx_status)]})
 
-  weights[, w := -log10(pred) * dx_status]
-  weights[pred == 0 & dx_status == 0, w := 0]
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
   weights[, dx_status := NULL]
   return(weights)}
 
@@ -106,6 +115,8 @@ getWeightsCox = function(
 #'   corresponding to `method`. All terms in the formula must correspond to
 #'   columns in `demos`. Do not use age-related covariates with the "cox"
 #'   method.
+#' @param negativeWeights Logical indicating the use of negative weights for
+#'  individuals with no occurrences of a phecode.
 #' @param dopar Logical indicating whether to run calculations in parallel if
 #'   a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
@@ -131,7 +142,7 @@ getWeightsCox = function(
 getWeights = function(
     demos, phecodeOccurrences,
     method = c('prevalence', 'logistic', 'cox', 'loglinear'),
-    methodFormula = NULL, dopar = FALSE) {
+    methodFormula = NULL, negativeWeights = FALSE, dopar = FALSE) {
 
   method = match.arg(method)
   checkDemos(demos, method)
