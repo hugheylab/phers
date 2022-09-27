@@ -100,21 +100,15 @@ checkPhecodeOccurrences = function(
 checkWeights = function(weights) {
   assertDataTable(weights)
 
-  if ('person_id' %in% colnames(weights)) {
-    mustCols = c('person_id', 'phecode', 'w')
-    byCols = c('person_id', 'phecode')
-  } else {
-    mustCols = c('phecode', 'w')
-    byCols = 'phecode'}
-
   assertNames(
-    colnames(weights), type = 'unique', must.include = mustCols,
+    colnames(weights), type = 'unique',
+    must.include = c('person_id', 'phecode', 'w'),
     disjunct.from = 'disease_id')
-  assert(anyDuplicated(weights, by = byCols) == 0)
+  assert(anyDuplicated(weights, by = c('person_id', 'phecode')) == 0)
 
   assertCharacter(weights$phecode)
   assertNumeric(weights$w, finite = TRUE)
-  return(byCols)}
+  invisible()}
 
 
 checkDiseasePhecodeMap = function(diseasePhecodeMap) {

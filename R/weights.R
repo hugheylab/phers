@@ -1,9 +1,25 @@
 getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights) {
   phecode = person_id = . = pred = w = NULL
+
   weights = phecodeOccurrences[, .(
     pred = uniqueN(person_id) / nrow(demos)),
     keyby = phecode]
-  weights[, w := -log10(pred)]
+
+  wBig = CJ(
+    person_id = demos$person_id, phecode = unique(phecodeOccurrences$phecode))
+  wBig = merge(
+    wBig, unique(phecodeOccurrences[, .(person_id, phecode, dx_status = 1)]),
+    by = c('person_id', 'phecode'), all.x = TRUE, allow.cartesian = TRUE)
+  wBig[is.na(dx_status), dx_status := 0]
+  weights = merge(wBig, weights, by = 'phecode')
+
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
+  weights[, dx_status := NULL]
+  setcolorder(weights, 'person_id')
+
   return(weights)}
 
 
@@ -118,14 +134,13 @@ getWeightsCox = function(
 #'   a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
 #'
-#' @return A data.table with various columns. If `method` is "prevalence":
-#'   `phecode`, `pred`, and `w` (weight). If `method` is "logistic", "cox", or
-#'   "loglinear": `person_id`, `phecode`, `pred`, and `w`. The column `pred`
-#'   represents a different quantity depending on `method`. Under the
-#'   "prevalence" `method`, it is fraction of the cohort that has at least one
-#'   occurrence of the given phecode. Under "logistic" or "cox" `method`, it is
-#'   the predicted probability of given individual having a given phecode based
-#'   on `methodFormula`. Under the "loglinear" `method`, it is the predicted
+#' @return A data.table with columns `person_id`, `phecode`, `pred`, and `w`.
+#'   The column `pred` represents a different quantity depending on `method`.
+#'   Under the "prevalence" `method`, it is fraction of the cohort that has
+#'   at least one occurrence of the given phecode.
+#'   Under "logistic" or "cox" `method`, it is the predicted probability of
+#'   given individual having a given phecode based on `methodFormula`.
+#'   Under the "loglinear" `method`, it is the predicted
 #'   `log2(num_occurrences + 1)` of a given phecode for a given individual
 #'   based on `methodFormula`. For the "prevalence", "cox", and "logistic"
 #'   `method`s, weight is calculated as `-log10(pred)`, and for "loglinear" as

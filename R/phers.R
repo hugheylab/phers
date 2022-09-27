@@ -76,18 +76,14 @@ getScores = function(
 
   checkDemos(demos)
   checkPhecodeOccurrences(phecodeOccurrences, demos)
-  byCols = checkWeights(weights)
+  checkWeights(weights)
   checkDiseasePhecodeMap(diseasePhecodeMap)
 
-  rBig = merge(unique(phecodeOccurrences[, .(person_id, phecode)]),
-               diseasePhecodeMap, by = 'phecode', allow.cartesian = TRUE)
-  rBig = merge(rBig, weights, by = byCols)
+  rBig = merge(
+    weights[, .(person_id, phecode, w)], diseasePhecodeMap,
+    by =  'phecode', allow.cartesian = TRUE)
+  r = rBig[, .(score = sum(w)), keyby = .(person_id, disease_id)]
 
-  rSum = rBig[, .(score = sum(w)), keyby = .(person_id, disease_id)]
-  r = merge(CJ(person_id = demos$person_id,
-               disease_id = unique(diseasePhecodeMap$disease_id)),
-            rSum, by = c('person_id', 'disease_id'), all.x = TRUE)
-  r[is.na(score), score := 0]
   return(r[])}
 
 
