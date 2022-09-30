@@ -49,15 +49,8 @@ getPhecodeOccurrences = function(
 #' sum of the weights of the disease-relevant phecodes that the person has
 #' received.
 #'
-#' @param demos A data.table having one row per person in the cohort. Must have
-#'   a column `person_id`.
-#' @param phecodeOccurrences A data.table of phecode occurrences for each person
-#'   in the cohort. Must have columns `person_id` and `phecode`.
 #' @param weights A data.table of phecodes and their corresponding weights.
-#'   Must have columns `phecode` and `w` when weights are unique to the
-#'   population (e.g., calculated using the prevalence method)
-#'   and `person_id`, `phecode`, and `w` when weights are unique to each
-#'   person (e.g., calculated using logistic, cox, or loglinear methods).
+#'   Must have columns `person_id`, `phecode` and `w`.
 #' @param diseasePhecodeMap A data.table of the mapping between diseases and
 #'   phecodes. Must have columns `disease_id` and `phecode`.
 #'
@@ -70,12 +63,9 @@ getPhecodeOccurrences = function(
 #'   [getResidualScores()], [phers()]
 #'
 #' @export
-getScores = function(
-    demos, phecodeOccurrences, weights, diseasePhecodeMap) {
+getScores = function(weights, diseasePhecodeMap) {
   person_id = phecode = disease_id = w = score = . = NULL
 
-  checkDemos(demos)
-  checkPhecodeOccurrences(phecodeOccurrences, demos)
   checkWeights(weights)
   checkDiseasePhecodeMap(diseasePhecodeMap)
 
@@ -229,8 +219,7 @@ phers = function(
   if (is.null(weights)) weights = getWeights(
     demos, phecodeOccurrences, method, methodFormula, dopar)
 
-  scores = getScores(
-    demos, phecodeOccurrences, weights, diseasePhecodeMap)
+  scores = getScores(weights, diseasePhecodeMap)
 
   if (!is.null(residScoreFormula)) {
     scores = getResidualScores(demos, scores, residScoreFormula)}

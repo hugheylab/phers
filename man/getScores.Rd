@@ -4,20 +4,11 @@
 \alias{getScores}
 \title{Calculate phenotype risk scores}
 \usage{
-getScores(demos, phecodeOccurrences, weights, diseasePhecodeMap)
+getScores(weights, diseasePhecodeMap)
 }
 \arguments{
-\item{demos}{A data.table having one row per person in the cohort. Must have
-a column \code{person_id}.}
-
-\item{phecodeOccurrences}{A data.table of phecode occurrences for each person
-in the cohort. Must have columns \code{person_id} and \code{phecode}.}
-
 \item{weights}{A data.table of phecodes and their corresponding weights.
-Must have columns \code{phecode} and \code{w} when weights are unique to the
-population (e.g., calculated using the prevalence method)
-and \code{person_id}, \code{phecode}, and \code{w} when weights are unique to each
-person (e.g., calculated using logistic, cox, or loglinear methods).}
+Must have columns \code{person_id}, \code{phecode} and \code{w}.}
 
 \item{diseasePhecodeMap}{A data.table of the mapping between diseases and
 phecodes. Must have columns \code{disease_id} and \code{phecode}.}
@@ -47,8 +38,7 @@ diseaseId = 154700
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate scores
-scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
+scores = getScores(weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual scores
 rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)

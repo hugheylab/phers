@@ -1,7 +1,6 @@
 test_that('getWeights output (prevalence model)', {
-
   resObs = getWeights(demosTest, phecodeOccurrencesTest)
-  resExp = weightsExp
+  resExp = snapshot(resObs, file.path(dataDir, 'get_weights_prevalence_output.qs'))
   expect_equal(resObs, resExp)
 })
 

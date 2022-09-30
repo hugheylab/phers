@@ -1,5 +1,5 @@
 getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights) {
-  phecode = person_id = . = pred = w = NULL
+  phecode = person_id = . = pred = w = dx_status = NULL
 
   weights = phecodeOccurrences[, .(
     pred = uniqueN(person_id) / nrow(demos)),

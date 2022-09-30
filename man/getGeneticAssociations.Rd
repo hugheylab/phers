@@ -85,8 +85,7 @@ diseaseId = 154700
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate scores
-scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
+scores = getScores(weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # map diseases to genetic variants
 nvar = 10

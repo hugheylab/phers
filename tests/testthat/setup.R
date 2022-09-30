@@ -63,9 +63,3 @@ demosTest2 = data.table(
   person_id = 1:6,
   sex = c('female', 'male', 'female', 'male', 'female', 'male'))
 formTest = ~ sex
-
-weightsExp = data.table(
-  phecode = c('001', '002', '003', '004'),
-  pred = c(0.25, 0.50, 0.25, 0.25),
-  w = c(0.60206, 0.30103, 0.60206, 0.60206))
-setkeyv(weightsExp, 'phecode')
