@@ -10,7 +10,8 @@ NULL
 
 
 checkDemos = function(
-    demos, method = c('prevalence', 'logistic', 'cox', 'loglinear')) {
+    demos, method = c(
+      'prevalence', 'logistic', 'cox', 'loglinear', 'prevalence_precalc')) {
 
   method = match.arg(method)
   assertDataTable(demos)
@@ -70,7 +71,8 @@ checkIcdOccurrences = function(
 
 checkPhecodeOccurrences = function(
     phecodeOccurrences, demos,
-    method = c('prevalence', 'logistic', 'cox', 'loglinear')) {
+    method = c(
+      'prevalence', 'logistic', 'cox', 'loglinear', 'prevalence_precalc')) {
 
   method = match.arg(method)
   assertDataTable(phecodeOccurrences)

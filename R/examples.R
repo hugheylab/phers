@@ -133,6 +133,6 @@ scores = phers(
 # calculate scores using pre-calculated weights
 scores = phers(
   demoSample, icdSample, diseasePhecodeMap,
-  weights = phers::preCalcWeights, residScoreFormula = ~ sex)
+  method = 'prevalence_precalc', residScoreFormula = ~ sex)
 "
   return(strsplit(ex, split = '\n')[[1L]])}

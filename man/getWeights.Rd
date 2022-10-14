@@ -7,7 +7,7 @@
 getWeights(
   demos,
   phecodeOccurrences,
-  method = c("prevalence", "logistic", "cox", "loglinear"),
+  method = c("prevalence", "logistic", "cox", "loglinear", "prevalence_precalc"),
   methodFormula = NULL,
   negativeWeights = FALSE,
   dopar = FALSE
@@ -33,8 +33,9 @@ weights.}
 
 \item{methodFormula}{A formula representing the right-hand side of the model
 corresponding to \code{method}. All terms in the formula must correspond to
-columns in \code{demos}. Do not use age-related covariates with the "cox"
-method.}
+columns in \code{demos}. A method formula is not required for the "prevalence"
+and "prevalence_precalc" methods. Do not use age-related covariates with
+the "cox" method.}
 
 \item{negativeWeights}{Logical indicating whether to allow negative weights
 for individuals with no occurrences of a phecode.}
@@ -47,14 +48,17 @@ a parallel backend is already set up, e.g., using
 A data.table with columns \code{person_id}, \code{phecode}, \code{pred}, and \code{w}.
 The column \code{pred} represents a different quantity depending on \code{method}.
 Under the "prevalence" \code{method}, it is fraction of the cohort that has
-at least one occurrence of the given phecode.
+at least one occurrence of the given phecode. The "prevalence_precalc"
+\code{method} is similar to the "prevalence" \code{method} but \code{pred} is calculated
+based on EHR data from the Vanderbilt University Medical Center.
 Under "logistic" or "cox" \code{method}, it is the predicted probability of
 given individual having a given phecode based on \code{methodFormula}.
 Under the "loglinear" \code{method}, it is the predicted
 \code{log2(num_occurrences + 1)} of a given phecode for a given individual
-based on \code{methodFormula}. For the "prevalence", "cox", and "logistic"
-\code{method}s, weight is calculated as \code{-log10(pred)}, and for "loglinear" as
-the difference between the observed \code{log2(num_occurrences + 1)} and \code{pred}.
+based on \code{methodFormula}. For the "prevalence", "prevalence_precalc",
+"cox", and "logistic" \code{method}s, weight is calculated as \code{-log10(pred)},
+and for "loglinear" as the difference between the observed
+\code{log2(num_occurrences + 1)} and \code{pred}.
 }
 \description{
 This is typically the second step of an analysis using phenotype risk scores,

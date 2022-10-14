@@ -1,3 +1,24 @@
+getPreCalcWeights = function(demos, phecodeOccurrences, negativeWeights) {
+  phecode = person_id = . = pred = w = dx_status = NULL
+
+  wBig = CJ(
+    person_id = demos$person_id, phecode = unique(phecodeOccurrences$phecode))
+  wBig = merge(
+    wBig, unique(phecodeOccurrences[, .(person_id, phecode, dx_status = 1)]),
+    by = c('person_id', 'phecode'), all.x = TRUE, allow.cartesian = TRUE)
+  wBig[is.na(dx_status), dx_status := 0]
+  weights = merge(wBig, phers::preCalcWeights[, .(phecode, pred)], by = 'phecode')
+
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
+  weights[, dx_status := NULL]
+  setcolorder(weights, 'person_id')
+
+  return(weights)}
+
+
 getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights) {
   phecode = person_id = . = pred = w = dx_status = NULL
 
@@ -126,8 +147,9 @@ getWeightsCox = function(
 #'   weights.
 #' @param methodFormula A formula representing the right-hand side of the model
 #'   corresponding to `method`. All terms in the formula must correspond to
-#'   columns in `demos`. Do not use age-related covariates with the "cox"
-#'   method.
+#'   columns in `demos`. A method formula is not required for the "prevalence"
+#'   and "prevalence_precalc" methods. Do not use age-related covariates with
+#'   the "cox" method.
 #' @param negativeWeights Logical indicating whether to allow negative weights
 #'   for individuals with no occurrences of a phecode.
 #' @param dopar Logical indicating whether to run calculations in parallel if
@@ -137,14 +159,17 @@ getWeightsCox = function(
 #' @return A data.table with columns `person_id`, `phecode`, `pred`, and `w`.
 #'   The column `pred` represents a different quantity depending on `method`.
 #'   Under the "prevalence" `method`, it is fraction of the cohort that has
-#'   at least one occurrence of the given phecode.
+#'   at least one occurrence of the given phecode. The "prevalence_precalc"
+#'   `method` is similar to the "prevalence" `method` but `pred` is calculated
+#'   based on EHR data from the Vanderbilt University Medical Center.
 #'   Under "logistic" or "cox" `method`, it is the predicted probability of
 #'   given individual having a given phecode based on `methodFormula`.
 #'   Under the "loglinear" `method`, it is the predicted
 #'   `log2(num_occurrences + 1)` of a given phecode for a given individual
-#'   based on `methodFormula`. For the "prevalence", "cox", and "logistic"
-#'   `method`s, weight is calculated as `-log10(pred)`, and for "loglinear" as
-#'   the difference between the observed `log2(num_occurrences + 1)` and `pred`.
+#'   based on `methodFormula`. For the "prevalence", "prevalence_precalc",
+#'   "cox", and "logistic" `method`s, weight is calculated as `-log10(pred)`,
+#'   and for "loglinear" as the difference between the observed
+#'   `log2(num_occurrences + 1)` and `pred`.
 #'
 #' @eval example1()
 #'
@@ -153,7 +178,8 @@ getWeightsCox = function(
 #' @export
 getWeights = function(
     demos, phecodeOccurrences,
-    method = c('prevalence', 'logistic', 'cox', 'loglinear'),
+    method = c('prevalence', 'logistic', 'cox', 'loglinear',
+               'prevalence_precalc'),
     methodFormula = NULL, negativeWeights = FALSE, dopar = FALSE) {
 
   method = match.arg(method)
@@ -161,8 +187,11 @@ getWeights = function(
   checkPhecodeOccurrences(phecodeOccurrences, demos, method)
   assertFlag(negativeWeights)
 
-  if (method == 'prevalence') {
-    weights = getWeightsPrevalence(demos, phecodeOccurrences, negativeWeights)
+  if (method %in% c('prevalence', 'prevalence_precalc')) {
+    getWeightsFunc = switch(
+      method, prevalence = getWeightsPrevalence,
+      prevalence_precalc = getPreCalcWeights)
+    weights = getWeightsFunc(demos, phecodeOccurrences, negativeWeights)
     return(weights[])}
 
   checkMethodFormula(methodFormula, demos)

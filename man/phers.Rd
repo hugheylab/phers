@@ -11,8 +11,9 @@ phers(
   icdPhecodeMap = phers::icdPhecodeMap,
   dxIcd = phers::diseaseDxIcdMap,
   weights = NULL,
-  method = c("prevalence", "logistic", "cox", "loglinear"),
+  method = c("prevalence", "logistic", "cox", "loglinear", "prevalence_precalc"),
   methodFormula = NULL,
+  negativeWeights = FALSE,
   dopar = FALSE,
   residScoreFormula = NULL
 )
@@ -40,19 +41,21 @@ Must have columns \code{icd} and \code{flag}. Default is the table of Mendelian
 diseases and the corresponding ICD codes that indicate a genetic diagnosis.
 If \code{NULL}, no ICD codes will be excluded.}
 
-\item{weights}{A data.table of phecodes and their corresponding weights.
-Must have columns \code{phecode} and \code{w}. If \code{NULL} (the default), weights will
-be calculated based on data for the cohort provided. If the cohort is small
-or its phecode prevalences do not reflect those in the population of
-interest, it is recommended to use \link{preCalcWeights}.}
+\item{weights}{A data.table of person IDs, phecodes, and their corresponding
+weights. Must have columns \code{person_id}, \code{phecode}, and \code{w}.
+If \code{NULL} (the default), weights will be calculated based on data for the
+cohort provided.}
 
 \item{method}{A string indicating the statistical model for calculating
 weights.}
 
 \item{methodFormula}{A formula representing the right hand side of the model
 corresponding to \code{method}. All terms in the formula must correspond to
-columns in \code{demos}. A method formula is not required for the \code{prevalence}
-method.}
+columns in \code{demos}. A method formula is not required for the "prevalence"
+and "prevalence_precalc" methods.}
+
+\item{negativeWeights}{Logical indicating whether to allow negative weights
+for individuals with no occurrences of a phecode.}
 
 \item{dopar}{Logical indicating whether to calculate the weights in parallel
 if a parallel backend is already set up, e.g., using
@@ -94,7 +97,7 @@ scores = phers(
 # calculate scores using pre-calculated weights
 scores = phers(
   demoSample, icdSample, diseasePhecodeMap,
-  weights = phers::preCalcWeights, residScoreFormula = ~ sex)
+  method = 'prevalence_precalc', residScoreFormula = ~ sex)
 }
 \seealso{
 \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}}, \code{\link[=getScores]{getScores()}},

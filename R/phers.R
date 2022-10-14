@@ -144,17 +144,18 @@ getResidualScores = function(demos, scores, lmFormula) {
 #'   Must have columns `icd` and `flag`. Default is the table of Mendelian
 #'   diseases and the corresponding ICD codes that indicate a genetic diagnosis.
 #'   If `NULL`, no ICD codes will be excluded.
-#' @param weights A data.table of phecodes and their corresponding weights.
-#'   Must have columns `phecode` and `w`. If `NULL` (the default), weights will
-#'   be calculated based on data for the cohort provided. If the cohort is small
-#'   or its phecode prevalences do not reflect those in the population of
-#'   interest, it is recommended to use [preCalcWeights].
+#' @param weights A data.table of person IDs, phecodes, and their corresponding
+#'   weights. Must have columns `person_id`, `phecode`, and `w`.
+#'   If `NULL` (the default), weights will be calculated based on data for the
+#'   cohort provided.
 #' @param method A string indicating the statistical model for calculating
 #'   weights.
 #' @param methodFormula A formula representing the right hand side of the model
 #'   corresponding to `method`. All terms in the formula must correspond to
-#'   columns in `demos`. A method formula is not required for the `prevalence`
-#'   method.
+#'   columns in `demos`. A method formula is not required for the "prevalence"
+#'   and "prevalence_precalc" methods.
+#' @param negativeWeights Logical indicating whether to allow negative weights
+#'   for individuals with no occurrences of a phecode.
 #' @param dopar Logical indicating whether to calculate the weights in parallel
 #'   if a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
@@ -180,8 +181,10 @@ getResidualScores = function(demos, scores, lmFormula) {
 phers = function(
   demos, icdOccurrences, diseasePhecodeMap,
   icdPhecodeMap = phers::icdPhecodeMap, dxIcd = phers::diseaseDxIcdMap,
-  weights = NULL, method = c('prevalence', 'logistic', 'cox', 'loglinear'),
-  methodFormula = NULL, dopar = FALSE, residScoreFormula = NULL) {
+  weights = NULL,
+  method = c('prevalence', 'logistic', 'cox', 'loglinear', 'prevalence_precalc'),
+  methodFormula = NULL, negativeWeights = FALSE, dopar = FALSE,
+  residScoreFormula = NULL) {
 
   occurrence_age = person_id = phecode = . = NULL
 
@@ -199,7 +202,7 @@ phers = function(
   checkDxIcd(dxIcd, nullOk = TRUE)
   if (!is.null(weights)) checkWeights(weights)
 
-  if (method != 'prevalence') {
+  if (!(method %in% c('prevalence', 'prevalence_precalc'))) {
     checkMethodFormula(methodFormula, demos)
     assertFlag(dopar)}
   if (!is.null(residScoreFormula)) checkLmFormula(residScoreFormula, demos)
@@ -217,7 +220,7 @@ phers = function(
       by = .(person_id, phecode)]}
 
   if (is.null(weights)) weights = getWeights(
-    demos, phecodeOccurrences, method, methodFormula, dopar)
+    demos, phecodeOccurrences, method, methodFormula, negativeWeights, dopar)
 
   scores = getScores(weights, diseasePhecodeMap)
 

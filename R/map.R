@@ -32,7 +32,8 @@
 #' Pre-calculated weights for calculating phenotype risk scores
 #'
 #' The weights are based on EHR data from the Vanderbilt University Medical
-#' Center Synthetic Derivative (SD) and ICD-phecode map version 1.2.
+#' Center Synthetic Derivative (SD) and ICD-phecode map version 1.2 and are
+#' calculated using the "prevalence" method.
 #'
 #' @format A data.table with the following columns:
 #'
