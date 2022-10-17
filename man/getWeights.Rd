@@ -38,7 +38,9 @@ and "prevalence_precalc" methods. Do not use age-related covariates with
 the "cox" method.}
 
 \item{negativeWeights}{Logical indicating whether to allow negative weights
-for individuals with no occurrences of a phecode.}
+for individuals with no occurrences of a phecode. This option is not
+required for the "loglinear" method since under this method, individuals
+with a nonzero phecode occurrence can also have negative weights.}
 
 \item{dopar}{Logical indicating whether to run calculations in parallel if
 a parallel backend is already set up, e.g., using

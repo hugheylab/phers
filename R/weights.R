@@ -87,8 +87,6 @@ getWeightsLoglinear = function(
     lmInput = lmInput[, .(person_id, phecode, num_occurrences, pred)]})
 
   weights[, w := log2(num_occurrences + 1) - pred]
-  if (!negativeWeights) {
-    weights[num_occurrences == 0, w := 0]}
   weights[, num_occurrences := NULL]
   return(weights)}
 
@@ -151,7 +149,9 @@ getWeightsCox = function(
 #'   and "prevalence_precalc" methods. Do not use age-related covariates with
 #'   the "cox" method.
 #' @param negativeWeights Logical indicating whether to allow negative weights
-#'   for individuals with no occurrences of a phecode.
+#'   for individuals with no occurrences of a phecode. This option is not
+#'   required for the "loglinear" method since under this method, individuals
+#'   with a nonzero phecode occurrence can also have negative weights.
 #' @param dopar Logical indicating whether to run calculations in parallel if
 #'   a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
