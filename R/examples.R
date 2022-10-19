@@ -70,7 +70,12 @@ example3 = function() {
 @examples
 library('data.table')
 
-dxStatus = getDxStatus(demoSample, icdSample)
+
+icdSample1 = merge(icdSample, demoSample[, .(person_id, dob)], by = 'person_id')
+icdSample1[, entry_age := as.numeric((entry_date - dob)/365.25)]
+icdSample1[, `:=`(entry_date = NULL, dob = NULL)]
+
+dxStatus = getDxStatus(demoSample, icdSample1)
 "
   return(strsplit(ex, split = '\n')[[1L]])}
 

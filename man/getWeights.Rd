@@ -58,8 +58,10 @@ given individual having a given phecode based on \code{methodFormula}.
 Under the "loglinear" \code{method}, it is the predicted
 \code{log2(num_occurrences + 1)} of a given phecode for a given individual
 based on \code{methodFormula}. For the "prevalence", "prevalence_precalc",
-"cox", and "logistic" \code{method}s, weight is calculated as \code{-log10(pred)},
-and for "loglinear" as the difference between the observed
+"cox", and "logistic" \code{method}s, weight is calculated as \code{-log10(pred)}
+when an individual has non-zero phecode occurrence and \code{log10(1 - pred)}
+when an individual has zero phecode occurrence. For the "loglinear" \code{method}
+weight is calculated as the difference between the observed
 \code{log2(num_occurrences + 1)} and \code{pred}.
 }
 \description{

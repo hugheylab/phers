@@ -39,8 +39,7 @@ test_that('getPhecodeOccurrences output (dxIcd = NULL)', {
   resExp = data.table(
     person_id = c(1, rep(2L, 3), 3, rep(4L, 3)),
     phecode = c('001', '002', '003', '005', '002', '004', '005', '006'),
-    entry_date = c(rep(as.Date('2000/01/01'), 6),
-                   c(as.Date('2000/01/01'), as.Date('2000/01/02'))))
+    entry_age= c(rep(10, 6), c(10, 11)))
   setkey(resExp)
 
   expect_equal(resObs, resExp)

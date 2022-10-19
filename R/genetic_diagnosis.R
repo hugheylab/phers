@@ -8,10 +8,10 @@
 #'   a column `person_id`.
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
 #'   person in the cohort. Must have columns `person_id`, `icd`, `flag`, and
-#'   `entry_date`.
-#' @param minUniqueDates Integer indicating the minimum number of unique
-#'   ICD code entry dates required to classify a person as a case. Persons with
-#'   at least one, but fewer than `minUniqueDates` entry dates, are assigned as
+#'   `entry_age`.
+#' @param minUniqueAges Integer indicating the minimum number of unique
+#'   ICD code entry ages required to classify a person as a case. Persons with
+#'   at least one, but fewer than `minUniqueAges` entry ages, are assigned as
 #'   neither cases nor controls.
 #' @param diseaseDxIcdMap A data.table of the mapping between diseases and
 #'   the corresponding ICD codes that indicate a diagnosis. Must have columns
@@ -26,15 +26,15 @@
 #'
 #' @export
 getDxStatus = function(
-  demos, icdOccurrences, minUniqueDates = 2L,
+  demos, icdOccurrences, minUniqueAges = 2L,
   diseaseDxIcdMap = phers::diseaseDxIcdMap) {
-  dx_status = entry_date = uniq_dates = . = NULL
+  dx_status = entry_age = uniq_ages = . = NULL
 
   checkDemos(demos)
   checkIcdOccurrences(
-    icdOccurrences, cols = c('person_id', 'icd', 'flag', 'entry_date'))
-  checkDate(icdOccurrences$entry_date)
-  assertCount(minUniqueDates, positive = TRUE)
+    icdOccurrences, cols = c('person_id', 'icd', 'flag', 'entry_age'))
+  assertNumeric(icdOccurrences$entry_age, lower = 0)
+  assertCount(minUniqueAges, positive = TRUE)
 
   checkDxIcd(diseaseDxIcdMap, nullOk = FALSE)
   byCols = c('person_id', 'disease_id')
@@ -42,9 +42,9 @@ getDxStatus = function(
   dxIcd = merge(
     icdOccurrences, diseaseDxIcdMap[, c('disease_id', 'icd', 'flag')],
     by = c('icd', 'flag'))
-  dxIcd = dxIcd[, .(uniq_dates = uniqueN(entry_date)), keyby = byCols]
+  dxIcd = dxIcd[, .(uniq_ages = uniqueN(entry_age)), keyby = byCols]
   dxIcd[, dx_status := -1L]
-  dxIcd[uniq_dates >= minUniqueDates, dx_status := 1L]
+  dxIcd[uniq_ages >= minUniqueAges, dx_status := 1L]
 
   dxStatus = merge(
     CJ(person_id = demos$person_id,
