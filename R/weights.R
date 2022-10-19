@@ -167,8 +167,10 @@ getWeightsCox = function(
 #'   Under the "loglinear" `method`, it is the predicted
 #'   `log2(num_occurrences + 1)` of a given phecode for a given individual
 #'   based on `methodFormula`. For the "prevalence", "prevalence_precalc",
-#'   "cox", and "logistic" `method`s, weight is calculated as `-log10(pred)`,
-#'   and for "loglinear" as the difference between the observed
+#'   "cox", and "logistic" `method`s, weight is calculated as `-log10(pred)`
+#'   when an individual has non-zero phecode occurrence and `log10(1 - pred)`
+#'   when an individual has zero phecode occurrence. For the "loglinear" `method`
+#'   weight is calculated as the difference between the observed
 #'   `log2(num_occurrences + 1)` and `pred`.
 #'
 #' @eval example1()

@@ -138,7 +138,9 @@ runLinear = function(
     if (varName == 'allele_count1') {
       lmStat[, genotype := 'heterozygous']
     } else if (varName == 'allele_count2') {
-      lmStat[, genotype := 'homozygous']}}
+      lmStat[, genotype := 'homozygous']}
+
+    lmStat}
 
   stat = cbind(stat, lmStats)
   return(stat)}
