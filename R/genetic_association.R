@@ -44,7 +44,7 @@
 #'
 #' @eval example4()
 #'
-#' @seealso [stats::lm()], [stats::confint()], [getScores()], [phers()]
+#' @seealso [stats::lm()], [stats::confint()], [getScores()]
 #'
 #' @export
 getGeneticAssociations = function(

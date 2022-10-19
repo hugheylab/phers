@@ -47,6 +47,3 @@ icdSample1[, `:=`(entry_date = NULL, dob = NULL)]
 
 dxStatus = getDxStatus(demoSample, icdSample1)
 }
-\seealso{
-\code{\link[=phers]{phers()}}
-}

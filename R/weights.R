@@ -175,7 +175,7 @@ getWeightsCox = function(
 #'
 #' @eval example1()
 #'
-#' @seealso [getPhecodeOccurrences()], [getScores()], [phers()]
+#' @seealso [getPhecodeOccurrences()], [getScores()]
 #'
 #' @export
 getWeights = function(

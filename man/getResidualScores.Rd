@@ -50,5 +50,5 @@ scores = getScores(weights, diseasePhecodeMap[disease_id == diseaseId])
 rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
 }
 \seealso{
-\code{\link[stats:influence.measures]{stats::rstandard()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
+\code{\link[stats:influence.measures]{stats::rstandard()}}, \code{\link[=getScores]{getScores()}}
 }

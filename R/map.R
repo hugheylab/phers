@@ -138,7 +138,7 @@
 #'
 #' @eval example1()
 #'
-#' @seealso [getScores()], [phers()]
+#' @seealso [getScores()]
 #'
 #' @export
 mapDiseaseToPhecode = function(

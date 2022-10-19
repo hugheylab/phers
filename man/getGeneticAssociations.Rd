@@ -103,5 +103,5 @@ genoStats = getGeneticAssociations(
   modelType = 'additive')
 }
 \seealso{
-\code{\link[stats:lm]{stats::lm()}}, \code{\link[stats:confint]{stats::confint()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
+\code{\link[stats:lm]{stats::lm()}}, \code{\link[stats:confint]{stats::confint()}}, \code{\link[=getScores]{getScores()}}
 }

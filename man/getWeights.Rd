@@ -105,5 +105,5 @@ weightsCox = getWeights(
   demoSample3, phecodeOccurrences3, method = 'cox', methodFormula = ~ sex)
 }
 \seealso{
-\code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getScores]{getScores()}}, \code{\link[=phers]{phers()}}
+\code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getScores]{getScores()}}
 }

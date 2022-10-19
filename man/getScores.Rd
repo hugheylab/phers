@@ -45,5 +45,5 @@ rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
 }
 \seealso{
 \code{\link[=mapDiseaseToPhecode]{mapDiseaseToPhecode()}}, \code{\link[=getPhecodeOccurrences]{getPhecodeOccurrences()}}, \code{\link[=getWeights]{getWeights()}},
-\code{\link[=getResidualScores]{getResidualScores()}}, \code{\link[=phers]{phers()}}
+\code{\link[=getResidualScores]{getResidualScores()}}
 }

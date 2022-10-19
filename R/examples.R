@@ -117,27 +117,3 @@ genoStats = getGeneticAssociations(
   modelType = 'additive')
 "
   return(strsplit(ex, split = '\n')[[1L]])}
-
-
-example5 = function() {
-  ex = "
-@examples
-library('data.table')
-
-# OMIM disease IDs for which to calculate phenotype risk scores
-diseaseId = 154700
-
-# map diseases to phecodes
-diseasePhecodeMap = mapDiseaseToPhecode()
-diseasePhecodeMap = diseasePhecodeMap[disease_id == diseaseId]
-
-# calculate raw and residal scores using weights based on the sample cohort
-scores = phers(
-  demoSample, icdSample, diseasePhecodeMap, residScoreFormula = ~ sex)
-
-# calculate scores using pre-calculated weights
-scores = phers(
-  demoSample, icdSample, diseasePhecodeMap,
-  method = 'prevalence_precalc', residScoreFormula = ~ sex)
-"
-  return(strsplit(ex, split = '\n')[[1L]])}
