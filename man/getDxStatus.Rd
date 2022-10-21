@@ -17,7 +17,7 @@ a column \code{person_id}.}
 
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
 person in the cohort. Must have columns \code{person_id}, \code{icd}, \code{flag}, and
-\code{entry_age}.}
+\code{occurrence_age}.}
 
 \item{minUniqueAges}{Integer indicating the minimum number of unique
 ICD code entry ages required to classify a person as a case. Persons with
@@ -42,7 +42,7 @@ library('data.table')
 
 
 icdSample1 = merge(icdSample, demoSample[, .(person_id, dob)], by = 'person_id')
-icdSample1[, entry_age := as.numeric((entry_date - dob)/365.25)]
+icdSample1[, occurrence_age := as.numeric((entry_date - dob)/365.25)]
 icdSample1[, `:=`(entry_date = NULL, dob = NULL)]
 
 dxStatus = getDxStatus(demoSample, icdSample1)

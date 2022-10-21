@@ -35,6 +35,11 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights using the prevalence method
 weightsPrev = getWeights(demoSample, phecodeOccurrences)
 
+# calculate weights using the prevalence method
+# (assign negative weights to those with zero phecode occurrence)
+weightsPrevNeg = getWeights(
+  demoSample, phecodeOccurrences, negativeWeights = TRUE)
+
 # calculate weights using the logistic method
 weightsLogistic = getWeights(
   demoSample, phecodeOccurrences, method = 'logistic', methodFormula = ~ sex)
@@ -57,9 +62,13 @@ demoSample3 = demoSample[, .(
   person_id, sex,
   first_age = as.numeric((first_visit_date - dob)/365.25),
   last_age = as.numeric((last_visit_date - dob)/365.25))]
-
 weightsCox = getWeights(
   demoSample3, phecodeOccurrences3, method = 'cox', methodFormula = ~ sex)
+
+# calculate weights using pre-calculated weights based on data from
+# Vanderbilt University Medical Center
+weightsPreCalc = getWeights(
+  demoSample, phecodeOccurrences, method = 'prevalence_precalc')
 }
 \seealso{
 \code{\link[=getScores]{getScores()}}

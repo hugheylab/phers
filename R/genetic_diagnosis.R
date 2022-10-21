@@ -8,7 +8,7 @@
 #'   a column `person_id`.
 #' @param icdOccurrences A data.table of occurrences of ICD codes for each
 #'   person in the cohort. Must have columns `person_id`, `icd`, `flag`, and
-#'   `entry_age`.
+#'   `occurrence_age`.
 #' @param minUniqueAges Integer indicating the minimum number of unique
 #'   ICD code entry ages required to classify a person as a case. Persons with
 #'   at least one, but fewer than `minUniqueAges` entry ages, are assigned as
@@ -26,12 +26,12 @@
 getDxStatus = function(
   demos, icdOccurrences, minUniqueAges = 2L,
   diseaseDxIcdMap = phers::diseaseDxIcdMap) {
-  dx_status = entry_age = uniq_ages = . = NULL
+  dx_status = occurrence_age = uniq_ages = . = NULL
 
   checkDemos(demos)
   checkIcdOccurrences(
-    icdOccurrences, cols = c('person_id', 'icd', 'flag', 'entry_age'))
-  assertNumeric(icdOccurrences$entry_age, lower = 0)
+    icdOccurrences, cols = c('person_id', 'icd', 'flag', 'occurrence_age'))
+  assertNumeric(icdOccurrences$occurrence_age, lower = 0)
   assertCount(minUniqueAges, positive = TRUE)
 
   checkDxIcd(diseaseDxIcdMap, nullOk = FALSE)
@@ -40,7 +40,7 @@ getDxStatus = function(
   dxIcd = merge(
     icdOccurrences, diseaseDxIcdMap[, c('disease_id', 'icd', 'flag')],
     by = c('icd', 'flag'))
-  dxIcd = dxIcd[, .(uniq_ages = uniqueN(entry_age)), keyby = byCols]
+  dxIcd = dxIcd[, .(uniq_ages = uniqueN(occurrence_age)), keyby = byCols]
   dxIcd[, dx_status := -1L]
   dxIcd[uniq_ages >= minUniqueAges, dx_status := 1L]
 
