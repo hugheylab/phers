@@ -1,14 +1,51 @@
-getWeightsPrevalence = function(demos, phecodeOccurrences) {
-  phecode = person_id = . = pred = w = NULL
+getPreCalcWeights = function(demos, phecodeOccurrences, negativeWeights) {
+  phecode = person_id = . = pred = w = dx_status = NULL
+
+  wBig = CJ(
+    person_id = demos$person_id, phecode = unique(phecodeOccurrences$phecode))
+  wBig = merge(
+    wBig, unique(phecodeOccurrences[, .(person_id, phecode, dx_status = 1)]),
+    by = c('person_id', 'phecode'), all.x = TRUE, allow.cartesian = TRUE)
+  wBig[is.na(dx_status), dx_status := 0]
+  weights = merge(wBig, phers::preCalcWeights[, .(phecode, pred)], by = 'phecode')
+
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
+  weights[, dx_status := NULL]
+  setcolorder(weights, 'person_id')
+
+  return(weights)}
+
+
+getWeightsPrevalence = function(demos, phecodeOccurrences, negativeWeights) {
+  phecode = person_id = . = pred = w = dx_status = NULL
+
   weights = phecodeOccurrences[, .(
     pred = uniqueN(person_id) / nrow(demos)),
     keyby = phecode]
-  weights[, w := -log10(pred)]
+
+  wBig = CJ(
+    person_id = demos$person_id, phecode = unique(phecodeOccurrences$phecode))
+  wBig = merge(
+    wBig, unique(phecodeOccurrences[, .(person_id, phecode, dx_status = 1)]),
+    by = c('person_id', 'phecode'), all.x = TRUE, allow.cartesian = TRUE)
+  wBig[is.na(dx_status), dx_status := 0]
+  weights = merge(wBig, weights, by = 'phecode')
+
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
+  weights[, dx_status := NULL]
+  setcolorder(weights, 'person_id')
+
   return(weights)}
 
 
 getWeightsLogistic = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foreachCall, doOp) {
   phecode = person_id = . = w = phe = dx_status = pred = NULL
 
   weights = doOp(foreachCall, {
@@ -19,18 +56,21 @@ getWeightsLogistic = function(
     glmInput[, phecode := phe]
 
     methodFormula = update.formula(methodFormula, dx_status ~ .)
-    fit = glm(methodFormula, data = glmInput, family = 'binomial')
+    fit = speedglm(methodFormula, data = glmInput, family = binomial())
     glmInput[, pred := predict(
       fit, newdata = .SD , type = 'response', se.fit = FALSE)]
     glmInput = glmInput[, .(person_id, phecode, pred, dx_status)]})
 
-  weights[, w := -log10(pred) * dx_status]
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
   weights[, dx_status := NULL]
   return(weights)}
 
 
 getWeightsLoglinear = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foreachCall, doOp) {
   phecode = person_id = . = w = phe = pred = num_occurrences = NULL
 
   weights = doOp(foreachCall, {
@@ -47,13 +87,12 @@ getWeightsLoglinear = function(
     lmInput = lmInput[, .(person_id, phecode, num_occurrences, pred)]})
 
   weights[, w := log2(num_occurrences + 1) - pred]
-  weights[num_occurrences == 0, w := 0]
   weights[, num_occurrences := NULL]
   return(weights)}
 
 
 getWeightsCox = function(
-    demos, phecodeOccurrences, methodFormula, foreachCall, doOp) {
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foreachCall, doOp) {
   phecode = person_id = . = w = phe = dx_status = pred = occurrence_age =
     first_age = last_age = age2 = NULL
 
@@ -77,8 +116,10 @@ getWeightsCox = function(
       -predict(fit, newdata = .SD, type = 'expected', se.fit = FALSE))]
     coxInput = coxInput[, .(person_id, phecode, pred, dx_status)]})
 
-  weights[, w := -log10(pred) * dx_status]
-  weights[pred == 0 & dx_status == 0, w := 0]
+  weights[, w := (
+    1 - 2 * dx_status) * log10(dx_status * pred + (1 - dx_status) * (1 - pred))]
+  if (!negativeWeights) {
+    weights[, w := dx_status * w]}
   weights[, dx_status := NULL]
   return(weights)}
 
@@ -104,41 +145,55 @@ getWeightsCox = function(
 #'   weights.
 #' @param methodFormula A formula representing the right-hand side of the model
 #'   corresponding to `method`. All terms in the formula must correspond to
-#'   columns in `demos`. Do not use age-related covariates with the "cox"
-#'   method.
+#'   columns in `demos`. A method formula is not required for the "prevalence"
+#'   and "prevalence_precalc" methods. Do not use age-related covariates with
+#'   the "cox" method.
+#' @param negativeWeights Logical indicating whether to allow negative weights
+#'   for individuals with no occurrences of a phecode. This option is not
+#'   required for the "loglinear" method since under this method, individuals
+#'   with a nonzero phecode occurrence can also have negative weights.
 #' @param dopar Logical indicating whether to run calculations in parallel if
 #'   a parallel backend is already set up, e.g., using
 #'   [doParallel::registerDoParallel()]. Recommended to minimize runtime.
 #'
-#' @return A data.table with various columns. If `method` is "prevalence":
-#'   `phecode`, `pred`, and `w` (weight). If `method` is "logistic", "cox", or
-#'   "loglinear": `person_id`, `phecode`, `pred`, and `w`. The column `pred`
-#'   represents a different quantity depending on `method`. Under the
-#'   "prevalence" `method`, it is fraction of the cohort that has at least one
-#'   occurrence of the given phecode. Under "logistic" or "cox" `method`, it is
-#'   the predicted probability of given individual having a given phecode based
-#'   on `methodFormula`. Under the "loglinear" `method`, it is the predicted
-#'   log2(`num_occurrences` + 1) of a given phecode for a given individual
-#'   based on `methodFormula`. For the "prevalence", "cox", and "logistic"
-#'   `method`s, weight is calculated as `-log10(pred)`, and for "loglinear" as
-#'   the difference between the observed `log2(num_occurrences + 1)` and `pred`.
+#' @return A data.table with columns `person_id`, `phecode`, `pred`, and `w`.
+#'   The column `pred` represents a different quantity depending on `method`.
+#'   Under the "prevalence" `method`, it is fraction of the cohort that has
+#'   at least one occurrence of the given phecode. The "prevalence_precalc"
+#'   `method` is similar to the "prevalence" `method` but `pred` is calculated
+#'   based on EHR data from the Vanderbilt University Medical Center.
+#'   Under "logistic" or "cox" `method`, it is the predicted probability of
+#'   given individual having a given phecode based on `methodFormula`.
+#'   Under the "loglinear" `method`, it is the predicted
+#'   `log2(num_occurrences + 1)` of a given phecode for a given individual
+#'   based on `methodFormula`. For the "prevalence", "prevalence_precalc",
+#'   "cox", and "logistic" `method`s, weight is calculated as `-log10(pred)`
+#'   when an individual has non-zero phecode occurrence and `log10(1 - pred)`
+#'   when an individual has zero phecode occurrence. For the "loglinear" `method`
+#'   weight is calculated as the difference between the observed
+#'   `log2(num_occurrences + 1)` and `pred`.
 #'
 #' @eval example1()
 #'
-#' @seealso [getPhecodeOccurrences()], [getScores()], [phers()]
+#' @seealso [getPhecodeOccurrences()], [getScores()]
 #'
 #' @export
 getWeights = function(
     demos, phecodeOccurrences,
-    method = c('prevalence', 'logistic', 'cox', 'loglinear'),
-    methodFormula = NULL, dopar = FALSE) {
+    method = c('prevalence', 'logistic', 'cox', 'loglinear',
+               'prevalence_precalc'),
+    methodFormula = NULL, negativeWeights = FALSE, dopar = FALSE) {
 
   method = match.arg(method)
   checkDemos(demos, method)
   checkPhecodeOccurrences(phecodeOccurrences, demos, method)
+  assertFlag(negativeWeights)
 
-  if (method == 'prevalence') {
-    weights = getWeightsPrevalence(demos, phecodeOccurrences)
+  if (method %in% c('prevalence', 'prevalence_precalc')) {
+    getWeightsFunc = switch(
+      method, prevalence = getWeightsPrevalence,
+      prevalence_precalc = getPreCalcWeights)
+    weights = getWeightsFunc(demos, phecodeOccurrences, negativeWeights)
     return(weights[])}
 
   checkMethodFormula(methodFormula, demos)
@@ -152,5 +207,6 @@ getWeights = function(
     method, logistic = getWeightsLogistic,
     loglinear = getWeightsLoglinear, cox = getWeightsCox)
 
-  weights = getWeightsFunc(demos, phecodeOccurrences, methodFormula, foe, doOp)
+  weights = getWeightsFunc(
+    demos, phecodeOccurrences, methodFormula, negativeWeights, foe, doOp)
   return(weights[])}

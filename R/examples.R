@@ -10,6 +10,11 @@ phecodeOccurrences = getPhecodeOccurrences(icdSample)
 # calculate weights using the prevalence method
 weightsPrev = getWeights(demoSample, phecodeOccurrences)
 
+# calculate weights using the prevalence method
+# (assign negative weights to those with zero phecode occurrence)
+weightsPrevNeg = getWeights(
+  demoSample, phecodeOccurrences, negativeWeights = TRUE)
+
 # calculate weights using the logistic method
 weightsLogistic = getWeights(
   demoSample, phecodeOccurrences, method = 'logistic', methodFormula = ~ sex)
@@ -32,9 +37,13 @@ demoSample3 = demoSample[, .(
   person_id, sex,
   first_age = as.numeric((first_visit_date - dob)/365.25),
   last_age = as.numeric((last_visit_date - dob)/365.25))]
-
 weightsCox = getWeights(
   demoSample3, phecodeOccurrences3, method = 'cox', methodFormula = ~ sex)
+
+# calculate weights using pre-calculated weights based on data from
+# Vanderbilt University Medical Center
+weightsPreCalc = getWeights(
+  demoSample, phecodeOccurrences, method = 'prevalence_precalc')
 "
   return(strsplit(ex, split = '\n')[[1L]])}
 
@@ -57,8 +66,7 @@ diseaseId = 154700
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate scores
-scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
+scores = getScores(weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # calculate residual scores
 rscores = getResidualScores(demoSample, scores, lmFormula = ~ sex)
@@ -71,7 +79,12 @@ example3 = function() {
 @examples
 library('data.table')
 
-dxStatus = getDxStatus(demoSample, icdSample)
+
+icdSample1 = merge(icdSample, demoSample[, .(person_id, dob)], by = 'person_id')
+icdSample1[, occurrence_age := as.numeric((entry_date - dob)/365.25)]
+icdSample1[, `:=`(entry_date = NULL, dob = NULL)]
+
+dxStatus = getDxStatus(demoSample, icdSample1)
 "
   return(strsplit(ex, split = '\n')[[1L]])}
 
@@ -95,8 +108,7 @@ diseaseId = 154700
 diseasePhecodeMap = mapDiseaseToPhecode()
 
 # calculate scores
-scores = getScores(
-  demoSample, phecodeOccurrences, weights, diseasePhecodeMap[disease_id == diseaseId])
+scores = getScores(weights, diseasePhecodeMap[disease_id == diseaseId])
 
 # map diseases to genetic variants
 nvar = 10
@@ -112,29 +124,5 @@ rownames(genoSample) = 1:npop
 genoStats = getGeneticAssociations(
   scores, genoSample, demoSample, diseaseVariantMap, lmFormula = ~ sex,
   modelType = 'additive')
-"
-  return(strsplit(ex, split = '\n')[[1L]])}
-
-
-example5 = function() {
-  ex = "
-@examples
-library('data.table')
-
-# OMIM disease IDs for which to calculate phenotype risk scores
-diseaseId = 154700
-
-# map diseases to phecodes
-diseasePhecodeMap = mapDiseaseToPhecode()
-diseasePhecodeMap = diseasePhecodeMap[disease_id == diseaseId]
-
-# calculate raw and residal scores using weights based on the sample cohort
-scores = phers(
-  demoSample, icdSample, diseasePhecodeMap, residScoreFormula = ~ sex)
-
-# calculate scores using pre-calculated weights
-scores = phers(
-  demoSample, icdSample, diseasePhecodeMap,
-  weights = phers::preCalcWeights, residScoreFormula = ~ sex)
 "
   return(strsplit(ex, split = '\n')[[1L]])}

@@ -7,7 +7,7 @@
 getDxStatus(
   demos,
   icdOccurrences,
-  minUniqueDates = 2L,
+  minUniqueAges = 2L,
   diseaseDxIcdMap = phers::diseaseDxIcdMap
 )
 }
@@ -17,11 +17,11 @@ a column \code{person_id}.}
 
 \item{icdOccurrences}{A data.table of occurrences of ICD codes for each
 person in the cohort. Must have columns \code{person_id}, \code{icd}, \code{flag}, and
-\code{entry_date}.}
+\code{occurrence_age}.}
 
-\item{minUniqueDates}{Integer indicating the minimum number of unique
-ICD code entry dates required to classify a person as a case. Persons with
-at least one, but fewer than \code{minUniqueDates} entry dates, are assigned as
+\item{minUniqueAges}{Integer indicating the minimum number of unique
+ICD code entry ages required to classify a person as a case. Persons with
+at least one, but fewer than \code{minUniqueAges} entry ages, are assigned as
 neither cases nor controls.}
 
 \item{diseaseDxIcdMap}{A data.table of the mapping between diseases and
@@ -40,8 +40,10 @@ undiagnosed individuals (controls).
 \examples{
 library('data.table')
 
-dxStatus = getDxStatus(demoSample, icdSample)
-}
-\seealso{
-\code{\link[=phers]{phers()}}
+
+icdSample1 = merge(icdSample, demoSample[, .(person_id, dob)], by = 'person_id')
+icdSample1[, occurrence_age := as.numeric((entry_date - dob)/365.25)]
+icdSample1[, `:=`(entry_date = NULL, dob = NULL)]
+
+dxStatus = getDxStatus(demoSample, icdSample1)
 }

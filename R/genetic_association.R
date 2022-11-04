@@ -44,7 +44,7 @@
 #'
 #' @eval example4()
 #'
-#' @seealso [stats::lm()], [stats::confint()], [getScores()], [phers()]
+#' @seealso [stats::lm()], [stats::confint()], [getScores()]
 #'
 #' @export
 getGeneticAssociations = function(
@@ -138,7 +138,9 @@ runLinear = function(
     if (varName == 'allele_count1') {
       lmStat[, genotype := 'heterozygous']
     } else if (varName == 'allele_count2') {
-      lmStat[, genotype := 'homozygous']}}
+      lmStat[, genotype := 'homozygous']}
+
+    lmStat}
 
   stat = cbind(stat, lmStats)
   return(stat)}

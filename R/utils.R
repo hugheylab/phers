@@ -1,7 +1,8 @@
 #' @import checkmate
 #' @import data.table
+#' @importFrom speedglm speedglm
 #' @importFrom foreach foreach %do% %dopar%
-#' @importFrom stats lm confint update.formula rstandard glm predict
+#' @importFrom stats lm confint update.formula rstandard binomial predict
 #' @importFrom iterators iter
 #' @importFrom BEDMatrix BEDMatrix
 #' @importFrom survival coxph
@@ -10,7 +11,8 @@ NULL
 
 
 checkDemos = function(
-    demos, method = c('prevalence', 'logistic', 'cox', 'loglinear')) {
+    demos, method = c(
+      'prevalence', 'logistic', 'cox', 'loglinear', 'prevalence_precalc')) {
 
   method = match.arg(method)
   assertDataTable(demos)
@@ -70,7 +72,8 @@ checkIcdOccurrences = function(
 
 checkPhecodeOccurrences = function(
     phecodeOccurrences, demos,
-    method = c('prevalence', 'logistic', 'cox', 'loglinear')) {
+    method = c(
+      'prevalence', 'logistic', 'cox', 'loglinear', 'prevalence_precalc')) {
 
   method = match.arg(method)
   assertDataTable(phecodeOccurrences)
@@ -100,21 +103,15 @@ checkPhecodeOccurrences = function(
 checkWeights = function(weights) {
   assertDataTable(weights)
 
-  if ('person_id' %in% colnames(weights)) {
-    mustCols = c('person_id', 'phecode', 'w')
-    byCols = c('person_id', 'phecode')
-  } else {
-    mustCols = c('phecode', 'w')
-    byCols = 'phecode'}
-
   assertNames(
-    colnames(weights), type = 'unique', must.include = mustCols,
+    colnames(weights), type = 'unique',
+    must.include = c('person_id', 'phecode', 'w'),
     disjunct.from = 'disease_id')
-  assert(anyDuplicated(weights, by = byCols) == 0)
+  assert(anyDuplicated(weights, by = c('person_id', 'phecode')) == 0)
 
   assertCharacter(weights$phecode)
   assertNumeric(weights$w, finite = TRUE)
-  return(byCols)}
+  invisible()}
 
 
 checkDiseasePhecodeMap = function(diseasePhecodeMap) {
