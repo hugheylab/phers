@@ -136,7 +136,7 @@ statistics for heterozygous and homozygous genotypes.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code>, <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">stats::confint()</a></code>, <code><a href="getScores.html">getScores()</a></code>, <code><a href="phers.html">phers()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="https://rdrr.io/r/stats/lm.html" class="external-link">stats::lm()</a></code>, <code><a href="https://rdrr.io/r/stats/confint.html" class="external-link">stats::confint()</a></code>, <code><a href="getScores.html">getScores()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -157,8 +157,7 @@ statistics for heterozygous and homozygous genotypes.</p>
 <span class="r-in"><span><span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate scores</span></span></span>
-<span class="r-in"><span><span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="getScores.html">getScores</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseId</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">scores</span> <span class="op">=</span> <span class="fu"><a href="getScores.html">getScores</a></span><span class="op">(</span><span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseId</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># map diseases to genetic variants</span></span></span>
 <span class="r-in"><span><span class="va">nvar</span> <span class="op">=</span> <span class="fl">10</span></span></span>

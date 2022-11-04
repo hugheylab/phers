@@ -85,7 +85,7 @@ included in this package.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="getScores.html">getScores()</a></code>, <code><a href="phers.html">phers()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="getScores.html">getScores()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -98,6 +98,11 @@ included in this package.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate weights using the prevalence method</span></span></span>
 <span class="r-in"><span><span class="va">weightsPrev</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculate weights using the prevalence method</span></span></span>
+<span class="r-in"><span><span class="co"># (assign negative weights to those with zero phecode occurrence)</span></span></span>
+<span class="r-in"><span><span class="va">weightsPrevNeg</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, negativeWeights <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate weights using the logistic method</span></span></span>
 <span class="r-in"><span><span class="va">weightsLogistic</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span></span></span>
@@ -145,7 +150,6 @@ included in this package.</p></dd>
 <span class="r-in"><span>  <span class="va">person_id</span>, <span class="va">sex</span>,</span></span>
 <span class="r-in"><span>  first_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">first_visit_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  last_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">last_visit_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">weightsCox</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">demoSample3</span>, <span class="va">phecodeOccurrences3</span>, method <span class="op">=</span> <span class="st">'cox'</span>, methodFormula <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
@@ -318,6 +322,11 @@ included in this package.</p></dd>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculate weights using pre-calculated weights based on data from</span></span></span>
+<span class="r-in"><span><span class="co"># Vanderbilt University Medical Center</span></span></span>
+<span class="r-in"><span><span class="va">weightsPreCalc</span> <span class="op">=</span> <span class="fu"><a href="getWeights.html">getWeights</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, method <span class="op">=</span> <span class="st">'prevalence_precalc'</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

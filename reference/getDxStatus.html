@@ -63,7 +63,7 @@ undiagnosed individuals (controls).</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getDxStatus</span><span class="op">(</span></span>
 <span>  <span class="va">demos</span>,</span>
 <span>  <span class="va">icdOccurrences</span>,</span>
-<span>  minUniqueDates <span class="op">=</span> <span class="fl">2L</span>,</span>
+<span>  minUniqueAges <span class="op">=</span> <span class="fl">2L</span>,</span>
 <span>  diseaseDxIcdMap <span class="op">=</span> <span class="fu">phers</span><span class="fu">::</span><span class="va"><a href="diseaseDxIcdMap.html">diseaseDxIcdMap</a></span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -78,13 +78,13 @@ a column <code>person_id</code>.</p></dd>
 <dt>icdOccurrences</dt>
 <dd><p>A data.table of occurrences of ICD codes for each
 person in the cohort. Must have columns <code>person_id</code>, <code>icd</code>, <code>flag</code>, and
-<code>entry_date</code>.</p></dd>
+<code>occurrence_age</code>.</p></dd>
 
 
-<dt>minUniqueDates</dt>
+<dt>minUniqueAges</dt>
 <dd><p>Integer indicating the minimum number of unique
-ICD code entry dates required to classify a person as a case. Persons with
-at least one, but fewer than <code>minUniqueDates</code> entry dates, are assigned as
+ICD code entry ages required to classify a person as a case. Persons with
+at least one, but fewer than <code>minUniqueAges</code> entry ages, are assigned as
 neither cases nor controls.</p></dd>
 
 
@@ -103,16 +103,41 @@ the corresponding ICD codes that indicate a diagnosis. Must have columns
 
 <p>(1 indicates a case, 0 indicates a control, -1 indicates neither).</p>
     </div>
-    <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="phers.html">phers()</a></code></p></div>
-    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-datatable.com" class="external-link">'data.table'</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">dxStatus</span> <span class="op">=</span> <span class="fu">getDxStatus</span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">icdSample</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">icdSample1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">icdSample</span>, <span class="va">demoSample</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">person_id</span>, <span class="va">dob</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">'person_id'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">icdSample1</span><span class="op">[</span>, <span class="va">occurrence_age</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">entry_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      person_id    icd flag entry_date        dob occurrence_age</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1    365    9 2008-02-22 1999-09-03       8.472154</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1    366    9 2006-02-15 1999-09-03       6.454358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1    734    9 2009-11-05 1999-09-03      10.175097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1 759.82    9 2006-09-08 1999-09-03       7.015617</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2    441    9 2014-07-06 1995-09-26      18.777409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                           </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149:        48  741.0    9 2007-08-29 1992-01-04      15.649146</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150:        48 803.50    9 2010-10-20 1992-01-04      18.792199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151:        49  474.8    9 2014-07-25 1999-10-21      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152:        49  494.0    9 2014-07-25 1999-10-21      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153:        49 E933.8    9 2014-07-25 1999-10-21      14.759346</span>
+<span class="r-in"><span><span class="va">icdSample1</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span>entry_date <span class="op">=</span> <span class="cn">NULL</span>, dob <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      person_id    icd flag occurrence_age</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1    365    9       8.472154</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1    366    9       6.454358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1    734    9      10.175097</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1 759.82    9       7.015617</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2    441    9      18.777409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                     </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 149:        48  741.0    9      15.649146</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 150:        48 803.50    9      18.792199</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 151:        49  474.8    9      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 152:        49  494.0    9      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 153:        49 E933.8    9      14.759346</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">dxStatus</span> <span class="op">=</span> <span class="fu">getDxStatus</span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">icdSample1</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

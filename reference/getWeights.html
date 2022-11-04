@@ -60,8 +60,9 @@ the next is <code><a href="getScores.html">getScores()</a></code>.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getWeights</span><span class="op">(</span></span>
 <span>  <span class="va">demos</span>,</span>
 <span>  <span class="va">phecodeOccurrences</span>,</span>
-<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prevalence"</span>, <span class="st">"logistic"</span>, <span class="st">"cox"</span>, <span class="st">"loglinear"</span><span class="op">)</span>,</span>
+<span>  method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"prevalence"</span>, <span class="st">"logistic"</span>, <span class="st">"cox"</span>, <span class="st">"loglinear"</span>, <span class="st">"prevalence_precalc"</span><span class="op">)</span>,</span>
 <span>  methodFormula <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  negativeWeights <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  dopar <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -94,8 +95,16 @@ weights.</p></dd>
 <dt>methodFormula</dt>
 <dd><p>A formula representing the right-hand side of the model
 corresponding to <code>method</code>. All terms in the formula must correspond to
-columns in <code>demos</code>. Do not use age-related covariates with the "cox"
-method.</p></dd>
+columns in <code>demos</code>. A method formula is not required for the "prevalence"
+and "prevalence_precalc" methods. Do not use age-related covariates with
+the "cox" method.</p></dd>
+
+
+<dt>negativeWeights</dt>
+<dd><p>Logical indicating whether to allow negative weights
+for individuals with no occurrences of a phecode. This option is not
+required for the "loglinear" method since under this method, individuals
+with a nonzero phecode occurrence can also have negative weights.</p></dd>
 
 
 <dt>dopar</dt>
@@ -108,24 +117,32 @@ a parallel backend is already set up, e.g., using
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     
 
-<p>A data.table with various columns. If <code>method</code> is "prevalence":
-<code>phecode</code>, <code>pred</code>, and <code>w</code> (weight). If <code>method</code> is "logistic", "cox", or
-"loglinear": <code>person_id</code>, <code>phecode</code>, <code>pred</code>, and <code>w</code>. The column <code>pred</code></p>
+<p>A data.table with columns <code>person_id</code>, <code>phecode</code>, <code>pred</code>, and <code>w</code>.
+The column <code>pred</code> represents a different quantity depending on <code>method</code>.
+Under the "prevalence" <code>method</code>, it is fraction of the cohort that has
+at least one occurrence of the given phecode. The "prevalence_precalc"
+<code>method</code> is similar to the "prevalence" <code>method</code> but <code>pred</code> is calculated
+based on EHR data from the Vanderbilt University Medical Center.
+Under "logistic" or "cox" <code>method</code>, it is the predicted probability of
+given individual having a given phecode based on <code>methodFormula</code>.
+Under the "loglinear" <code>method</code>, it is the predicted
+<code>log2(num_occurrences + 1)</code> of a given phecode for a given individual
+based on <code>methodFormula</code>. For the "prevalence", "prevalence_precalc",
+"cox", and "logistic" <code>method</code>s, weight is calculated as <code>-log10(pred)</code></p>
 
 
-<p>represents a different quantity depending on <code>method</code>. Under the
-"prevalence" <code>method</code>, it is fraction of the cohort that has at least one
-occurrence of the given phecode. Under "logistic" or "cox" <code>method</code>, it is
-the predicted probability of given individual having a given phecode based
-on <code>methodFormula</code>. Under the "loglinear" <code>method</code>, it is the predicted
-log2(<code>num_occurrences</code> + 1) of a given phecode for a given individual
-based on <code>methodFormula</code>. For the "prevalence", "cox", and "logistic"
-<code>method</code>s, weight is calculated as <code>-log10(pred)</code>, and for "loglinear" as
-the difference between the observed <code>log2(num_occurrences + 1)</code> and <code>pred</code>.</p>
+<p>when an individual has non-zero phecode occurrence and <code>log10(1 - pred)</code></p>
+
+
+<p>when an individual has zero phecode occurrence. For the "loglinear" <code>method</code></p>
+
+
+<p>weight is calculated as the difference between the observed
+<code>log2(num_occurrences + 1)</code> and <code>pred</code>.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="getPhecodeOccurrences.html">getPhecodeOccurrences()</a></code>, <code><a href="getScores.html">getScores()</a></code>, <code><a href="phers.html">phers()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="getPhecodeOccurrences.html">getPhecodeOccurrences()</a></code>, <code><a href="getScores.html">getScores()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -138,6 +155,11 @@ the difference between the observed <code>log2(num_occurrences + 1)</code> and <
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate weights using the prevalence method</span></span></span>
 <span class="r-in"><span><span class="va">weightsPrev</span> <span class="op">=</span> <span class="fu">getWeights</span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculate weights using the prevalence method</span></span></span>
+<span class="r-in"><span><span class="co"># (assign negative weights to those with zero phecode occurrence)</span></span></span>
+<span class="r-in"><span><span class="va">weightsPrevNeg</span> <span class="op">=</span> <span class="fu">getWeights</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, negativeWeights <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate weights using the logistic method</span></span></span>
 <span class="r-in"><span><span class="va">weightsLogistic</span> <span class="op">=</span> <span class="fu">getWeights</span><span class="op">(</span></span></span>
@@ -185,7 +207,6 @@ the difference between the observed <code>log2(num_occurrences + 1)</code> and <
 <span class="r-in"><span>  <span class="va">person_id</span>, <span class="va">sex</span>,</span></span>
 <span class="r-in"><span>  first_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">first_visit_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  last_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">last_visit_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">weightsCox</span> <span class="op">=</span> <span class="fu">getWeights</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">demoSample3</span>, <span class="va">phecodeOccurrences3</span>, method <span class="op">=</span> <span class="st">'cox'</span>, methodFormula <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span><span class="op">)</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
@@ -358,6 +379,11 @@ the difference between the observed <code>log2(num_occurrences + 1)</code> and <
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># calculate weights using pre-calculated weights based on data from</span></span></span>
+<span class="r-in"><span><span class="co"># Vanderbilt University Medical Center</span></span></span>
+<span class="r-in"><span><span class="va">weightsPreCalc</span> <span class="op">=</span> <span class="fu">getWeights</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, method <span class="op">=</span> <span class="st">'prevalence_precalc'</span><span class="op">)</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>

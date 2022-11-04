@@ -60,27 +60,14 @@ received.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getScores</span><span class="op">(</span><span class="va">demos</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">getScores</span><span class="op">(</span><span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
-    <dl><dt>demos</dt>
-<dd><p>A data.table having one row per person in the cohort. Must have
-a column <code>person_id</code>.</p></dd>
-
-
-<dt>phecodeOccurrences</dt>
-<dd><p>A data.table of phecode occurrences for each person
-in the cohort. Must have columns <code>person_id</code> and <code>phecode</code>.</p></dd>
-
-
-<dt>weights</dt>
+    <dl><dt>weights</dt>
 <dd><p>A data.table of phecodes and their corresponding weights.
-Must have columns <code>phecode</code> and <code>w</code> when weights are unique to the
-population (e.g., calculated using the prevalence method)
-and <code>person_id</code>, <code>phecode</code>, and <code>w</code> when weights are unique to each
-person (e.g., calculated using logistic, cox, or loglinear methods).</p></dd>
+Must have columns <code>person_id</code>, <code>phecode</code> and <code>w</code>.</p></dd>
 
 
 <dt>diseasePhecodeMap</dt>
@@ -98,7 +85,7 @@ each disease.</p>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="mapDiseaseToPhecode.html">mapDiseaseToPhecode()</a></code>, <code><a href="getPhecodeOccurrences.html">getPhecodeOccurrences()</a></code>, <code><a href="getWeights.html">getWeights()</a></code>,
-<code><a href="getResidualScores.html">getResidualScores()</a></code>, <code><a href="phers.html">phers()</a></code></p></div>
+<code><a href="getResidualScores.html">getResidualScores()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -118,8 +105,7 @@ each disease.</p>
 <span class="r-in"><span><span class="va">diseasePhecodeMap</span> <span class="op">=</span> <span class="fu"><a href="mapDiseaseToPhecode.html">mapDiseaseToPhecode</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate scores</span></span></span>
-<span class="r-in"><span><span class="va">scores</span> <span class="op">=</span> <span class="fu">getScores</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  <span class="va">demoSample</span>, <span class="va">phecodeOccurrences</span>, <span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseId</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">scores</span> <span class="op">=</span> <span class="fu">getScores</span><span class="op">(</span><span class="va">weights</span>, <span class="va">diseasePhecodeMap</span><span class="op">[</span><span class="va">disease_id</span> <span class="op">==</span> <span class="va">diseaseId</span><span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate residual scores</span></span></span>
 <span class="r-in"><span><span class="va">rscores</span> <span class="op">=</span> <span class="fu"><a href="getResidualScores.html">getResidualScores</a></span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">scores</span>, lmFormula <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span><span class="op">)</span></span></span>
