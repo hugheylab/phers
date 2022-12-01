@@ -1,12 +1,4 @@
 filename,line_number,message,line
-R/genetic_diagnosis.R,29,Variable and function name style should be camelCase.,dx_status = occurrence_age = uniq_ages = . = NULL
-R/phers.R,26,Variable and function name style should be camelCase.,flag = icd = person_id = . = NULL
-R/phers.R,67,Variable and function name style should be camelCase.,person_id = phecode = disease_id = w = score = . = NULL
-R/phers.R,105,Variable and function name style should be camelCase.,disease_id = diseaseId = resid_score = . = person_id = score = NULL
-R/utils.R,186,Variable and function name style should be camelCase.,n_het = n_hom = n_wt = NULL
-R/weights.R,2,Variable and function name style should be camelCase.,phecode = person_id = . = pred = w = dx_status = NULL
-R/weights.R,23,Variable and function name style should be camelCase.,phecode = person_id = . = pred = w = dx_status = NULL
-R/weights.R,49,Variable and function name style should be camelCase.,phecode = person_id = . = w = phe = dx_status = pred = NULL
-R/weights.R,74,Variable and function name style should be camelCase.,phecode = person_id = . = w = phe = pred = num_occurrences = NULL
-R/weights.R,96,Variable and function name style should be camelCase.,phecode = person_id = . = w = phe = dx_status = pred = occurrence_age =
-R/weights.R,97,Variable and function name style should be camelCase.,first_age = last_age = age2 = NULL
+R/genetic_association.R,55,Variable and function name style should be camelCase.,diseaseId = disease_id = snp = allele_count = count = N = variant_id = person_id = NULL
+R/genetic_association.R,102,Variable and function name style should be camelCase.,ci_lower = melt = pval = se = ci_upper = allele_count = varName = n_het =
+R/genetic_association.R,103,Variable and function name style should be camelCase.,n_hom = n_total = n_wt = genotype = NULL
