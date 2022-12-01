@@ -58,7 +58,7 @@ getWeightsLogistic = function(
     methodFormula = update.formula(methodFormula, dx_status ~ .)
     fit = speedglm(methodFormula, data = glmInput, family = binomial())
     glmInput[, pred := predict(
-      fit, newdata = .SD , type = 'response', se.fit = FALSE)]
+      fit, newdata = .SD, type = 'response', se.fit = FALSE)]
     glmInput = glmInput[, .(person_id, phecode, pred, dx_status)]})
 
   weights[, w := (
