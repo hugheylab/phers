@@ -77,7 +77,8 @@ getGeneticAssociations = function(
 
     snpNow = unique(diseaseVariantMap[disease_id == diseaseId]$variant_id)
     genoCount = apply(
-      genotypes[, snpNow, drop = FALSE], 2L, uniqueN, na.rm = TRUE)
+      genotypes[unique(lmInputSub$person_id), snpNow, drop = FALSE], 2L,
+      uniqueN, na.rm = TRUE)
     snpSub = snpNow[genoCount > 1]
 
     genotypesSub = data.table(
