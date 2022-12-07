@@ -1,7 +1,7 @@
 filename,line_number,message,line
 R/genetic_association.R,55,Variable and function name style should be camelCase.,diseaseId = disease_id = snp = allele_count = count = N = variant_id = person_id = NULL
-R/genetic_association.R,102,Variable and function name style should be camelCase.,ci_lower = melt = pval = se = ci_upper = allele_count = varName = n_het =
-  R/genetic_association.R,103,Variable and function name style should be camelCase.,n_hom = n_total = n_wt = genotype = NULL
+R/genetic_association.R,103,Variable and function name style should be camelCase.,ci_lower = melt = pval = se = ci_upper = allele_count = varName = n_het =
+R/genetic_association.R,104,Variable and function name style should be camelCase.,n_hom = n_total = n_wt = genotype = NULL
 R/genetic_diagnosis.R,29,Variable and function name style should be camelCase.,dx_status = occurrence_age = uniq_ages = . = NULL
 R/phers.R,26,Variable and function name style should be camelCase.,flag = icd = person_id = . = NULL
 R/phers.R,67,Variable and function name style should be camelCase.,person_id = phecode = disease_id = w = score = . = NULL

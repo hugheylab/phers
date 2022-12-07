@@ -6,7 +6,7 @@
 [![CRAN Status](https://www.r-pkg.org/badges/version/phers)](https://cran.r-project.org/package=phers)
 [![drat version](https://raw.githubusercontent.com/hugheylab/drat/gh-pages/badges/phers_drat_badge.svg)](https://github.com/hugheylab/drat/tree/gh-pages/src/contrib)
 
-`phers` is an R package for calculating phenotype risk scores that quantify the extent to which a person's clinical diagnoses resemble a given Mendelian disease. For details on the R package, see [Aref et al. (bioRxiv)](https://doi.org/10.1101/2022.06.07.495133). For details on the original application of phenotype risk scores, see [Bastarache et. al. (2018)](https://pubmed.ncbi.nlm.nih.gov/29590070/).
+`phers` is an R package for calculating phenotype risk scores, which quantify the extent to which a person's clinical diagnoses resemble a given Mendelian disease. For details on the R package, see [Aref et al. (2022)](https://doi.org/10.1093/bioinformatics/btac619). For details on the original application of phenotype risk scores, see [Bastarache et al. (2018)](https://pubmed.ncbi.nlm.nih.gov/29590070/).
 
 ## Installation
 
