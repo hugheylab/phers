@@ -81,18 +81,25 @@ getGeneticAssociations = function(
       uniqueN, na.rm = TRUE)
     snpSub = snpNow[genoCount > 1]
 
-    genotypesSub = data.table(
-      person_id = rownames(genotypes), genotypes[, snpSub, drop = FALSE])
+    if (length(snpSub) == 0) {
+      statsSnps = data.table(
+        'disease_id' = as.integer(), 'variant_id' = as.character())
+      statsSnps[, c('n_total', 'n_wt', 'n_het', 'n_hom') := as.integer()]
+      statsSnps[, c(
+        'beta', 'se', 'pval', 'ci_lower', 'ci_upper') := as.numeric()]}
 
-    statsSnps = foreach(snp = snpSub, .combine = rbind) %do% {
-      genotypesSub2 = genotypesSub[, c('person_id', snp), with = FALSE]
-      lmInputSub2 = merge(
-        lmInputSub, genotypesSub2, by = 'person_id')[, !'person_id']
-      setnames(lmInputSub2, snp, 'allele_count')
-      lmInputSub2 = lmInputSub2[!is.na(allele_count)]
+    else {
+      genotypesSub = data.table(
+        person_id = rownames(genotypes), genotypes[, snpSub, drop = FALSE])
+      statsSnps = foreach(snp = snpSub, .combine = rbind) %do% {
+        genotypesSub2 = genotypesSub[, c('person_id', snp), with = FALSE]
+        lmInputSub2 = merge(
+          lmInputSub, genotypesSub2, by = 'person_id')[, !'person_id']
+        setnames(lmInputSub2, snp, 'allele_count')
+        lmInputSub2 = lmInputSub2[!is.na(allele_count)]
 
-      lmStat = runLinear(
-        lmInputSub2, lmFormula, modelType, diseaseId, snp, level)}})
+        lmStat = runLinear(
+          lmInputSub2, lmFormula, modelType, diseaseId, snp, level)}}})
 
   setkeyv(statsAll, c('disease_id', 'variant_id'))
   return(statsAll)}
