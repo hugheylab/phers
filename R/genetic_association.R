@@ -82,11 +82,7 @@ getGeneticAssociations = function(
     snpSub = snpNow[genoCount > 1]
 
     if (length(snpSub) == 0) {
-      statsSnps = data.table(
-        'disease_id' = as.integer(), 'variant_id' = as.character())
-      statsSnps[, c('n_total', 'n_wt', 'n_het', 'n_hom') := as.integer()]
-      statsSnps[, c(
-        'beta', 'se', 'pval', 'ci_lower', 'ci_upper') := as.numeric()]}
+      statsSnps = data.table()}
 
     else {
       genotypesSub = data.table(
@@ -101,7 +97,10 @@ getGeneticAssociations = function(
         lmStat = runLinear(
           lmInputSub2, lmFormula, modelType, diseaseId, snp, level)}}})
 
-  setkeyv(statsAll, c('disease_id', 'variant_id'))
+  if (nrow(statsAll) > 0) {
+    setkeyv(statsAll, c('disease_id', 'variant_id'))
+  }
+
   return(statsAll)}
 
 
