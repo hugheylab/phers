@@ -1,8 +1,7 @@
 #' @import checkmate
 #' @import data.table
-#' @importFrom speedglm speedglm
 #' @importFrom foreach foreach %do% %dopar%
-#' @importFrom stats lm confint update.formula rstandard binomial predict
+#' @importFrom stats lm confint update.formula rstandard glm predict
 #' @importFrom iterators iter
 #' @importFrom BEDMatrix BEDMatrix
 #' @importFrom survival coxph

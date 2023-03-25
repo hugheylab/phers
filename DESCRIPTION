@@ -21,8 +21,7 @@ Imports:
   data.table (>= 1.5.0),
   foreach (>= 1.5.2),
   iterators (>= 1.0.14),
-  survival (>= 3.3.1),
-  speedglm (>= 0.3.4)
+  survival (>= 3.3.1)
 Suggests:
   doParallel (>= 1.0.17),
   knitr,
