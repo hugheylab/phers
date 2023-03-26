@@ -1,7 +1,7 @@
 Package: phers
 Type: Package
 Title: Calculate Phenotype Risk Scores 
-Version: 1.0.0
+Version: 1.0.1
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Layla', 'Aref', , 'larefnezhad@gmail.com', 'aut'))
