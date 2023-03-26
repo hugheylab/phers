@@ -14,7 +14,7 @@ undiagnosed individuals (controls)."><!-- mathjax --><script src="https://cdnjs.
     
     <a class="navbar-brand me-2" href="../index.html">phers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,31 +111,139 @@ the corresponding ICD codes that indicate a diagnosis. Must have columns
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">icdSample1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge</a></span><span class="op">(</span><span class="va">icdSample</span>, <span class="va">demoSample</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span><span class="va">person_id</span>, <span class="va">dob</span><span class="op">)</span><span class="op">]</span>, by <span class="op">=</span> <span class="st">'person_id'</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">icdSample1</span><span class="op">[</span>, <span class="va">occurrence_age</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">entry_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      person_id    icd flag entry_date        dob occurrence_age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1    365    9 2008-02-22 1999-09-03       8.472154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1    366    9 2006-02-15 1999-09-03       6.454358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1    734    9 2009-11-05 1999-09-03      10.175097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1 759.82    9 2006-09-08 1999-09-03       7.015617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2    441    9 2014-07-06 1995-09-26      18.777409</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 149:        48  741.0    9 2007-08-29 1992-01-04      15.649146</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 150:        48 803.50    9 2010-10-20 1992-01-04      18.792199</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 151:        49  474.8    9 2014-07-25 1999-10-21      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 152:        49  494.0    9 2014-07-25 1999-10-21      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 153:        49 E933.8    9 2014-07-25 1999-10-21      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     person_id    icd flag entry_date        dob occurrence_age</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:         1    365    9 2014-03-10 1925-05-24      88.796699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:         1    366    9 2014-11-07 1925-05-24      89.459259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:         1    734    9 2014-05-28 1925-05-24      89.012989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         1 759.82    9 2014-02-15 1925-05-24      88.733728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:         2    441    9 2011-10-10 1976-06-05      35.346012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:         2  524.0    9 2012-11-04 1976-06-05      36.416511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:         2  718.4    9 2014-10-28 1976-06-05      38.395977</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:         2 759.82    9 2014-12-29 1976-06-05      38.565724</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:         2 759.82    9 2015-10-03 1976-06-05      39.326847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:         3    366    9 2005-09-28 1942-07-02      63.239370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:         3    734    9 2007-03-17 1942-07-02      64.704120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:         4    441    9 2019-10-15 1986-03-22      33.566328</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:         5  331.9    9 2011-03-08 1969-07-01      41.684307</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:         5 362.07    9 2011-06-07 1969-07-01      41.933451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:         5 369.25    9 2011-05-06 1969-07-01      41.845840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:         5 812.10    9 2011-03-26 1969-07-01      41.733588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:         6 811.11    9 2014-04-27 2001-01-10      13.291612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:         6  958.3    9 2005-06-14 2001-01-10       4.423713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:         6  V33.1    9 2004-12-14 2001-01-10       3.925424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:         7  062.8    9 2010-10-13 1973-11-05      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:         7 607.83    9 2010-10-13 1973-11-05      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:         7 712.17    9 2010-10-13 1973-11-05      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:         7 785.52    9 2010-10-13 1973-11-05      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:         7 788.30    9 2010-10-13 1973-11-05      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:         8    077    9 2017-03-30 2009-06-02       7.824870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:         8    256    9 2017-03-01 2009-06-02       7.745473</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:         9  391.1    9 2013-05-17 2001-04-29      12.049971</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:         9 756.13    9 2014-05-14 2001-04-29      13.041073</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:        10 711.81    9 2011-06-20 2002-01-17       9.420733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:        11 361.04    9 2016-10-03 2013-03-27       3.522563</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:        11  775.9    9 2016-11-23 2013-03-27       3.662194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:        11  960.6    9 2016-10-13 2013-03-27       3.549942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:        12  480.9    9 2017-12-10 1951-03-13      66.745830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:        12  916.2    9 2017-12-10 1951-03-13      66.745830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:        12 V18.51    9 2017-12-10 1951-03-13      66.745830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:        13 534.61    9 2014-07-09 2010-11-26       3.615044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:        13  773.5    9 2016-08-27 2010-11-26       5.750567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:        14  020.5    9 2014-03-01 1980-11-03      33.321550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:        14  982.0    9 2014-03-01 1980-11-03      33.321550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:        15  031.0    9 2012-05-06 1995-03-19      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:        15 202.15    9 2012-05-06 1995-03-19      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:        15  404.1    9 2012-05-06 1995-03-19      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:        15 404.10    9 2012-05-06 1995-03-19      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:        15 758.31    9 2012-05-06 1995-03-19      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:        16 641.81    9 2015-01-13 1947-03-28      67.797530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:        16 642.00    9 2015-01-13 1947-03-28      67.797530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:        17  224.2    9 2016-12-28 1991-07-14      25.459982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:        17 296.36    9 2017-04-16 1991-07-14      25.758408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:        17  441.4    9 2016-04-13 1991-07-14      24.750879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:        17  690.8    9 2014-12-02 1991-07-14      23.387429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:        17  904.6    9 2014-10-06 1991-07-14      23.231372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:        18 363.20    9 2011-02-11 1976-05-19      34.734167</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:        18 368.12    9 2011-04-08 1976-05-19      34.887487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:        18  410.5    9 2011-06-15 1976-05-19      35.073661</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:        18 772.12    9 2011-06-14 1976-05-19      35.070923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:        19  110.1    9 2010-06-29 1938-02-27      72.332488</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:        19 747.41    9 2008-09-28 1938-02-27      70.583001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:        19 803.44    9 2004-02-26 1938-02-27      65.994363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:        19  821.1    9 2007-11-10 1938-02-27      69.698675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:        19 952.14    9 2010-08-08 1938-02-27      72.442002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:        20  268.9    9 2018-03-07 2006-09-25      11.447654</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62:        20  534.2    9 2017-02-15 2006-09-25      10.393582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63:        20 663.40    9 2019-07-01 2006-09-25      12.764560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64:        20 755.11    9 2017-05-10 2006-09-25      10.623561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     person_id    icd flag entry_date        dob occurrence_age</span>
 <span class="r-in"><span><span class="va">icdSample1</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span>entry_date <span class="op">=</span> <span class="cn">NULL</span>, dob <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">]</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      person_id    icd flag occurrence_age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1    365    9       8.472154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1    366    9       6.454358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1    734    9      10.175097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1 759.82    9       7.015617</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2    441    9      18.777409</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 149:        48  741.0    9      15.649146</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 150:        48 803.50    9      18.792199</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 151:        49  474.8    9      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 152:        49  494.0    9      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 153:        49 E933.8    9      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     person_id    icd flag occurrence_age</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  1:         1    365    9      88.796699</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  2:         1    366    9      89.459259</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  3:         1    734    9      89.012989</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  4:         1 759.82    9      88.733728</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  5:         2    441    9      35.346012</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  6:         2  524.0    9      36.416511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  7:         2  718.4    9      38.395977</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  8:         2 759.82    9      38.565724</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  9:         2 759.82    9      39.326847</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 10:         3    366    9      63.239370</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 11:         3    734    9      64.704120</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 12:         4    441    9      33.566328</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 13:         5  331.9    9      41.684307</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 14:         5 362.07    9      41.933451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 15:         5 369.25    9      41.845840</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 16:         5 812.10    9      41.733588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 17:         6 811.11    9      13.291612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 18:         6  958.3    9       4.423713</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 19:         6  V33.1    9       3.925424</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 20:         7  062.8    9      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 21:         7 607.83    9      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 22:         7 712.17    9      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 23:         7 785.52    9      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 24:         7 788.30    9      36.938331</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 25:         8    077    9       7.824870</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 26:         8    256    9       7.745473</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 27:         9  391.1    9      12.049971</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 28:         9 756.13    9      13.041073</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 29:        10 711.81    9       9.420733</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 30:        11 361.04    9       3.522563</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 31:        11  775.9    9       3.662194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 32:        11  960.6    9       3.549942</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 33:        12  480.9    9      66.745830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 34:        12  916.2    9      66.745830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 35:        12 V18.51    9      66.745830</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 36:        13 534.61    9       3.615044</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 37:        13  773.5    9       5.750567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 38:        14  020.5    9      33.321550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 39:        14  982.0    9      33.321550</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 40:        15  031.0    9      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 41:        15 202.15    9      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 42:        15  404.1    9      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 43:        15 404.10    9      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 44:        15 758.31    9      17.133533</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 45:        16 641.81    9      67.797530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 46:        16 642.00    9      67.797530</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 47:        17  224.2    9      25.459982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 48:        17 296.36    9      25.758408</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 49:        17  441.4    9      24.750879</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 50:        17  690.8    9      23.387429</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 51:        17  904.6    9      23.231372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 52:        18 363.20    9      34.734167</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 53:        18 368.12    9      34.887487</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 54:        18  410.5    9      35.073661</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 55:        18 772.12    9      35.070923</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 56:        19  110.1    9      72.332488</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 57:        19 747.41    9      70.583001</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 58:        19 803.44    9      65.994363</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 59:        19  821.1    9      69.698675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 60:        19 952.14    9      72.442002</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 61:        20  268.9    9      11.447654</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 62:        20  534.2    9      10.393582</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 63:        20 663.40    9      12.764560</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 64:        20 755.11    9      10.623561</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     person_id    icd flag occurrence_age</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dxStatus</span> <span class="op">=</span> <span class="fu">getDxStatus</span><span class="op">(</span><span class="va">demoSample</span>, <span class="va">icdSample1</span><span class="op">)</span></span></span>
 </code></pre></div>

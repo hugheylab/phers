@@ -12,7 +12,7 @@ the next is getScores()."><!-- mathjax --><script src="https://cdnjs.cloudflare.
     
     <a class="navbar-brand me-2" href="../index.html">phers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.2</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -179,38 +179,36 @@ based on <code>methodFormula</code>. For the "prevalence", "prevalence_precalc",
 <span class="r-in"><span><span class="va">phecodeOccurrences3</span><span class="op">[</span>,</span></span>
 <span class="r-in"><span>  <span class="va">occurrence_age</span> <span class="op">:=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">first_occurrence_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      person_id phecode first_occurrence_date        dob occurrence_age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1     365            2008-02-22 1999-09-03       8.472154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1     366            2006-02-15 1999-09-03       6.454358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1     735            2009-11-05 1999-09-03      10.175097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1   735.1            2009-11-05 1999-09-03      10.175097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2     442            2014-07-06 1995-09-26      18.777409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1     365            2014-03-10 1925-05-24       88.79670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1     366            2014-11-07 1925-05-24       89.45926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1     735            2014-05-28 1925-05-24       89.01299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1   735.1            2014-05-28 1925-05-24       89.01299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2     442            2011-10-10 1976-06-05       35.34601</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 252:        49     474            2014-07-25 1999-10-21      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 253:        49   474.2            2014-07-25 1999-10-21      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 254:        49     496            2014-07-25 1999-10-21      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 255:        49   496.3            2014-07-25 1999-10-21      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 256:        49     963            2014-07-25 1999-10-21      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100:        20     531            2017-02-15 2006-09-25       10.39358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101:        20   531.1            2017-02-15 2006-09-25       10.39358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102:        20     661            2019-07-01 2006-09-25       12.76456</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103:        20     755            2017-05-10 2006-09-25       10.62356</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104:        20   755.3            2017-05-10 2006-09-25       10.62356</span>
 <span class="r-in"><span><span class="va">phecodeOccurrences3</span><span class="op">[</span>, <span class="fu">`:=`</span><span class="op">(</span>first_occurrence_date <span class="op">=</span> <span class="cn">NULL</span>, dob <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      person_id phecode occurrence_age</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1     365       8.472154</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1     366       6.454358</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1     735      10.175097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1   735.1      10.175097</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2     442      18.777409</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:         1     365       88.79670</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:         1     366       89.45926</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:         1     735       89.01299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:         1   735.1       89.01299</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:         2     442       35.34601</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 252:        49     474      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 253:        49   474.2      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 254:        49     496      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 255:        49   496.3      14.759346</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 256:        49     963      14.759346</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 100:        20     531       10.39358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 101:        20   531.1       10.39358</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 102:        20     661       12.76456</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 103:        20     755       10.62356</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 104:        20   755.3       10.62356</span>
 <span class="r-in"><span><span class="va">demoSample3</span> <span class="op">=</span> <span class="va">demoSample</span><span class="op">[</span>, <span class="fu">.</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">person_id</span>, <span class="va">sex</span>,</span></span>
 <span class="r-in"><span>  first_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">first_visit_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  last_age <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="op">(</span><span class="va">last_visit_date</span> <span class="op">-</span> <span class="va">dob</span><span class="op">)</span><span class="op">/</span><span class="fl">365.25</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">weightsCox</span> <span class="op">=</span> <span class="fu">getWeights</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  <span class="va">demoSample3</span>, <span class="va">phecodeOccurrences3</span>, method <span class="op">=</span> <span class="st">'cox'</span>, methodFormula <span class="op">=</span> <span class="op">~</span> <span class="va">sex</span><span class="op">)</span></span></span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
@@ -226,14 +224,6 @@ based on <code>methodFormula</code>. For the "prevalence", "prevalence_precalc",
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
@@ -242,26 +232,13 @@ based on <code>methodFormula</code>. For the "prevalence", "prevalence_precalc",
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
@@ -269,71 +246,30 @@ based on <code>methodFormula</code>. For the "prevalence", "prevalence_precalc",
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
@@ -344,41 +280,11 @@ based on <code>methodFormula</code>. For the "prevalence", "prevalence_precalc",
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Ran out of iterations and did not converge</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Loglik converged before variable  1 ; beta may be infinite. </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># calculate weights using pre-calculated weights based on data from</span></span></span>
 <span class="r-in"><span><span class="co"># Vanderbilt University Medical Center</span></span></span>
