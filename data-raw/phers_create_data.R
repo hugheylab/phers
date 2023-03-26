@@ -56,7 +56,7 @@ usethis::use_data(preCalcWeights, overwrite = TRUE)
 
 #######################
 # sample demographic, ICD code, and genotype data
-npop = 50
+npop = 20
 set.seed(1)
 
 # demographic data

@@ -15,7 +15,7 @@
   * checking for detritus in the temp directory ... NOTE
     'lastMiKTeXException'
 
-See results for [Windows](https://builder.r-hub.io/status/phers_1.0.1.tar.gz-ff03952f81034c6b85960c9b5c51af9c), [Ubuntu](https://builder.r-hub.io/status/phers_1.0.1.tar.gz-57df0038a62b49c5bb0ab659e8d8fab1), and [Fedora](https://builder.r-hub.io/status/phers_1.0.1.tar.gz-f64edfa659864173aae1eeb04a5cc8fd).
+See results for [Windows](https://builder.r-hub.io/status/phers_1.0.1.tar.gz-957a6d1b9cee448c88426a624e4f531b), [Ubuntu](https://builder.r-hub.io/status/phers_1.0.1.tar.gz-4c1e834e4d124903a622824d3cc3f4e8), and [Fedora](https://builder.r-hub.io/status/phers_1.0.1.tar.gz-41bfe8442b14440298c225a213172a33).
 
 ### GitHub Actions
 
@@ -26,3 +26,4 @@ See results for Mac, Windows, and Ubuntu [here]().
 ## Changes from current CRAN release
 
 * Replaced `speedglm()` with `glm()` due to compatibility issues with CRAN.
+* Reduced size of example data.
