@@ -78,7 +78,7 @@
 #'   disease's clinical features
 #' * `hpo_term_name`: Character vector of HPO term descriptions
 #'
-#' @source <https://hpo.jax.org/app/download/annotation>
+#' @source <https://hpo.jax.org/data/annotations>
 #'
 #' @seealso [mapDiseaseToPhecode()]
 'diseaseHpoMap'

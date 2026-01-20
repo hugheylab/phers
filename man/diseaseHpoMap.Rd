@@ -15,7 +15,7 @@ disease's clinical features
 }
 }
 \source{
-\url{https://hpo.jax.org/app/download/annotation}
+\url{https://hpo.jax.org/data/annotations}
 }
 \usage{
 diseaseHpoMap
