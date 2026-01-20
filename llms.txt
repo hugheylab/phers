@@ -1,0 +1,94 @@
+# phers
+
+[![check-deploy](https://github.com/hugheylab/phers/workflows/check-deploy/badge.svg)](https://github.com/hugheylab/phers/actions)
+[![codecov](https://codecov.io/gh/hugheylab/phers/branch/main/graph/badge.svg)](https://codecov.io/gh/hugheylab/phers)
+[![Netlify
+Status](https://api.netlify.com/api/v1/badges/353450f6-2feb-49ac-8aa1-35ebbf40e378/deploy-status)](https://app.netlify.com/sites/strong-centaur-770dd1/deploys)
+[![CRAN
+Status](https://www.r-pkg.org/badges/version/phers)](https://cran.r-project.org/package=phers)
+[![drat
+version](https://raw.githubusercontent.com/hugheylab/drat/gh-pages/badges/phers_drat_badge.svg)](https://github.com/hugheylab/drat/tree/gh-pages/src/contrib)
+
+`phers` is an R package for calculating phenotype risk scores, which
+quantify the extent to which a person’s clinical diagnoses resemble a
+given Mendelian disease. For details on the R package, see [Aref et
+al. (2022)](https://doi.org/10.1093/bioinformatics/btac619). For details
+on the original application of phenotype risk scores, see [Bastarache et
+al. (2018)](https://pubmed.ncbi.nlm.nih.gov/29590070/).
+
+## Installation
+
+### Option 1: CRAN
+
+``` r
+install.packages('phers')
+```
+
+### Option 2: Hughey Lab Drat Repository
+
+1.  Install
+    [`BiocManager`](https://cran.r-project.org/package=BiocManager).
+
+    ``` r
+    if (!requireNamespace('BiocManager', quietly = TRUE))
+      install.packages('BiocManager')
+    ```
+
+2.  If you use RStudio, go to Tools → Global Options… → Packages → Add…
+    (under Secondary repositories), then enter:
+
+    - Name: hugheylab
+    - Url: <https://hugheylab.github.io/drat/>
+
+    You only have to do this once. Then you can install or update the
+    package by entering:
+
+    ``` r
+    BiocManager::install('phers')
+    ```
+
+    Alternatively, you can install or update the package by entering:
+
+    ``` r
+    BiocManager::install('phers', site_repository = 'https://hugheylab.github.io/drat/')
+    ```
+
+## Usage
+
+Check out the [reference
+documentation](https://phers.hugheylab.org/reference/index.html).
+
+# Package index
+
+## All functions
+
+- [`demoSample`](https://phers.hugheylab.org/reference/demoSample.md) :
+  Sample table of demographic information
+- [`diseaseDxIcdMap`](https://phers.hugheylab.org/reference/diseaseDxIcdMap.md)
+  : Mapping of diseases and diagnostic ICD codes
+- [`diseaseHpoMap`](https://phers.hugheylab.org/reference/diseaseHpoMap.md)
+  : Mapping of Mendelian diseases and their clinical features
+- [`getDxStatus()`](https://phers.hugheylab.org/reference/getDxStatus.md)
+  : Identify cases and controls for Mendelian diseases
+- [`getGeneticAssociations()`](https://phers.hugheylab.org/reference/getGeneticAssociations.md)
+  : Perform association tests between phenotype risk scores and
+  genotypes
+- [`getPhecodeOccurrences()`](https://phers.hugheylab.org/reference/getPhecodeOccurrences.md)
+  : Map ICD code occurrences to phecode occurrences
+- [`getResidualScores()`](https://phers.hugheylab.org/reference/getResidualScores.md)
+  : Calculate residual phenotype risk scores
+- [`getScores()`](https://phers.hugheylab.org/reference/getScores.md) :
+  Calculate phenotype risk scores
+- [`getWeights()`](https://phers.hugheylab.org/reference/getWeights.md)
+  : Calculate phecode-specific weights for phenotype risk scores
+- [`hpoPhecodeMap`](https://phers.hugheylab.org/reference/hpoPhecodeMap.md)
+  : Mapping of HPO terms and phecodes
+- [`icdPhecodeMap`](https://phers.hugheylab.org/reference/icdPhecodeMap.md)
+  : Mapping of ICD codes and phecodes
+- [`icdSample`](https://phers.hugheylab.org/reference/icdSample.md) :
+  Sample table of ICD occurrences
+- [`mapDiseaseToPhecode()`](https://phers.hugheylab.org/reference/mapDiseaseToPhecode.md)
+  : Map diseases to phecodes via HPO terms
+- [`preCalcWeights`](https://phers.hugheylab.org/reference/preCalcWeights.md)
+  : Pre-calculated weights for calculating phenotype risk scores
+

@@ -1,60 +1,22 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://phers.hugheylab.org/404.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/index.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/demoSample.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/diseaseDxIcdMap.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/diseaseHpoMap.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/getDxStatus.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/getGeneticAssociations.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/getPhecodeOccurrences.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/getResidualScores.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/getScores.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/getWeights.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/hpoPhecodeMap.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/icdPhecodeMap.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/icdSample.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/mapDiseaseToPhecode.html</loc>
-  </url>
-  <url>
-    <loc>https://phers.hugheylab.org/reference/preCalcWeights.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://phers.hugheylab.org/404.html</loc></url>
+<url><loc>https://phers.hugheylab.org/authors.html</loc></url>
+<url><loc>https://phers.hugheylab.org/index.html</loc></url>
+<url><loc>https://phers.hugheylab.org/news/index.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/demoSample.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/diseaseDxIcdMap.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/diseaseHpoMap.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/getDxStatus.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/getGeneticAssociations.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/getPhecodeOccurrences.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/getResidualScores.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/getScores.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/getWeights.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/hpoPhecodeMap.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/icdPhecodeMap.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/icdSample.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/index.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/mapDiseaseToPhecode.html</loc></url>
+<url><loc>https://phers.hugheylab.org/reference/preCalcWeights.html</loc></url>
 </urlset>
+
