@@ -26,7 +26,7 @@ A data.table with the following columns:
 
 ## Source
 
-<https://hpo.jax.org/app/download/annotation>
+<https://hpo.jax.org/data/annotations>
 
 ## See also
 
