@@ -1,3 +1,6 @@
+# phers 1.0.3
+* Removed dependency on qs package, which was removed from CRAN.
+
 # phers 1.0.2
 * Reduced size of example data.
 

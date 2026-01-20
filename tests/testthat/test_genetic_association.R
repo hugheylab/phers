@@ -7,7 +7,7 @@ lmInputTest = data.table(
 test_that('runLinear output (additive)', {
 
   resObs = runLinear(lmInputTest, formTest, 'additive', 1, 'snp1')
-  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_additive_output.qs'))
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_additive_output.rds'))
 
   expect_equal(resObs, resExp)
 })
@@ -16,7 +16,7 @@ test_that('runLinear output (additive)', {
 test_that('runLinear output (dominant)', {
 
   resObs = runLinear(lmInputTest, formTest, 'dominant', 1, 'snp1')
-  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_dominant_output.qs'))
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_dominant_output.rds'))
 
   expect_equal(resObs, resExp)
 })
@@ -25,7 +25,7 @@ test_that('runLinear output (dominant)', {
 test_that('runLinear output (recessive)', {
 
   resObs = runLinear(lmInputTest, formTest, 'recessive', 1, 'snp1')
-  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_recessive_output.qs'))
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_recessive_output.rds'))
 
   expect_equal(resObs, resExp)
 })
@@ -34,7 +34,7 @@ test_that('runLinear output (recessive)', {
 test_that('runLinear output (genotypic)', {
 
   resObs = runLinear(lmInputTest, formTest, 'genotypic', 1, 'snp1')
-  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_genotypic_output.qs'))
+  resExp = snapshot(resObs, file.path(dataDir, 'run_linear_genotypic_output.rds'))
 
   expect_equal(resObs, resExp)
 })
@@ -52,7 +52,7 @@ test_that('getGeneticAssociations output (additive)', {
     modelType = 'additive')
 
   resExp = snapshot(
-    resObs, file.path(dataDir, 'get_genetic_associations_additive_output.qs'))
+    resObs, file.path(dataDir, 'get_genetic_associations_additive_output.rds'))
 
   expect_equal(resObs, resExp)
 })

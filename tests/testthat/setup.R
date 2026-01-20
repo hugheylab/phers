@@ -1,6 +1,6 @@
 library('data.table')
 library('foreach')
-library('qs')
+# library('qs')
 library('BEDMatrix')
 library('survival')
 registerDoSEQ()
@@ -8,9 +8,11 @@ registerDoSEQ()
 
 snapshot = function(xObs, path) {
   if (file.exists(path)) {
-    xExp = qs::qread(path)
+    # xExp = qs::qread(path)
+    xExp = readRDS(path)
   } else {
-    qs::qsave(xObs, path)
+    # qs::qsave(xObs, path)
+    saveRDS(xObs, path)
     xExp = xObs}
   return(xExp)}
 dataDir = 'data'

@@ -1,7 +1,7 @@
 Package: phers
 Type: Package
 Title: Calculate Phenotype Risk Scores 
-Version: 1.0.2
+Version: 1.0.3
 Authors@R: c(
   person('Jake', 'Hughey', , 'jakejhughey@gmail.com', c('aut', 'cre')),
   person('Layla', 'Aref', , 'larefnezhad@gmail.com', 'aut'))
@@ -12,7 +12,7 @@ URL: https://phers.hugheylab.org, https://github.com/hugheylab/phers
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.3
 Roxygen: list(markdown = TRUE)
 Depends: R (>= 3.5)
 Imports:
@@ -26,6 +26,5 @@ Suggests:
   doParallel (>= 1.0.17),
   knitr,
   rmarkdown,
-  testthat (>= 3.1.0),
-  qs (>= 0.25.2)
+  testthat (>= 3.1.0)
 Config/testthat/edition: 3

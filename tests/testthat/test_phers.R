@@ -78,7 +78,7 @@ test_that('getScores args error', {
 
 test_that('getResidualScores output', {
   resObs = getResidualScores(demosTest2, scoresTest, formTest)
-  resExp = snapshot(resObs, file.path(dataDir, 'get_residual_scores_output.qs'))
+  resExp = snapshot(resObs, file.path(dataDir, 'get_residual_scores_output.rds'))
 
   expect_equal(resObs, resExp)
 })
