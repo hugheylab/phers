@@ -2,7 +2,7 @@
 
 ## phers 1.0.4
 
-- .
+- Updated url in documentation.
 
 ## phers 1.0.3
 
