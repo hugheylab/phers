@@ -3,6 +3,7 @@ example1 = function() {
 @examples
 library('data.table')
 library('survival')
+setDTthreads(2) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
@@ -52,6 +53,7 @@ example2 = function() {
   ex = "
 @examples
 library('data.table')
+setDTthreads(2) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
@@ -78,7 +80,7 @@ example3 = function() {
   ex = "
 @examples
 library('data.table')
-
+setDTthreads(2) # default for examples
 
 icdSample1 = merge(icdSample, demoSample[, .(person_id, dob)], by = 'person_id')
 icdSample1[, occurrence_age := as.numeric((entry_date - dob)/365.25)]
@@ -94,6 +96,7 @@ example4 = function() {
 @examples
 library('data.table')
 library('BEDMatrix')
+setDTthreads(2) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
