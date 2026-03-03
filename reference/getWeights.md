@@ -92,6 +92,7 @@ when an individual has zero phecode occurrence. For the "loglinear"
 ``` r
 library('data.table')
 library('survival')
+setDTthreads(1) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)

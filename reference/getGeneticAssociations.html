@@ -9,7 +9,7 @@ model, with the phenotype risk score as the dependent variable."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">phers</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.4</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">1.0.5</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,6 +127,7 @@ statistics for heterozygous and homozygous genotypes.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://r-datatable.com" class="external-link">'data.table'</a></span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="st"><a href="https://github.com/QuantGen/BEDMatrix" class="external-link">'BEDMatrix'</a></span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/pkg/data.table/man/openmp-utils.html" class="external-link">setDTthreads</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span> <span class="co"># default for examples</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># map ICD codes to phecodes</span></span></span>
 <span class="r-in"><span><span class="va">phecodeOccurrences</span> <span class="op">=</span> <span class="fu"><a href="getPhecodeOccurrences.html">getPhecodeOccurrences</a></span><span class="op">(</span><span class="va">icdSample</span><span class="op">)</span></span></span>
@@ -145,7 +146,7 @@ statistics for heterozygous and homozygous genotypes.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># map diseases to genetic variants</span></span></span>
 <span class="r-in"><span><span class="va">nvar</span> <span class="op">=</span> <span class="fl">10</span></span></span>
-<span class="r-in"><span><span class="va">diseaseVariantMap</span> <span class="op">=</span> <span class="fu"><a href="https://rdatatable.gitlab.io/data.table/reference/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>disease_id <span class="op">=</span> <span class="va">diseaseId</span>, variant_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'snp'</span>, <span class="fl">1</span><span class="op">:</span><span class="va">nvar</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">diseaseVariantMap</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/pkg/data.table/man/data.table.html" class="external-link">data.table</a></span><span class="op">(</span>disease_id <span class="op">=</span> <span class="va">diseaseId</span>, variant_id <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">'snp'</span>, <span class="fl">1</span><span class="op">:</span><span class="va">nvar</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># load sample genetic data</span></span></span>
 <span class="r-in"><span><span class="va">npop</span> <span class="op">=</span> <span class="fl">50</span></span></span>

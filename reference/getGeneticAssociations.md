@@ -106,6 +106,7 @@ statistics for heterozygous and homozygous genotypes.
 ``` r
 library('data.table')
 library('BEDMatrix')
+setDTthreads(1) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)

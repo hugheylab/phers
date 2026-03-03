@@ -47,6 +47,7 @@ A data.table of phecode occurrences for each person.
 
 ``` r
 library('data.table')
+setDTthreads(1) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
