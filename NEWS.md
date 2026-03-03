@@ -1,3 +1,6 @@
+# phers 1.0.5
+* Set data.table to use 1 thread in examples for CRAN.
+
 # phers 1.0.4
 * Updated url in documentation.
 

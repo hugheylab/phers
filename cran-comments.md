@@ -6,4 +6,4 @@
 
 ## Changes from current CRAN release
 
-* Removed dependency on qs package, which was removed from CRAN.
+* Set data.table to use 1 thread in examples for CRAN.

@@ -71,6 +71,7 @@ model, with the phenotype risk score as the dependent variable.
 \examples{
 library('data.table')
 library('BEDMatrix')
+setDTthreads(1) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)

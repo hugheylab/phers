@@ -39,7 +39,7 @@ undiagnosed individuals (controls).
 }
 \examples{
 library('data.table')
-
+setDTthreads(1) # default for examples
 
 icdSample1 = merge(icdSample, demoSample[, .(person_id, dob)], by = 'person_id')
 icdSample1[, occurrence_age := as.numeric((entry_date - dob)/365.25)]

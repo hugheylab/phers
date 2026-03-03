@@ -71,6 +71,7 @@ the next is \code{\link[=getScores]{getScores()}}.
 \examples{
 library('data.table')
 library('survival')
+setDTthreads(1) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)

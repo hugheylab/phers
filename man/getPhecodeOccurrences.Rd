@@ -32,6 +32,7 @@ the next is \code{\link[=getWeights]{getWeights()}}.
 }
 \examples{
 library('data.table')
+setDTthreads(1) # default for examples
 
 # map ICD codes to phecodes
 phecodeOccurrences = getPhecodeOccurrences(icdSample)
